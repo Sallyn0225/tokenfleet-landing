@@ -17,6 +17,9 @@
 
 import MeshBackdrop from './MeshBackdrop.astro';
 import CodeBlock from './CodeBlock.astro';
+import { totalModelCount } from '../data/pricing.ts';
+
+const total = totalModelCount();
 ---
 
 <section class="hero" id="main">
@@ -33,7 +36,7 @@ import CodeBlock from './CodeBlock.astro';
 
       <p class="hero__body">
         聚合 OpenAI、Anthropic、Google、DeepSeek、Qwen 等
-        <strong class="hero__body-num mono">34</strong>
+        <strong class="hero__body-num mono">{total}</strong>
         个生产级 LLM、图像、视频模型。一个 API key，一份发票，国内直连。
       </p>
 
@@ -50,7 +53,7 @@ import CodeBlock from './CodeBlock.astro';
       </div>
 
       <ul class="hero__trust" aria-label="平台特性">
-        <li><span class="mono">34</span> 个生产级模型</li>
+        <li><a class="hero__trust-link" href="/models"><span class="mono">{total}</span> 个生产级模型</a></li>
         <li>OpenAI SDK 兼容</li>
         <li>国内直连</li>
       </ul>
@@ -159,6 +162,17 @@ import CodeBlock from './CodeBlock.astro';
   .hero__trust .mono {
     color: var(--color-ink);
     font-weight: var(--weight-medium);
+  }
+
+  .hero__trust-link {
+    color: inherit;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--motion-base) var(--ease-out-quart),
+                color var(--motion-base) var(--ease-out-quart);
+  }
+  .hero__trust-link:hover {
+    color: var(--color-primary);
+    border-bottom-color: currentColor;
   }
 
   .hero__panel {
