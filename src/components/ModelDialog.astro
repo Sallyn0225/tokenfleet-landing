@@ -31,12 +31,12 @@ function renderDetail(m: Model): string {
   if (meta?.contextK) specRows.push(`<dt>上下文窗口</dt><dd class="mono">${meta.contextK >= 1000 ? (meta.contextK / 1000) + 'M' : meta.contextK + 'K'} tokens</dd>`);
   if (meta?.maxOutputK) specRows.push(`<dt>最大输出</dt><dd class="mono">${meta.maxOutputK}K tokens</dd>`);
   specRows.push(`<dt>计费方式</dt><dd class="mono">${p.kind === 'token' ? '按 token' : '按调用次数'}</dd>`);
-  specRows.push(`<dt>可用分组</dt><dd class="mono">${m.enable_groups.join(' · ')}</dd>`);
+  specRows.push(`<dt>可用分组</dt><dd class="mono">${m.enable_groups.map(escapeHtml).join(' · ')}</dd>`);
 
   const endpoints = m.supported_endpoint_types
     .map((e) => {
       const def = endpointDefs[e];
-      return `<li><span class="endpoint__name mono">${e}</span><span class="endpoint__path mono">${def?.path ?? ''}</span></li>`;
+      return `<li><span class="endpoint__name mono">${escapeHtml(e)}</span><span class="endpoint__path mono">${escapeHtml(def?.path ?? '')}</span></li>`;
     })
     .join('');
 
@@ -77,13 +77,13 @@ function renderDetail(m: Model): string {
     : '<p class="dialog__desc dialog__desc--mute">该模型暂无官方简介。</p>';
 
   const docsLink = meta?.docs
-    ? `<a class="link dialog__docs" href="${meta.docs}" target="_blank" rel="noopener noreferrer">查看厂商文档 ↗</a>`
+    ? `<a class="link dialog__docs" href="${escapeHtml(meta.docs)}" target="_blank" rel="noopener noreferrer">查看厂商文档 ↗</a>`
     : '';
 
   return `
     <header class="dialog__head">
       <span class="dialog__logo">
-        <img src="${m.iconUrl}" alt="${escapeHtml(m.vendor.name)} logo" onerror="this.style.display='none'" />
+        <img src="${escapeHtml(m.iconUrl)}" alt="${escapeHtml(m.vendor.name)} logo" onerror="this.style.display='none'" />
       </span>
       <div class="dialog__heading">
         <span class="dialog__vendor mono">${escapeHtml(m.vendor.name)}</span>
