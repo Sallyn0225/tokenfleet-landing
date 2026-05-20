@@ -13,10 +13,14 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# local browser/tooling output
+# local agent/browser tooling output
+.agents/
+.claude/
+.impeccable/
 .impeccable-*
 .playwright-mcp/
 .screenshots/
+skills-lock.json
 
 
 # environment variables
