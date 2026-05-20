@@ -1,0 +1,108 @@
+---
+import Base from '../layouts/Base.astro';
+import TopNav from '../components/TopNav.astro';
+import Footer from '../components/Footer.astro';
+import ModelsExplorer from '../components/ModelsExplorer.astro';
+import { totalModelCount, usedVendors } from '../data/pricing.ts';
+
+const total = totalModelCount();
+const vendorCount = usedVendors().length;
+---
+
+<Base
+  title={`全部 ${total} 个模型 · TokenFleet`}
+  description={`覆盖 ${vendorCount} 家厂商的 ${total} 个生产级 AI 模型。一个 endpoint 调用所有，按厂商筛选、按价格排序、查看官方简介与完整价格分解。`}
+>
+  <TopNav />
+  <main id="main">
+    <section class="models-hero">
+      <div class="container models-hero__inner">
+        <span class="eyebrow">MODELS CATALOG</span>
+        <h1 class="models-hero__title">
+          <span class="mono models-hero__num">{total}</span> 个生产级模型，<br />
+          一份 endpoint。
+        </h1>
+        <p class="models-hero__body">
+          覆盖 LLM、图像、视频、音频 4 种形态，{vendorCount} 家厂商。按厂商筛选、按价格排序、点开查看官方简介与完整价格分解。
+        </p>
+        <ul class="models-hero__stats mono">
+          <li><strong>{total}</strong>个模型</li>
+          <li><strong>{vendorCount}</strong>家厂商</li>
+          <li>OpenAI / Anthropic / Gemini <strong>3</strong>种 endpoint</li>
+        </ul>
+      </div>
+    </section>
+
+    <ModelsExplorer />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .models-hero {
+    padding-block: clamp(56px, 8vw, 96px) clamp(28px, 4vw, 48px);
+    background:
+      linear-gradient(180deg, var(--color-canvas-soft) 0%, var(--color-canvas) 100%);
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .models-hero__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 720px;
+  }
+
+  .models-hero__title {
+    font-size: var(--type-display-xl-size);
+    line-height: var(--type-display-xl-line);
+    letter-spacing: var(--type-display-xl-track);
+    font-weight: var(--weight-thin);
+    color: var(--color-ink);
+  }
+
+  .models-hero__num {
+    font-weight: var(--weight-medium);
+    color: var(--color-primary);
+    font-size: 0.95em;
+  }
+
+  .models-hero__body {
+    color: var(--color-ink-secondary);
+    font-size: var(--type-body-lg-size);
+    line-height: 1.6;
+    font-weight: var(--weight-thin);
+    max-width: 52ch;
+  }
+
+  .models-hero__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 0;
+    margin-top: 14px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-hairline);
+    color: var(--color-ink-mute);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  .models-hero__stats li {
+    padding: 4px 16px;
+    border-right: 1px solid var(--color-hairline);
+  }
+  .models-hero__stats li:first-child { padding-left: 0; }
+  .models-hero__stats li:last-child { border-right: 0; }
+
+  .models-hero__stats strong {
+    color: var(--color-ink);
+    font-weight: var(--weight-medium);
+    margin-right: 4px;
+  }
+
+  @media (max-width: 640px) {
+    .models-hero__stats li {
+      padding: 4px 10px;
+    }
+  }
+</style>

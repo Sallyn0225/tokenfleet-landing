@@ -1,0 +1,481 @@
+---
+/**
+ * ModelsExplorer.astro — toolbar + cards grid + shared dialog.
+ *
+ * Interactivity is vanilla JS in a single <script>:
+ *   - filter:  toggle [hidden] on cards based on vendor/modality/search
+ *   - sort:    set card.style.order numeric key (input/output price ascending
+ *              maps to its own value; descending = negated; default = source)
+ *   - URL sync: state ↔ URLSearchParams (?vendor=&modality=&sort=&q=)
+ *               so /models?modality=image links from elsewhere land in the
+ *               filtered state.
+ *   - dialog:  card button [data-model] click → look up pre-rendered HTML in
+ *              the <script id="model-detail-data"> JSON blob → swap innerHTML
+ *              → dialog.showModal(). Close on Esc, backdrop click, ×.
+ */
+import ModelCard from './ModelCard.astro';
+import ModelDialog from './ModelDialog.astro';
+import { loadModels, usedVendors, vendorSlug, totalModelCount } from '../data/pricing.ts';
+
+const models = loadModels();
+const vendors = usedVendors();
+const total = totalModelCount();
+
+const modalities = [
+  { slug: 'all', label: '全部' },
+  { slug: 'chat', label: 'LLM' },
+  { slug: 'image', label: '图像' },
+  { slug: 'video', label: '视频' },
+  { slug: 'audio', label: '音频' },
+];
+---
+
+<section class="explorer" id="explorer" aria-label="模型筛选">
+  <div class="container explorer__inner">
+    <div class="explorer__toolbar" data-toolbar>
+      <div class="explorer__chips" role="group" aria-label="按厂商筛选">
+        <button type="button" class="chip is-active" data-vendor="all">全部 <span class="chip__count mono">{total}</span></button>
+        {vendors.map((v) => (
+          <button type="button" class="chip" data-vendor={vendorSlug(v)}>
+            {v.name}
+          </button>
+        ))}
+      </div>
+
+      <div class="explorer__chips explorer__chips--modality" role="group" aria-label="按形态筛选">
+        {modalities.map((m) => (
+          <button type="button" class={`chip chip--modality${m.slug === 'all' ? ' is-active' : ''}`} data-modality={m.slug}>
+            {m.label}
+          </button>
+        ))}
+      </div>
+
+      <div class="explorer__controls">
+        <label class="explorer__search">
+          <span class="sr-only">搜索模型名</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <circle cx="6" cy="6" r="4.25" stroke="currentColor" stroke-width="1.4" />
+            <path d="M9.2 9.2L12 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+          </svg>
+          <input
+            type="search"
+            placeholder="搜索模型名"
+            data-search
+            autocomplete="off"
+          />
+        </label>
+
+        <label class="explorer__sort">
+          <span class="sr-only">排序</span>
+          <select data-sort>
+            <option value="default">默认顺序</option>
+            <option value="input_asc">输入价 ↑</option>
+            <option value="input_desc">输入价 ↓</option>
+            <option value="output_asc">输出价 ↑</option>
+            <option value="output_desc">输出价 ↓</option>
+          </select>
+        </label>
+      </div>
+
+      <p class="explorer__counter mono" data-counter>
+        <span data-counter-shown>{total}</span> / <span data-counter-total>{total}</span> 个模型
+      </p>
+    </div>
+
+    <ol class="explorer__grid" data-grid>
+      {models.map((m, i) => (
+        <ModelCard model={m} />
+      ))}
+      <li class="explorer__empty" data-empty hidden>
+        <p class="mono">未找到匹配的模型。</p>
+        <button type="button" class="link" data-reset>清除筛选</button>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<ModelDialog />
+
+<style>
+  .explorer {
+    background: var(--color-canvas);
+    padding-block: clamp(32px, 4vw, 56px);
+  }
+
+  .explorer__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .explorer__toolbar {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'vendor   controls'
+      'modality counter';
+    gap: 16px 24px;
+    align-items: center;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .explorer__chips {
+    grid-area: vendor;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .explorer__chips--modality {
+    grid-area: modality;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-hairline);
+    background: var(--color-canvas);
+    color: var(--color-ink-secondary);
+    font-size: 12.5px;
+    letter-spacing: -0.005em;
+    transition: background-color var(--motion-base) var(--ease-out-quart),
+                border-color var(--motion-base) var(--ease-out-quart),
+                color var(--motion-base) var(--ease-out-quart);
+  }
+  .chip:hover {
+    border-color: var(--color-hairline-strong);
+    color: var(--color-ink);
+  }
+  .chip.is-active {
+    background: var(--color-ink);
+    color: var(--color-on-primary);
+    border-color: var(--color-ink);
+  }
+  .chip__count {
+    font-size: 11px;
+    color: var(--color-ink-mute);
+    margin-left: 2px;
+  }
+  .chip.is-active .chip__count {
+    color: var(--color-on-dark-mute);
+  }
+  .chip--modality {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  .explorer__controls {
+    grid-area: controls;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-self: end;
+  }
+
+  .explorer__search {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-hairline);
+    background: var(--color-canvas);
+    color: var(--color-ink-mute);
+    min-width: 200px;
+    transition: border-color var(--motion-base) var(--ease-out-quart);
+  }
+  .explorer__search:focus-within {
+    border-color: var(--color-primary);
+    color: var(--color-ink);
+  }
+  .explorer__search input {
+    flex: 1;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-size: 13px;
+    min-width: 0;
+  }
+  .explorer__search input::placeholder {
+    color: var(--color-ink-mute);
+  }
+
+  .explorer__sort select {
+    padding: 8px 28px 8px 12px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-hairline);
+    background: var(--color-canvas);
+    font-size: 13px;
+    color: var(--color-ink);
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'><path d='M1 1l4 4 4-4' stroke='%23273951' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    cursor: pointer;
+  }
+
+  .explorer__counter {
+    grid-area: counter;
+    font-size: 11px;
+    color: var(--color-ink-mute);
+    justify-self: end;
+  }
+
+  .explorer__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+  }
+
+  .explorer__empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 64px 0;
+    color: var(--color-ink-mute);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .explorer__empty[hidden] {
+    display: none;
+  }
+
+  @media (max-width: 880px) {
+    .explorer__toolbar {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'vendor'
+        'modality'
+        'controls'
+        'counter';
+    }
+    .explorer__controls {
+      justify-self: stretch;
+      flex-wrap: wrap;
+    }
+    .explorer__search { flex: 1; }
+    .explorer__counter { justify-self: start; }
+  }
+
+  @media (max-width: 520px) {
+    .explorer__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  type SortKey = 'default' | 'input_asc' | 'input_desc' | 'output_asc' | 'output_desc';
+
+  interface State {
+    vendor: string;
+    modality: string;
+    sort: SortKey;
+    q: string;
+  }
+
+  const toolbar = document.querySelector<HTMLElement>('[data-toolbar]');
+  const grid = document.querySelector<HTMLElement>('[data-grid]');
+  if (!toolbar || !grid) {
+    // ModelsExplorer not mounted — bail.
+  } else {
+    const cards = Array.from(grid.querySelectorAll<HTMLElement>('.modelcard'));
+    const empty = grid.querySelector<HTMLElement>('[data-empty]');
+    const counterShown = document.querySelector<HTMLElement>('[data-counter-shown]');
+    const searchInput = document.querySelector<HTMLInputElement>('[data-search]');
+    const sortSelect = document.querySelector<HTMLSelectElement>('[data-sort]');
+    const vendorChips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip[data-vendor]'));
+    const modalityChips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip[data-modality]'));
+    const resetBtn = document.querySelector<HTMLElement>('[data-reset]');
+
+    const initialOrder = new Map<HTMLElement, number>();
+    cards.forEach((c, i) => initialOrder.set(c, i));
+
+    const state: State = readUrlState();
+
+    function readUrlState(): State {
+      const p = new URLSearchParams(window.location.search);
+      const sort = p.get('sort') as SortKey | null;
+      const validSorts: SortKey[] = ['default', 'input_asc', 'input_desc', 'output_asc', 'output_desc'];
+      return {
+        vendor: p.get('vendor') || 'all',
+        modality: p.get('modality') || 'all',
+        sort: sort && validSorts.includes(sort) ? sort : 'default',
+        q: p.get('q') || '',
+      };
+    }
+
+    function writeUrlState() {
+      const p = new URLSearchParams();
+      if (state.vendor !== 'all') p.set('vendor', state.vendor);
+      if (state.modality !== 'all') p.set('modality', state.modality);
+      if (state.sort !== 'default') p.set('sort', state.sort);
+      if (state.q) p.set('q', state.q);
+      const qs = p.toString();
+      const url = window.location.pathname + (qs ? '?' + qs : '');
+      window.history.replaceState(null, '', url);
+    }
+
+    function applyChipActive(chips: HTMLButtonElement[], attr: 'vendor' | 'modality', value: string) {
+      chips.forEach((c) => {
+        if (c.dataset[attr] === value) c.classList.add('is-active');
+        else c.classList.remove('is-active');
+      });
+    }
+
+    function render() {
+      // Sync UI controls with state.
+      applyChipActive(vendorChips, 'vendor', state.vendor);
+      applyChipActive(modalityChips, 'modality', state.modality);
+      if (sortSelect && sortSelect.value !== state.sort) sortSelect.value = state.sort;
+      if (searchInput && searchInput.value !== state.q) searchInput.value = state.q;
+
+      const q = state.q.trim().toLowerCase();
+      let shown = 0;
+
+      cards.forEach((card) => {
+        const v = card.dataset.vendor || '';
+        const m = card.dataset.modality || '';
+        const name = card.dataset.name || '';
+        const visible =
+          (state.vendor === 'all' || v === state.vendor) &&
+          (state.modality === 'all' || m === state.modality) &&
+          (q === '' || name.includes(q));
+        card.hidden = !visible;
+        if (visible) shown++;
+
+        // sort key
+        let order = initialOrder.get(card) ?? 0;
+        if (state.sort === 'input_asc' || state.sort === 'output_asc') {
+          const p = parseFloat(state.sort === 'input_asc' ? (card.dataset.inputPrice || '0') : (card.dataset.outputPrice || '0'));
+          order = Math.round(p * 1000);
+        } else if (state.sort === 'input_desc' || state.sort === 'output_desc') {
+          const p = parseFloat(state.sort === 'input_desc' ? (card.dataset.inputPrice || '0') : (card.dataset.outputPrice || '0'));
+          order = 1_000_000_000 - Math.round(p * 1000);
+        }
+        card.style.order = String(order);
+      });
+
+      if (counterShown) counterShown.textContent = String(shown);
+      if (empty) empty.hidden = shown !== 0;
+    }
+
+    vendorChips.forEach((c) => {
+      c.addEventListener('click', () => {
+        state.vendor = c.dataset.vendor || 'all';
+        writeUrlState();
+        render();
+      });
+    });
+
+    modalityChips.forEach((c) => {
+      c.addEventListener('click', () => {
+        state.modality = c.dataset.modality || 'all';
+        writeUrlState();
+        render();
+      });
+    });
+
+    sortSelect?.addEventListener('change', () => {
+      state.sort = (sortSelect.value as SortKey) || 'default';
+      writeUrlState();
+      render();
+    });
+
+    let searchTimer: number | undefined;
+    searchInput?.addEventListener('input', () => {
+      window.clearTimeout(searchTimer);
+      searchTimer = window.setTimeout(() => {
+        state.q = searchInput.value;
+        writeUrlState();
+        render();
+      }, 120);
+    });
+
+    resetBtn?.addEventListener('click', () => {
+      state.vendor = 'all';
+      state.modality = 'all';
+      state.sort = 'default';
+      state.q = '';
+      writeUrlState();
+      render();
+    });
+
+    render();
+
+    // ── Dialog wiring ───────────────────────────────────────────────────
+    const dialog = document.getElementById('model-dialog') as HTMLDialogElement | null;
+    const dialogInner = document.querySelector<HTMLElement>('[data-dialog-inner]');
+    const dataScript = document.getElementById('model-detail-data');
+    const detailMap: Record<string, string> = dataScript ? JSON.parse(dataScript.textContent || '{}') : {};
+
+    function openModel(name: string) {
+      if (!dialog || !dialogInner) return;
+      const html = detailMap[name];
+      if (!html) return;
+      dialogInner.innerHTML = html;
+      dialog.showModal();
+      // give the dialog body focus for keyboard scrolling
+      const focusable = dialog.querySelector<HTMLElement>('[data-dialog-close]');
+      focusable?.focus();
+    }
+
+    function closeDialog() {
+      dialog?.close();
+    }
+
+    grid.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const btn = target.closest<HTMLElement>('[data-model]');
+      if (btn) {
+        const name = btn.dataset.model;
+        if (name) openModel(name);
+      }
+    });
+
+    if (dialog) {
+      // backdrop click closes
+      dialog.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        if (target.matches('[data-dialog-close]')) {
+          closeDialog();
+          return;
+        }
+        // click on dialog element itself (not its child content) = backdrop
+        if (target === dialog) {
+          const rect = dialog.getBoundingClientRect();
+          const inside =
+            e.clientX >= rect.left &&
+            e.clientX <= rect.right &&
+            e.clientY >= rect.top &&
+            e.clientY <= rect.bottom;
+          if (!inside) closeDialog();
+        }
+      });
+
+      // copy id button
+      dialog.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        const copyBtn = target.closest<HTMLElement>('[data-copy-id]');
+        if (copyBtn) {
+          const id = copyBtn.dataset.id || '';
+          navigator.clipboard?.writeText(id).then(() => {
+            const original = copyBtn.textContent;
+            copyBtn.textContent = '已复制 ✓';
+            window.setTimeout(() => {
+              copyBtn.textContent = original;
+            }, 1400);
+          });
+        }
+      });
+    }
+
+    // Open dialog via ?open=<model_name> deep link.
+    const initialOpen = new URLSearchParams(window.location.search).get('open');
+    if (initialOpen) openModel(initialOpen);
+  }
+</script>

@@ -8,7 +8,10 @@
  * model id (display-md, weight 300) + mono token cost.
  */
 
-import { featuredModels, totalModelCount } from '../data/models.ts';
+import { featuredModels } from '../data/models.ts';
+import { totalModelCount } from '../data/pricing.ts';
+
+const total = totalModelCount();
 ---
 
 <section class="featured" id="models" aria-labelledby="featured-title">
@@ -16,23 +19,23 @@ import { featuredModels, totalModelCount } from '../data/models.ts';
     <div class="featured__lede" data-reveal>
       <span class="eyebrow eyebrow--mute">MODELS GALLERY</span>
       <h2 class="featured__title" id="featured-title">
-        <span class="mono featured__num">{totalModelCount}</span> 个生产级模型，<br />
+        <span class="mono featured__num">{total}</span> 个生产级模型，<br />
         一份计费。
       </h2>
       <p class="featured__body">
         从 LLM、图像、视频到音频，全部走同一个 endpoint 与同一个对公账户。
       </p>
-      <a href="/#why" class="link featured__link">
+      <a href="/models" class="link featured__link">
         查看全部模型
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
           <path d="M4 2.5l3.5 3.5L4 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </a>
       <ul class="featured__taxonomy mono">
-        <li>LLM</li>
-        <li>图像</li>
-        <li>视频</li>
-        <li>音频</li>
+        <li><a href="/models?modality=chat">LLM</a></li>
+        <li><a href="/models?modality=image">图像</a></li>
+        <li><a href="/models?modality=video">视频</a></li>
+        <li><a href="/models?modality=audio">音频</a></li>
       </ul>
     </div>
 
@@ -137,6 +140,14 @@ import { featuredModels, totalModelCount } from '../data/models.ts';
   }
   .featured__taxonomy li:first-child { padding-left: 0; }
   .featured__taxonomy li:last-child { border-right: 0; padding-right: 0; }
+
+  .featured__taxonomy a {
+    color: inherit;
+    transition: color var(--motion-base) var(--ease-out-quart);
+  }
+  .featured__taxonomy a:hover {
+    color: var(--color-primary);
+  }
 
   /* ── grid: asymmetric on desktop ──────────────────────────────────────── */
   .featured__grid {

@@ -90,7 +90,7 @@ const cities = [
             </li>
           ))}
           <li class="modelgrid__cell modelgrid__cell--more">
-            <span class="modelgrid__more">+ 持续接入中</span>
+            <a href="/models" class="modelgrid__more">浏览全部 →</a>
           </li>
         </ul>
       </article>
@@ -327,10 +327,22 @@ const cities = [
     align-items: center;
     justify-content: center;
     color: var(--color-primary);
+    padding: 0;
   }
   .modelgrid__more {
     font-size: 10px;
     font-weight: var(--weight-medium);
+    color: var(--color-primary);
+    width: 100%;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 6px;
+    transition: background-color var(--motion-base) var(--ease-out-quart);
+  }
+  .modelgrid__more:hover {
+    background: var(--color-primary-bg-subdued);
   }
 
   /* ── B: VPC schematic ─────────────────────────────────────────────────── */
