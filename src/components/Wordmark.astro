@@ -1,10 +1,8 @@
 ---
 /**
  * Wordmark.astro — TokenFleet wordmark.
- * `Token` in ink + `Fleet` in indigo voltage + a single indigo dot after.
- * Renders semantic text inside an inline-block so search engines / screen
- * readers read "TokenFleet" cleanly while the visual still carries the brand
- * voltage. Used in nav, footer, and og fallback.
+ * Combines the company mark with semantic brand text so nav/footer get the
+ * optimized logo asset without sacrificing screen-reader clarity.
  */
 
 interface Props {
@@ -21,24 +19,81 @@ const { size = 'md', variant = 'on-light', class: className = '' } = Astro.props
   class={`wordmark wordmark--${size} wordmark--${variant} ${className}`}
   aria-label="TokenFleet 首页"
 >
-  <span class="wordmark__token">Token</span><span class="wordmark__fleet">Fleet</span><span class="wordmark__dot" aria-hidden="true">.</span>
+  <picture class="wordmark__mark" aria-hidden="true">
+    <source srcset="/xy-mark-small.webp" type="image/webp" />
+    <img
+      class="wordmark__mark-img"
+      src="/xy-mark-small.png"
+      width="160"
+      height="110"
+      alt=""
+      decoding="async"
+      loading="eager"
+    />
+  </picture>
+  <span class="wordmark__text">
+    <span class="wordmark__token">Token</span><span class="wordmark__fleet">Fleet</span><span class="wordmark__dot" aria-hidden="true">.</span>
+  </span>
 </a>
 
 <style>
   .wordmark {
     display: inline-flex;
-    align-items: baseline;
+    align-items: center;
+    gap: 8px;
+    min-height: 32px;
     font-family: var(--font-sans);
     font-weight: var(--weight-medium);
-    letter-spacing: -0.025em;
+    letter-spacing: -0.018em;
     line-height: 1;
     text-decoration: none;
     color: var(--color-ink);
   }
 
-  .wordmark--sm { font-size: 18px; }
-  .wordmark--md { font-size: 22px; }
-  .wordmark--lg { font-size: 32px; }
+  .wordmark--sm {
+    gap: 7px;
+    font-size: 18px;
+  }
+
+  .wordmark--md {
+    font-size: 22px;
+  }
+
+  .wordmark--lg {
+    gap: 10px;
+    font-size: 32px;
+  }
+
+  .wordmark__mark {
+    display: block;
+    flex: 0 0 auto;
+    width: 34px;
+    height: 24px;
+    line-height: 0;
+    overflow: hidden;
+  }
+
+  .wordmark--sm .wordmark__mark {
+    width: 30px;
+    height: 21px;
+  }
+
+  .wordmark--lg .wordmark__mark {
+    width: 48px;
+    height: 33px;
+  }
+
+  .wordmark__mark-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .wordmark__text {
+    display: inline-flex;
+    align-items: baseline;
+  }
 
   .wordmark--on-dark { color: var(--color-on-primary); }
   .wordmark--on-dark .wordmark__token { color: var(--color-on-primary); }
