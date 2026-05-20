@@ -66,8 +66,8 @@ const navLinks = [
         </li>
       ))}
       <li class="nav__drawer-cta">
-        <a href="https://console.tokenfleet.cn" class="nav__signin">登录</a>
-        <a href="https://console.tokenfleet.cn/signup" class="btn btn--primary btn--sm">开始接入</a>
+        <a href="https://console.tokenfleet.cn" class="btn btn--outline nav__drawer-button">登录</a>
+        <a href="https://console.tokenfleet.cn/signup" class="btn btn--primary nav__drawer-button">开始接入</a>
       </li>
     </ul>
   </div>
@@ -184,10 +184,16 @@ const navLinks = [
   .nav__drawer {
     position: fixed;
     inset: 64px 0 0 0;
-    background: var(--color-canvas);
-    z-index: calc(var(--z-nav) - 1);
+    z-index: var(--z-overlay);
+    min-height: calc(100vh - 64px);
+    min-height: calc(100dvh - 64px);
+    overflow-y: auto;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 249, 252, 0.98)),
+      var(--color-canvas);
     padding: 24px var(--gutter);
     border-top: 1px solid var(--color-hairline);
+    box-shadow: 0 18px 40px rgba(0, 55, 112, 0.12);
     animation: drawer-in 220ms var(--ease-out-quart);
   }
 
@@ -218,11 +224,11 @@ const navLinks = [
     gap: 12px;
   }
 
-  .nav__drawer-cta .nav__signin {
-    text-align: center;
-    padding: 12px;
-    border: 1px solid var(--color-hairline-strong);
-    border-radius: var(--radius-pill);
+  .nav__drawer-button {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 18px;
+    font-size: var(--type-button-md-size);
   }
 
   @keyframes drawer-in {
@@ -249,6 +255,11 @@ const navLinks = [
 
   @media (max-width: 480px) {
     .nav__cta .btn { display: none; }
+
+    .nav__drawer {
+      padding-top: 20px;
+      padding-bottom: max(24px, env(safe-area-inset-bottom));
+    }
   }
 </style>
 
