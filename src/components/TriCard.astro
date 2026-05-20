@@ -1,0 +1,415 @@
+---
+/**
+ * TriCard.astro — three-up product breakdown.
+ *
+ * Card 1: 统一 API 网关 — schematic + mono one-line call sample.
+ * Card 2: 统一计费与发票 (Unified Billing & Invoicing) — mini 增值税专票
+ *         mockup rendered in pure HTML/CSS with tabular figures.
+ *         Replaces v1 Fine-tuning Gateway (PRD Decision 10 v2).
+ * Card 3: GPU 算力出租 — desaturated + COMING SOON mono label + sales
+ *         contact path until the product is launch-ready.
+ */
+---
+
+<section class="tri" id="products" aria-labelledby="tri-title">
+  <div class="container tri__inner">
+    <div class="tri__header" data-reveal>
+      <span class="eyebrow eyebrow--mute">WHAT TOKENFLEET SHIPS</span>
+      <h2 class="tri__title" id="tri-title">
+        三条产品线，一条 endpoint，一份对公账单。
+      </h2>
+    </div>
+
+    <ol class="tri__grid" data-reveal>
+      {/* Card 1 — Unified API Gateway */}
+      <li class="tri-card tri-card--primary">
+        <div class="tri-card__inner">
+          <span class="eyebrow">PRODUCT 01</span>
+          <h3 class="tri-card__title">统一 API 网关</h3>
+          <p class="tri-card__body">
+            34 个生产级模型，全部 OpenAI Chat Completions 接口形态。改一行
+            <code class="mono">base_url</code>，今天接入。
+          </p>
+
+          <div class="tri-card__media tri-card__media--schematic" aria-hidden="true">
+            <svg viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="var(--color-ink-secondary)" stroke-width="1.2" stroke-linecap="round">
+                <line x1="100" y1="40"  x2="180" y2="90" />
+                <line x1="100" y1="90"  x2="180" y2="90" />
+                <line x1="100" y1="140" x2="180" y2="90" />
+                <line x1="180" y1="90"  x2="260" y2="90" />
+              </g>
+              {/* vendor nodes */}
+              <g>
+                <circle cx="90" cy="40"  r="16" fill="var(--color-canvas)" stroke="var(--color-hairline-strong)" />
+                <text x="90" y="44" text-anchor="middle" font-size="11" font-family="var(--font-mono)" fill="var(--color-ink-secondary)">A</text>
+
+                <circle cx="90" cy="90"  r="16" fill="var(--color-canvas)" stroke="var(--color-hairline-strong)" />
+                <text x="90" y="94" text-anchor="middle" font-size="11" font-family="var(--font-mono)" fill="var(--color-ink-secondary)">O</text>
+
+                <circle cx="90" cy="140" r="16" fill="var(--color-canvas)" stroke="var(--color-hairline-strong)" />
+                <text x="90" y="144" text-anchor="middle" font-size="11" font-family="var(--font-mono)" fill="var(--color-ink-secondary)">G</text>
+              </g>
+
+              {/* gateway pill */}
+              <rect x="180" y="74" width="44" height="32" rx="6" fill="var(--color-primary)" />
+              <text x="202" y="94" text-anchor="middle" font-size="10" font-family="var(--font-mono)" font-weight="500" fill="var(--color-on-primary)">tf/v1</text>
+
+              {/* client */}
+              <rect x="246" y="78" width="36" height="24" rx="4" fill="var(--color-canvas)" stroke="var(--color-ink)" stroke-width="1.2" />
+              <text x="264" y="93" text-anchor="middle" font-size="9" font-family="var(--font-mono)" fill="var(--color-ink)">app</text>
+            </svg>
+          </div>
+
+          <ul class="tri-card__bullets">
+            <li>OpenAI SDK 一行 <code class="mono">base_url</code> 替换</li>
+            <li>同账户、同对账、同发票</li>
+            <li>国内直连，低延迟</li>
+          </ul>
+
+          <a href="/#models" class="btn btn--outline-indigo btn--sm tri-card__cta">
+            查看支持的模型
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+              <path d="M3.5 2l3 3.5-3 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        </div>
+      </li>
+
+      {/* Card 2 — Unified Billing & Invoicing (v2 replacement for Fine-tuning Gateway) */}
+      <li class="tri-card tri-card--billing">
+        <div class="tri-card__inner">
+          <span class="eyebrow">PRODUCT 02</span>
+          <h3 class="tri-card__title">统一计费与发票</h3>
+          <p class="tri-card__body">
+            一个对公账户，自动汇总跨厂商用量。月底一张人民币增值税专票。
+          </p>
+
+          <figure class="invoice" aria-label="增值税专用发票示意">
+            <div class="invoice__head">
+              <span class="invoice__brand mono">TokenFleet · 增值税专用发票</span>
+              <span class="invoice__no mono">№ 2026-04-018</span>
+            </div>
+            <table class="invoice__table">
+              <tbody>
+                <tr>
+                  <td>OpenAI · gpt-5</td>
+                  <td class="invoice__num mono tabular">¥&thinsp;3,842.50</td>
+                </tr>
+                <tr>
+                  <td>Anthropic · claude-opus-4-7</td>
+                  <td class="invoice__num mono tabular">¥&thinsp;5,217.30</td>
+                </tr>
+                <tr>
+                  <td>Google · gemini-3-pro</td>
+                  <td class="invoice__num mono tabular">¥&thinsp;1,498.00</td>
+                </tr>
+                <tr>
+                  <td>BFL · flux-1.1-pro</td>
+                  <td class="invoice__num mono tabular">¥&thinsp;612.80</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td>合计（含税 6%）</td>
+                  <td class="invoice__total mono tabular">¥&thinsp;11,170.60</td>
+                </tr>
+              </tfoot>
+            </table>
+            <div class="invoice__foot mono">
+              <span>购方：示例企业有限公司</span>
+              <span>开票日期 2026-04-30</span>
+            </div>
+          </figure>
+
+          <ul class="tri-card__bullets">
+            <li>跨厂商用量统一对账</li>
+            <li>月度自动开票或按需补开</li>
+            <li>团队 / 项目维度的成本归属</li>
+          </ul>
+
+          <a href="/#business" class="btn btn--outline-indigo btn--sm tri-card__cta">
+            查看计费机制
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+              <path d="M3.5 2l3 3.5-3 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        </div>
+      </li>
+
+      {/* Card 3 — GPU Coming-soon */}
+      <li class="tri-card tri-card--soon">
+        <div class="tri-card__inner">
+          <span class="eyebrow eyebrow--mute">PRODUCT 03 · COMING SOON</span>
+          <h3 class="tri-card__title">GPU 算力出租</h3>
+          <p class="tri-card__body">
+            按小时计费的 H100 / H200 集群，跑你自己的训练与微调任务。准备中。
+          </p>
+
+          <div class="tri-card__media tri-card__media--soon" aria-hidden="true">
+            <svg viewBox="0 0 240 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="var(--color-ink-mute)" stroke-width="1" fill="var(--color-canvas)">
+                <rect x="20"  y="30" width="56" height="80" rx="4" />
+                <rect x="92"  y="30" width="56" height="80" rx="4" />
+                <rect x="164" y="30" width="56" height="80" rx="4" />
+              </g>
+              <g fill="var(--color-ink-mute)" font-family="var(--font-mono)" font-size="9" text-anchor="middle">
+                <text x="48"  y="70">H100</text>
+                <text x="120" y="70">H200</text>
+                <text x="192" y="70">H200</text>
+              </g>
+              <g fill="var(--color-ink-mute)" font-family="var(--font-mono)" font-size="7" text-anchor="middle" opacity="0.6">
+                <text x="48"  y="86">80GB</text>
+                <text x="120" y="86">141GB</text>
+                <text x="192" y="86">141GB</text>
+              </g>
+            </svg>
+          </div>
+
+          <div class="gpu-contact">
+            <a
+              href="mailto:sales@tokenfleet.cn?subject=GPU%20算力出租咨询"
+              class="btn btn--outline-indigo btn--sm gpu-contact__btn"
+            >
+              联系销售咨询
+            </a>
+            <p class="gpu-contact__note mono">sales@tokenfleet.cn</p>
+          </div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .tri {
+    background: var(--color-canvas);
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .tri__inner {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(40px, 5vw, 64px);
+  }
+
+  .tri__header {
+    max-width: 660px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .tri__title {
+    font-size: var(--type-display-lg-size);
+    line-height: var(--type-display-lg-line);
+    letter-spacing: var(--type-display-lg-track);
+    font-weight: var(--weight-thin);
+    color: var(--color-ink);
+  }
+
+  .tri__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .tri-card {
+    background: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    display: flex;
+    transition: border-color var(--motion-base) var(--ease-out-quart),
+                box-shadow var(--motion-base) var(--ease-out-quart),
+                transform 320ms var(--ease-out-quart);
+  }
+
+  .tri-card:hover {
+    border-color: var(--color-hairline-strong);
+    box-shadow: var(--shadow-1);
+  }
+
+  .tri-card--billing {
+    background: var(--color-canvas-cream);
+    border-color: var(--color-canvas-cream-deep);
+  }
+  .tri-card--billing:hover {
+    border-color: var(--color-canvas-cream-deep);
+    background: var(--color-canvas-cream);
+  }
+
+  .tri-card--soon {
+    background: var(--color-canvas-soft);
+    color: var(--color-ink-secondary);
+  }
+  .tri-card--soon:hover { box-shadow: none; }
+  .tri-card--soon .tri-card__title { color: var(--color-ink-secondary); }
+
+  .tri-card__inner {
+    flex: 1;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .tri-card__title {
+    font-size: var(--type-display-md-size);
+    line-height: var(--type-display-md-line);
+    letter-spacing: var(--type-display-md-track);
+    font-weight: var(--weight-thin);
+    color: var(--color-ink);
+  }
+
+  .tri-card__body {
+    font-size: var(--type-body-md-size);
+    color: var(--color-ink-secondary);
+    line-height: 1.55;
+    max-width: 32ch;
+  }
+
+  .tri-card__media {
+    margin: 4px -8px 0;
+  }
+
+  .tri-card__media--schematic {
+    padding: 8px;
+  }
+
+  .tri-card__media--soon svg {
+    opacity: 0.5;
+    filter: grayscale(60%);
+  }
+
+  .tri-card__bullets {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .tri-card__bullets li {
+    font-size: 13px;
+    color: var(--color-ink-secondary);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .tri-card__bullets li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 6px;
+    height: 1.5px;
+    background: var(--color-primary);
+    border-radius: 999px;
+  }
+
+  .tri-card__cta {
+    align-self: flex-start;
+    margin-top: 8px;
+  }
+
+  /* ── mini invoice mockup ──────────────────────────────────────────────── */
+  .invoice {
+    margin: 0;
+    background: var(--color-canvas);
+    border: 1px solid var(--color-canvas-cream-deep);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    box-shadow: 0 1px 0 rgba(155, 104, 41, 0.08);
+  }
+
+  .invoice__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--color-canvas-cream-deep);
+  }
+
+  .invoice__brand {
+    font-size: 11px;
+    color: var(--color-primary);
+    font-weight: var(--weight-medium);
+    letter-spacing: -0.005em;
+  }
+
+  .invoice__no {
+    font-size: 11px;
+    color: var(--color-ink-mute);
+  }
+
+  .invoice__table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0;
+  }
+
+  .invoice__table tbody tr {
+    border-bottom: 1px solid rgba(155, 104, 41, 0.08);
+  }
+
+  .invoice__table tr td {
+    padding: 7px 0;
+    font-size: 12px;
+    color: var(--color-ink-secondary);
+  }
+
+  .invoice__num {
+    text-align: right;
+    color: var(--color-ink);
+  }
+
+  .invoice__total {
+    text-align: right;
+    color: var(--color-primary);
+    font-weight: var(--weight-medium);
+    font-size: 13px;
+  }
+
+  .invoice__table tfoot tr td {
+    padding-top: 10px;
+    border-top: 1px solid var(--color-canvas-cream-deep);
+    font-weight: var(--weight-medium);
+    color: var(--color-ink);
+  }
+
+  .invoice__foot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--color-ink-mute);
+    padding-top: 10px;
+    border-top: 1px dashed var(--color-canvas-cream-deep);
+  }
+
+  /* ── GPU contact ──────────────────────────────────────────────────────── */
+  .gpu-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .gpu-contact__note {
+    font-size: 11px;
+    color: var(--color-ink-mute);
+  }
+
+  .gpu-contact__btn {
+    align-self: flex-start;
+  }
+
+  /* ── responsive ───────────────────────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .tri__grid {
+      grid-template-columns: 1fr;
+    }
+    .tri-card__inner {
+      padding: 24px;
+    }
+  }
+</style>

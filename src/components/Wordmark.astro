@@ -1,0 +1,65 @@
+---
+/**
+ * Wordmark.astro — TokenFleet wordmark.
+ * `Token` in ink + `Fleet` in indigo voltage + a single indigo dot after.
+ * Renders semantic text inside an inline-block so search engines / screen
+ * readers read "TokenFleet" cleanly while the visual still carries the brand
+ * voltage. Used in nav, footer, and og fallback.
+ */
+
+interface Props {
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'on-light' | 'on-dark';
+  class?: string;
+}
+
+const { size = 'md', variant = 'on-light', class: className = '' } = Astro.props;
+---
+
+<a
+  href="/"
+  class={`wordmark wordmark--${size} wordmark--${variant} ${className}`}
+  aria-label="TokenFleet 首页"
+>
+  <span class="wordmark__token">Token</span><span class="wordmark__fleet">Fleet</span><span class="wordmark__dot" aria-hidden="true">.</span>
+</a>
+
+<style>
+  .wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    font-family: var(--font-sans);
+    font-weight: var(--weight-medium);
+    letter-spacing: -0.025em;
+    line-height: 1;
+    text-decoration: none;
+    color: var(--color-ink);
+  }
+
+  .wordmark--sm { font-size: 18px; }
+  .wordmark--md { font-size: 22px; }
+  .wordmark--lg { font-size: 32px; }
+
+  .wordmark--on-dark { color: var(--color-on-primary); }
+  .wordmark--on-dark .wordmark__token { color: var(--color-on-primary); }
+
+  .wordmark__token {
+    color: var(--color-ink);
+  }
+
+  .wordmark__fleet {
+    color: var(--color-primary);
+  }
+
+  .wordmark__dot {
+    color: var(--color-primary);
+    margin-left: 1px;
+    line-height: 1;
+  }
+
+  .wordmark:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+    border-radius: var(--radius-xs);
+  }
+</style>

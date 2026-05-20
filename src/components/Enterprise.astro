@@ -1,0 +1,173 @@
+---
+/**
+ * Enterprise.astro — single dark band on the entire page.
+ *
+ * Decision 5 v2 boundary: this band serves engineering-side enterprise
+ * capability (SLA, VPC, dedicated technical contact). Finance reader
+ * concerns (invoice, contract, RBAC) are already served by §5 Built for
+ * Business. The two sections do NOT overlap.
+ *
+ * Hard rule: NEVER claim SOC 2, ISO 27001, HIPAA, or specific uptime
+ * percentages we have not actually contracted for. Copy reflects "可商谈
+ * / 可定制" wording until the legal team confirms each badge.
+ */
+
+const labels = [
+  {
+    eyebrow: 'SLA',
+    title: '企业级 SLA',
+    body: '按用量等级与团队规模定制承诺，月度可对账。',
+  },
+  {
+    eyebrow: 'VPC',
+    title: '私有部署 / VPC 直连',
+    body: '请求不出私网边界。具体形态按规模商谈。',
+  },
+  {
+    eyebrow: 'SUPPORT',
+    title: '专属技术对接',
+    body: '7×24 中文工程支持渠道，故障一线响应。',
+  },
+];
+---
+
+<section class="enterprise" id="enterprise" aria-labelledby="enterprise-title">
+  <div class="enterprise__bg" aria-hidden="true"></div>
+
+  <div class="container enterprise__inner">
+    <div class="enterprise__lede" data-reveal>
+      <span class="eyebrow eyebrow--on-dark">FOR PRODUCTION SCALE</span>
+      <h2 class="enterprise__title" id="enterprise-title">
+        服务大规模生产用量。
+      </h2>
+      <p class="enterprise__body">
+        当 token 用量越过自服务的边界，我们与你的工程团队直接对接：单点接入、容量规划、独立路由、定制条款。
+      </p>
+    </div>
+
+    <ol class="enterprise__labels" data-reveal>
+      {labels.map((l) => (
+        <li>
+          <span class="eyebrow eyebrow--on-dark">{l.eyebrow}</span>
+          <h3 class="enterprise__label-title">{l.title}</h3>
+          <p class="enterprise__label-body">{l.body}</p>
+        </li>
+      ))}
+    </ol>
+
+    <div class="enterprise__cta" data-reveal>
+      <a href="mailto:sales@tokenfleet.cn?subject=企业用量咨询" class="btn btn--primary btn--lg">
+        联系销售
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+      <p class="enterprise__cta-note mono">
+        通常 24 小时内回复 · sales@tokenfleet.cn
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .enterprise {
+    position: relative;
+    background: var(--color-brand-dark-900);
+    color: var(--color-on-primary);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  /* atmospheric inner glow (very subtle; not a marketing glow) */
+  .enterprise__bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.55;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 0%, rgba(83, 58, 253, 0.35), transparent 65%),
+      radial-gradient(ellipse 50% 40% at 90% 100%, rgba(234, 34, 97, 0.18), transparent 60%);
+  }
+
+  .enterprise__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(40px, 5vw, 64px);
+  }
+
+  .enterprise__lede {
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .enterprise__title {
+    font-size: var(--type-display-xl-size);
+    line-height: var(--type-display-xl-line);
+    letter-spacing: var(--type-display-xl-track);
+    font-weight: var(--weight-thin);
+    color: var(--color-on-primary);
+  }
+
+  .enterprise__body {
+    color: var(--color-on-dark-mute);
+    font-size: var(--type-body-lg-size);
+    line-height: 1.6;
+    max-width: 48ch;
+    font-weight: var(--weight-thin);
+  }
+
+  .enterprise__labels {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    padding-top: 28px;
+    border-top: 1px solid var(--color-hairline-dark);
+  }
+
+  .enterprise__labels li {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .enterprise__label-title {
+    font-size: var(--type-heading-md-size);
+    color: var(--color-on-primary);
+    line-height: 1.3;
+    font-weight: var(--weight-regular);
+    letter-spacing: -0.012em;
+  }
+
+  .enterprise__label-body {
+    color: var(--color-on-dark-mute);
+    font-size: 14px;
+    line-height: 1.55;
+    max-width: 32ch;
+  }
+
+  .enterprise__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-hairline-dark);
+  }
+
+  .enterprise__cta-note {
+    font-size: 12px;
+    color: var(--color-on-dark-mute);
+  }
+
+  @media (max-width: 768px) {
+    .enterprise__labels {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+</style>

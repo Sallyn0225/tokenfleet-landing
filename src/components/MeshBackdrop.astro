@@ -1,0 +1,129 @@
+---
+/**
+ * MeshBackdrop.astro
+ *
+ * Stripe-style atmospheric gradient mesh. Implemented as inline SVG with
+ * stacked radial gradients + Gaussian blur filter — DESIGN.md mandates SVG /
+ * large image rather than CSS gradient because the real mesh has organic blob
+ * shapes that aren't CSS-renderable.
+ *
+ * Stops mirror DESIGN.md "cream → sherbet → lavender → indigo → ruby pink"
+ * horizontal wash. Anchored to the upper region of the hero (default 55vh).
+ * Always static — no animation, even when prefers-reduced-motion is allowed.
+ */
+
+interface Props {
+  height?: string;
+  intensity?: 'soft' | 'medium' | 'bold';
+  class?: string;
+}
+
+const { height = '78vh', intensity = 'medium', class: className = '' } = Astro.props;
+
+const opacityMap = {
+  soft: 0.7,
+  medium: 0.9,
+  bold: 1,
+};
+const baseOpacity = opacityMap[intensity];
+---
+
+<div class={`mesh ${className}`} aria-hidden="true" style={`--mesh-h: ${height}; --mesh-o: ${baseOpacity};`}>
+  <svg
+    class="mesh__svg"
+    viewBox="0 0 1600 900"
+    preserveAspectRatio="xMidYMin slice"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <radialGradient id="meshCream" cx="14%" cy="34%" r="55%">
+        <stop offset="0%" stop-color="var(--mesh-cream)" stop-opacity="1" />
+        <stop offset="65%" stop-color="var(--mesh-cream)" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="meshLemon" cx="22%" cy="78%" r="45%">
+        <stop offset="0%" stop-color="var(--mesh-lemon)" stop-opacity="0.9" />
+        <stop offset="70%" stop-color="var(--mesh-lemon)" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="meshSherbet" cx="32%" cy="22%" r="40%">
+        <stop offset="0%" stop-color="var(--mesh-sherbet)" stop-opacity="0.95" />
+        <stop offset="60%" stop-color="var(--mesh-sherbet)" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="meshLavender" cx="56%" cy="48%" r="48%">
+        <stop offset="0%" stop-color="var(--mesh-lavender)" stop-opacity="0.95" />
+        <stop offset="65%" stop-color="var(--mesh-lavender)" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="meshIndigoBlob" cx="74%" cy="30%" r="42%">
+        <stop offset="0%" stop-color="var(--mesh-indigo)" stop-opacity="0.95" />
+        <stop offset="60%" stop-color="var(--mesh-indigo)" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="meshRuby" cx="88%" cy="62%" r="38%">
+        <stop offset="0%" stop-color="var(--mesh-ruby)" stop-opacity="0.7" />
+        <stop offset="55%" stop-color="var(--mesh-ruby)" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="meshMagenta" cx="96%" cy="20%" r="32%">
+        <stop offset="0%" stop-color="var(--mesh-magenta)" stop-opacity="0.65" />
+        <stop offset="65%" stop-color="var(--mesh-magenta)" stop-opacity="0" />
+      </radialGradient>
+      <filter id="meshBlur" x="-10%" y="-10%" width="120%" height="120%">
+        <feGaussianBlur stdDeviation="40" />
+      </filter>
+    </defs>
+
+    <g filter="url(#meshBlur)">
+      <rect x="0" y="0" width="1600" height="900" fill="url(#meshCream)" />
+      <rect x="0" y="0" width="1600" height="900" fill="url(#meshLemon)" />
+      <rect x="0" y="0" width="1600" height="900" fill="url(#meshSherbet)" />
+      <rect x="0" y="0" width="1600" height="900" fill="url(#meshLavender)" />
+      <rect x="0" y="0" width="1600" height="900" fill="url(#meshIndigoBlob)" />
+      <rect x="0" y="0" width="1600" height="900" fill="url(#meshRuby)" />
+      <rect x="0" y="0" width="1600" height="900" fill="url(#meshMagenta)" />
+    </g>
+
+    {/* fine grain dot pattern to break gradient smoothness */}
+    <defs>
+      <pattern id="grain" width="3" height="3" patternUnits="userSpaceOnUse">
+        <rect width="3" height="3" fill="transparent" />
+        <circle cx="1.5" cy="1.5" r="0.35" fill="rgba(13, 37, 61, 0.08)" />
+      </pattern>
+    </defs>
+    <rect x="0" y="0" width="1600" height="900" fill="url(#grain)" opacity="0.45" />
+  </svg>
+
+  {/* bottom feather: smooth handoff from mesh to canvas so the seam doesn't read as a horizon */}
+  <div class="mesh__feather"></div>
+</div>
+
+<style>
+  .mesh {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: var(--mesh-h);
+    pointer-events: none;
+    z-index: var(--z-mesh);
+    overflow: hidden;
+  }
+
+  .mesh__svg {
+    width: 100%;
+    height: 100%;
+    opacity: var(--mesh-o);
+  }
+
+  .mesh__feather {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 30%;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.6) 55%,
+      var(--color-canvas) 100%
+    );
+  }
+
+  @media (max-width: 640px) {
+    .mesh {
+      height: calc(var(--mesh-h) * 0.78);
+    }
+  }
+</style>

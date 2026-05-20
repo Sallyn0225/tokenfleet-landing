@@ -1,0 +1,116 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonical?: string;
+}
+
+const {
+  title = 'TokenFleet · 一个 API key，接入全部主流大模型',
+  description = '聚合 OpenAI、Anthropic、Google、DeepSeek、Qwen 等 34 个生产级 LLM、图像、视频模型。一个 API key，一份发票，国内直连，OpenAI SDK 兼容。',
+  ogImage,
+  canonical = Astro.url.href,
+} = Astro.props;
+
+const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).toString() : undefined;
+
+import '../styles/global.css';
+import '../styles/buttons.css';
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#533afd" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="zh_CN" />
+    {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+
+    <meta name="twitter:card" content={ogImageUrl ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">跳到主要内容</a>
+    <slot />
+
+    <style is:global>
+      .skip-link {
+        position: absolute;
+        top: -100px;
+        left: 16px;
+        z-index: 999;
+        background: var(--color-primary);
+        color: var(--color-on-primary);
+        padding: 10px 16px;
+        border-radius: var(--radius-md);
+        font-family: var(--font-mono);
+        font-size: 13px;
+        transition: top 200ms var(--ease-out-quart);
+      }
+      .skip-link:focus-visible {
+        top: 16px;
+      }
+    </style>
+
+    <script>
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const reveals = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+
+      if (!prefersReduced && reveals.length && 'IntersectionObserver' in window) {
+        // Only engage reveal animation when JS + IO + motion are all available.
+        document.documentElement.classList.add('js-reveal');
+
+        // Anything currently in (or above) the initial viewport is treated as
+        // already-revealed — avoids a flash on hard refresh near the fold.
+        const vh = window.innerHeight;
+        reveals.forEach((el) => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < vh * 0.95) {
+            el.classList.add('is-visible');
+          }
+        });
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { rootMargin: '0px 0px -6% 0px', threshold: 0.05 }
+        );
+
+        reveals.forEach((el) => {
+          if (!el.classList.contains('is-visible')) {
+            io.observe(el);
+          }
+        });
+
+        // Safety net: if anything is still hidden after 2.5s (e.g. headless
+        // screenshot tools that don't simulate scroll), force-reveal it.
+        window.setTimeout(() => {
+          reveals.forEach((el) => el.classList.add('is-visible'));
+        }, 2500);
+      }
+    </script>
+  </body>
+</html>

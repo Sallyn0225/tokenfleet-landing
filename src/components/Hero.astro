@@ -1,0 +1,217 @@
+---
+/**
+ * Hero.astro — fal.ai-style two-column hero on Stripe atmospheric mesh.
+ *
+ * Left:   eyebrow → Sohne thin headline → body lead → primary + outline CTA →
+ *         mono trust line.
+ * Right:  three-tab code block (curl / Python / Node) rendered as a mono
+ *         "terminal-editorial" panel: tab bar + copy button + scrollable
+ *         body. Same chat-completions call across all tabs, with base_url +
+ *         model id highlighted in indigo voltage so the OpenAI-SDK-drop-in
+ *         claim is visible without reading the code.
+ *
+ * Keyboard: ←/→ cycle tabs; Tab+Enter activates copy.
+ * Mobile (<880px): columns collapse vertically, code block keeps horizontal
+ * scroll because forcing line-wrap on real SDK code would lie about it.
+ */
+
+import MeshBackdrop from './MeshBackdrop.astro';
+import CodeBlock from './CodeBlock.astro';
+---
+
+<section class="hero" id="main">
+  <MeshBackdrop height="92vh" intensity="medium" class="hero__mesh" />
+
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <span class="eyebrow">MODEL API · UNIFIED</span>
+
+      <h1 class="hero__headline">
+        用 <span class="voltage">OpenAI SDK</span>，<br />
+        调用 Claude、Gemini、DeepSeek。
+      </h1>
+
+      <p class="hero__body">
+        聚合 OpenAI、Anthropic、Google、DeepSeek、Qwen 等
+        <strong class="hero__body-num mono">34</strong>
+        个生产级 LLM、图像、视频模型。一个 API key，一份发票，国内直连。
+      </p>
+
+      <div class="hero__cta">
+        <a href="https://console.tokenfleet.cn/signup" class="btn btn--primary btn--lg">
+          开始接入
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+        <a href="https://docs.tokenfleet.cn" class="btn btn--outline btn--lg" rel="noopener">
+          查看文档
+        </a>
+      </div>
+
+      <ul class="hero__trust" aria-label="平台特性">
+        <li><span class="mono">34</span> 个生产级模型</li>
+        <li>OpenAI SDK 兼容</li>
+        <li>国内直连</li>
+      </ul>
+    </div>
+
+    <div class="hero__panel">
+      <CodeBlock />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding-top: clamp(48px, 8vw, 96px);
+    padding-bottom: clamp(64px, 9vw, 128px);
+    overflow: hidden;
+  }
+
+  .hero__mesh {
+    /* mesh component handles its own position / size; this class hook lets us
+       override if needed in future. */
+  }
+
+  .hero__inner {
+    position: relative;
+    z-index: var(--z-content);
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    align-items: center;
+    gap: clamp(40px, 5vw, 72px);
+  }
+
+  .hero__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 0;
+  }
+
+  .hero__copy .eyebrow {
+    margin-bottom: -4px;
+  }
+
+  .hero__headline {
+    font-size: var(--type-display-xxl-size);
+    line-height: var(--type-display-xxl-line);
+    letter-spacing: var(--type-display-xxl-track);
+    font-weight: var(--weight-thin);
+    color: var(--color-ink);
+    max-width: 18ch;
+    overflow-wrap: anywhere;
+  }
+
+  .hero__body {
+    font-size: var(--type-body-lg-size);
+    line-height: 1.55;
+    color: var(--color-ink-secondary);
+    max-width: 36ch;
+    font-weight: var(--weight-thin);
+    overflow-wrap: anywhere;
+  }
+
+  .hero__body-num {
+    font-weight: var(--weight-medium);
+    color: var(--color-ink);
+    font-size: 1.06em;
+    margin: 0 2px;
+  }
+
+  .hero__cta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  .hero__trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    color: var(--color-ink-mute);
+    font-size: var(--type-caption-size);
+    margin-top: 12px;
+  }
+
+  .hero__trust li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero__trust li:not(:last-child)::after {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    border-radius: 999px;
+    background: var(--color-ink-mute);
+    margin-left: 12px;
+    opacity: 0.6;
+  }
+
+  .hero__trust li:last-child::after { display: none; }
+
+  .hero__trust .mono {
+    color: var(--color-ink);
+    font-weight: var(--weight-medium);
+  }
+
+  .hero__panel {
+    position: relative;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  @media (max-width: 960px) {
+    .hero__inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .hero__headline {
+      max-width: 22ch;
+    }
+    .hero__body { max-width: 48ch; }
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding-top: 32px;
+      padding-bottom: 72px;
+    }
+    .hero__inner {
+      gap: 36px;
+    }
+    .hero__copy {
+      gap: 20px;
+    }
+    .hero__headline {
+      max-width: 11ch;
+      font-size: clamp(38px, 12vw, 44px);
+      line-height: 1.06;
+    }
+    .hero__body {
+      max-width: 100%;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .hero__cta { gap: 10px; }
+    .hero__cta .btn {
+      flex: 1 1 144px;
+      justify-content: center;
+      min-height: 44px;
+      padding-inline: 16px;
+    }
+    .hero__trust {
+      gap: 8px 12px;
+      margin-top: 8px;
+    }
+    .hero__trust li:not(:last-child)::after {
+      margin-left: 6px;
+    }
+  }
+</style>

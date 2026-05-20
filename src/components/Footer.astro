@@ -1,0 +1,224 @@
+---
+/**
+ * Footer.astro — 5-column footer + Chinese compliance strip.
+ *
+ * Columns:
+ *  1 · Brand wordmark + tagline
+ *  2 · Product (homepage anchors + external status)
+ *  3 · Developers (Docs / SDK / API Reference / Cookbook)
+ *  4 · Company (About / Blog / Careers / Contact)
+ *  5 · Legal & Compliance (Terms / Privacy / DPA / Security)
+ *
+ * Bottom strip:
+ *  Left: 深圳市新云计算科技有限公司 © 2026
+ *  Right: 粤ICP备2022003994号-6 (links to https://beian.miit.gov.cn/)
+ */
+
+import Wordmark from './Wordmark.astro';
+
+const cols = [
+  {
+    title: 'Product',
+    items: [
+      { label: 'Models', href: '/#models' },
+      { label: 'Billing', href: '/#business' },
+      { label: 'Enterprise', href: '/#enterprise' },
+      { label: 'Status', href: 'https://status.tokenfleet.cn', external: true },
+    ],
+  },
+  {
+    title: 'Developers',
+    items: [
+      { label: 'Docs', href: 'https://docs.tokenfleet.cn', external: true },
+      { label: 'API Reference', href: 'https://docs.tokenfleet.cn/api', external: true },
+      { label: 'SDK Examples', href: 'https://docs.tokenfleet.cn/sdk', external: true },
+      { label: 'Status', href: 'https://status.tokenfleet.cn', external: true },
+    ],
+  },
+  {
+    title: 'Company',
+    items: [
+      { label: 'Blog', href: 'https://blog.tokenfleet.cn', external: true },
+      { label: 'Contact Sales', href: 'mailto:sales@tokenfleet.cn' },
+      { label: 'Console', href: 'https://console.tokenfleet.cn', external: true },
+    ],
+  },
+  {
+    title: 'Compliance',
+    items: [
+      { label: '主体与发票', href: '/#business' },
+      { label: 'SLA 咨询', href: '/#enterprise' },
+      { label: 'ICP 备案', href: 'https://beian.miit.gov.cn/', external: true },
+    ],
+  },
+];
+---
+
+<footer class="footer" role="contentinfo">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <Wordmark size="md" />
+      <p class="footer__tagline">
+        一站式 AI 模型 API 网关。一个 API key 接所有模型，一份对公账单结全部账。
+      </p>
+      <a href="mailto:sales@tokenfleet.cn" class="footer__sales mono">
+        sales@tokenfleet.cn
+      </a>
+    </div>
+
+    {cols.map((col) => (
+      <nav class="footer__col" aria-label={col.title}>
+        <h3 class="footer__col-title">{col.title}</h3>
+        <ul>
+          {col.items.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="footer__link"
+                {...('external' in item && item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    ))}
+  </div>
+
+  <div class="footer__strip">
+    <div class="container footer__strip-inner mono">
+      <p class="footer__copy">深圳市新云计算科技有限公司 © 2026</p>
+      <a
+        href="https://beian.miit.gov.cn/"
+        class="footer__icp"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        粤ICP备2022003994号-6
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-canvas);
+    border-top: 1px solid var(--color-hairline);
+    padding-top: 64px;
+    color: var(--color-ink-secondary);
+  }
+
+  .footer__inner {
+    display: grid;
+    grid-template-columns: 2fr repeat(4, 1fr);
+    gap: 48px;
+    padding-bottom: 56px;
+  }
+
+  .footer__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 320px;
+  }
+
+  .footer__tagline {
+    color: var(--color-ink-mute);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .footer__sales {
+    align-self: flex-start;
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--color-ink-mute);
+    border-bottom: 1px solid var(--color-hairline-strong);
+    transition: color var(--motion-base) var(--ease-out-quart),
+                border-color var(--motion-base) var(--ease-out-quart);
+  }
+
+  .footer__sales:hover {
+    color: var(--color-primary);
+    border-bottom-color: currentColor;
+  }
+
+  .footer__col-title {
+    font-size: 11px;
+    color: var(--color-ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: var(--weight-medium);
+    font-family: var(--font-mono);
+    margin-bottom: 16px;
+  }
+
+  .footer__col ul {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .footer__link {
+    font-size: 13px;
+    color: var(--color-ink-secondary);
+    transition: color var(--motion-base) var(--ease-out-quart);
+  }
+
+  .footer__link:hover {
+    color: var(--color-primary);
+  }
+
+  /* ── compliance strip ─────────────────────────────────────────────────── */
+  .footer__strip {
+    border-top: 1px solid var(--color-hairline);
+    background: var(--color-canvas-soft);
+    padding: 18px 0;
+  }
+
+  .footer__strip-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    font-size: 11px;
+    color: var(--color-ink-mute);
+  }
+
+  .footer__icp {
+    color: var(--color-ink-mute);
+    border-bottom: 1px solid transparent;
+    transition: color var(--motion-base) var(--ease-out-quart),
+                border-color var(--motion-base) var(--ease-out-quart);
+  }
+
+  .footer__icp:hover {
+    color: var(--color-primary);
+    border-bottom-color: currentColor;
+  }
+
+  /* ── responsive ───────────────────────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .footer__inner {
+      grid-template-columns: 1fr 1fr;
+      gap: 40px 24px;
+    }
+    .footer__brand {
+      grid-column: 1 / -1;
+      max-width: none;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .footer__inner {
+      grid-template-columns: 1fr 1fr;
+      gap: 28px 16px;
+    }
+    .footer__strip-inner {
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+    }
+  }
+</style>

@@ -1,0 +1,383 @@
+---
+/**
+ * CodeBlock.astro — three-tab code panel for hero.
+ *
+ * Tabs: curl / Python / Node. Same chat-completions call. The shared
+ * `base_url=https://api.tokenfleet.cn/v1` line and the `model="claude-opus-4-7"`
+ * line carry indigo voltage to visualize "drop-in OpenAI SDK" at a glance,
+ * without forcing the visitor to read the body.
+ *
+ * Implementation: pre-rendered highlighted HTML per tab (no runtime syntax
+ * highlighter — keeps bundle small and ships zero JS aside from the tab
+ * switcher / copy handler).
+ *
+ * Accessibility: real ARIA tab semantics, ←/→ keyboard nav, focus-visible
+ * ring on every tab and the copy button. Copy degrades to execCommand if
+ * clipboard API is unavailable; failure surfaces inline.
+ */
+
+const tabs = [
+  {
+    id: 'curl',
+    label: 'curl',
+    rawCopy: `curl https://api.tokenfleet.cn/v1/chat/completions \\
+  -H "Authorization: Bearer $TOKENFLEET_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "claude-opus-4-7",
+    "messages": [{"role": "user", "content": "用一句话解释 RAG。"}]
+  }'`,
+    html: `<span class="cb-cmt"># 同样的请求体，换 base_url 即接入</span>
+<span class="cb-fn">curl</span> <span class="cb-hl">https://api.tokenfleet.cn/v1</span>/chat/completions \\
+  -H <span class="cb-str">"Authorization: Bearer $TOKENFLEET_API_KEY"</span> \\
+  -H <span class="cb-str">"Content-Type: application/json"</span> \\
+  -d <span class="cb-str">'{
+    "model": <span class="cb-hl">"claude-opus-4-7"</span>,
+    "messages": [{"role": "user", "content": "用一句话解释 RAG。"}]
+  }'</span>`,
+  },
+  {
+    id: 'python',
+    label: 'Python',
+    rawCopy: `from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://api.tokenfleet.cn/v1",
+    api_key=os.environ["TOKENFLEET_API_KEY"],
+)
+
+resp = client.chat.completions.create(
+    model="claude-opus-4-7",
+    messages=[{"role": "user", "content": "用一句话解释 RAG。"}],
+)
+print(resp.choices[0].message.content)`,
+    html: `<span class="cb-kw">from</span> openai <span class="cb-kw">import</span> OpenAI
+
+client = OpenAI(
+    base_url=<span class="cb-hl">"https://api.tokenfleet.cn/v1"</span>,
+    api_key=os.environ[<span class="cb-str">"TOKENFLEET_API_KEY"</span>],
+)
+
+resp = client.chat.completions.create(
+    model=<span class="cb-hl">"claude-opus-4-7"</span>,
+    messages=[{<span class="cb-str">"role"</span>: <span class="cb-str">"user"</span>, <span class="cb-str">"content"</span>: <span class="cb-str">"用一句话解释 RAG。"</span>}],
+)
+<span class="cb-fn">print</span>(resp.choices[<span class="cb-num">0</span>].message.content)`,
+  },
+  {
+    id: 'node',
+    label: 'Node',
+    rawCopy: `import OpenAI from "openai";
+
+const client = new OpenAI({
+  baseURL: "https://api.tokenfleet.cn/v1",
+  apiKey: process.env.TOKENFLEET_API_KEY,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-opus-4-7",
+  messages: [{ role: "user", content: "用一句话解释 RAG。" }],
+});
+console.log(resp.choices[0].message.content);`,
+    html: `<span class="cb-kw">import</span> OpenAI <span class="cb-kw">from</span> <span class="cb-str">"openai"</span>;
+
+<span class="cb-kw">const</span> client = <span class="cb-kw">new</span> <span class="cb-fn">OpenAI</span>({
+  baseURL: <span class="cb-hl">"https://api.tokenfleet.cn/v1"</span>,
+  apiKey: process.env.TOKENFLEET_API_KEY,
+});
+
+<span class="cb-kw">const</span> resp = <span class="cb-kw">await</span> client.chat.completions.<span class="cb-fn">create</span>({
+  model: <span class="cb-hl">"claude-opus-4-7"</span>,
+  messages: [{ role: <span class="cb-str">"user"</span>, content: <span class="cb-str">"用一句话解释 RAG。"</span> }],
+});
+<span class="cb-fn">console</span>.log(resp.choices[<span class="cb-num">0</span>].message.content);`,
+  },
+];
+---
+
+<div class="cb" data-codeblock>
+  <div class="cb__chrome" role="tablist" aria-label="代码示例语言">
+    <div class="cb__tabs">
+      {tabs.map((tab, i) => (
+        <button
+          type="button"
+          role="tab"
+          id={`cb-tab-${tab.id}`}
+          aria-controls={`cb-panel-${tab.id}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? '0' : '-1'}
+          class="cb__tab"
+          data-cb-tab={tab.id}
+        >
+          {tab.label}
+        </button>
+      ))}
+    </div>
+    <button type="button" class="cb__copy" data-cb-copy aria-live="polite">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <rect x="4.5" y="4.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3" />
+        <path d="M11.5 4.5V3a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v7.5a1 1 0 0 0 1 1h1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+      </svg>
+      <span data-cb-copy-label>复制</span>
+    </button>
+  </div>
+
+  {tabs.map((tab, i) => (
+    <div
+      role="tabpanel"
+      id={`cb-panel-${tab.id}`}
+      aria-labelledby={`cb-tab-${tab.id}`}
+      class="cb__panel"
+      data-cb-panel={tab.id}
+      data-cb-raw={tab.rawCopy}
+      hidden={i !== 0}
+    >
+      <pre class="cb__pre"><code set:html={tab.html} /></pre>
+    </div>
+  ))}
+</div>
+
+<style>
+  .cb {
+    background: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-2);
+    overflow: hidden;
+    position: relative;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .cb__chrome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 8px 8px 16px;
+    background: var(--color-canvas-soft);
+    border-bottom: 1px solid var(--color-hairline);
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .cb__tabs {
+    display: flex;
+    gap: 0;
+    min-width: 0;
+  }
+
+  .cb__tab {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-ink-mute);
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    transition: color var(--motion-base) var(--ease-out-quart),
+                background-color var(--motion-base) var(--ease-out-quart);
+    letter-spacing: -0.005em;
+    cursor: pointer;
+  }
+
+  .cb__tab:hover {
+    color: var(--color-ink);
+    background: rgba(13, 37, 61, 0.04);
+  }
+
+  .cb__tab[aria-selected='true'] {
+    color: var(--color-primary);
+    background: var(--color-primary-bg-subdued);
+  }
+
+  .cb__tab:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .cb__copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-ink-mute);
+    padding: 7px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    transition: color var(--motion-base) var(--ease-out-quart),
+                background-color var(--motion-base) var(--ease-out-quart),
+                border-color var(--motion-base) var(--ease-out-quart);
+  }
+
+  .cb__copy:hover {
+    color: var(--color-ink);
+    background: rgba(13, 37, 61, 0.04);
+  }
+
+  .cb__copy[data-state='copied'] {
+    color: var(--color-primary);
+    background: var(--color-primary-bg-subdued);
+  }
+
+  .cb__copy[data-state='error'] {
+    color: var(--color-ruby);
+  }
+
+  .cb__panel {
+    background: var(--color-canvas);
+    min-width: 0;
+  }
+
+  .cb__pre {
+    margin: 0;
+    padding: 24px 20px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--color-ink);
+    background: var(--color-canvas);
+    font-feature-settings: 'tnum';
+    -webkit-font-smoothing: subpixel-antialiased;
+    max-width: 100%;
+  }
+
+  .cb__pre code {
+    display: block;
+    white-space: pre;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  /* token colors */
+  .cb__pre :global(.cb-hl) {
+    color: var(--color-primary);
+    font-weight: var(--weight-medium);
+    background: rgba(83, 58, 253, 0.06);
+    padding: 1px 4px;
+    border-radius: 3px;
+    margin: 0 -2px;
+  }
+
+  .cb__pre :global(.cb-cmt) { color: var(--color-ink-mute); font-style: italic; }
+  .cb__pre :global(.cb-kw)  { color: var(--color-ink-secondary); font-weight: var(--weight-medium); }
+  .cb__pre :global(.cb-str) { color: var(--color-lemon); }
+  .cb__pre :global(.cb-num) { color: var(--color-ruby); }
+  .cb__pre :global(.cb-fn)  { color: var(--color-shadow-blue); font-weight: var(--weight-medium); }
+
+  /* scrollbar */
+  .cb__pre::-webkit-scrollbar { height: 6px; }
+  .cb__pre::-webkit-scrollbar-track { background: transparent; }
+  .cb__pre::-webkit-scrollbar-thumb {
+    background: var(--color-hairline);
+    border-radius: 999px;
+  }
+  .cb__pre::-webkit-scrollbar-thumb:hover { background: var(--color-hairline-strong); }
+
+  @media (max-width: 640px) {
+    .cb__chrome {
+      padding: 7px 8px;
+      gap: 8px;
+    }
+    .cb__tab {
+      padding: 7px 10px;
+      font-size: 11px;
+    }
+    .cb__copy {
+      padding: 7px 8px;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+    .cb__pre {
+      padding: 18px 16px;
+      font-size: 12px;
+      line-height: 1.65;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-codeblock]');
+  if (!root) {
+    // no-op
+  } else {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-cb-tab]'));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>('[data-cb-panel]'));
+    const copyBtn = root.querySelector<HTMLButtonElement>('[data-cb-copy]');
+    const copyLabel = root.querySelector<HTMLElement>('[data-cb-copy-label]');
+
+    function activate(targetId: string) {
+      tabs.forEach((tab) => {
+        const isActive = tab.dataset.cbTab === targetId;
+        tab.setAttribute('aria-selected', String(isActive));
+        tab.setAttribute('tabindex', isActive ? '0' : '-1');
+      });
+      panels.forEach((panel) => {
+        panel.hidden = panel.dataset.cbPanel !== targetId;
+      });
+    }
+
+    tabs.forEach((tab, idx) => {
+      tab.addEventListener('click', () => activate(tab.dataset.cbTab as string));
+      tab.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          const next = e.key === 'ArrowRight'
+            ? tabs[(idx + 1) % tabs.length]
+            : tabs[(idx - 1 + tabs.length) % tabs.length];
+          activate(next.dataset.cbTab as string);
+          next.focus();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          activate(tabs[0].dataset.cbTab as string);
+          tabs[0].focus();
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          const last = tabs[tabs.length - 1];
+          activate(last.dataset.cbTab as string);
+          last.focus();
+        }
+      });
+    });
+
+    function getActiveRaw(): string {
+      const active = tabs.find((t) => t.getAttribute('aria-selected') === 'true');
+      if (!active) return '';
+      const panel = panels.find((p) => p.dataset.cbPanel === active.dataset.cbTab);
+      return panel?.dataset.cbRaw ?? '';
+    }
+
+    function flash(state: 'copied' | 'error', text: string) {
+      if (!copyBtn || !copyLabel) return;
+      copyBtn.dataset.state = state;
+      copyLabel.textContent = text;
+      window.setTimeout(() => {
+        copyBtn.removeAttribute('data-state');
+        copyLabel.textContent = '复制';
+      }, 1200);
+    }
+
+    copyBtn?.addEventListener('click', async () => {
+      const raw = getActiveRaw();
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(raw);
+        } else {
+          // legacy fallback
+          const ta = document.createElement('textarea');
+          ta.value = raw;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        }
+        flash('copied', '已复制 ✓');
+      } catch (err) {
+        flash('error', '复制失败');
+      }
+    });
+  }
+</script>

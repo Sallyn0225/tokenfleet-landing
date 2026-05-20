@@ -1,0 +1,276 @@
+---
+/**
+ * FeaturedModels.astro — 5-up Featured Models gallery.
+ *
+ * Layout: left ~32% section title + intro link, right ~68% asymmetric 5-up
+ * grid (mobile 2 / tablet 3 / desktop 5). Each card = full-bleed vendor
+ * brand color background + monogram chip + modality eyebrow + mono model id
+ * (display-md, weight 300) + mono token cost. Cards stretch to 4:3.
+ *
+ * Decision 13 (v2): vendor monograms instead of brand SVGs in MVP to avoid
+ * trademark license risk; upgrade path documented in README.
+ */
+
+import { featuredModels, totalModelCount } from '../data/models.ts';
+---
+
+<section class="featured" id="models" aria-labelledby="featured-title">
+  <div class="container featured__inner">
+    <div class="featured__lede" data-reveal>
+      <span class="eyebrow eyebrow--mute">MODELS GALLERY</span>
+      <h2 class="featured__title" id="featured-title">
+        <span class="mono featured__num">{totalModelCount}</span> 个生产级模型，<br />
+        一份计费。
+      </h2>
+      <p class="featured__body">
+        从 LLM、图像、视频到音频，全部走同一个 endpoint 与同一个对公账户。
+      </p>
+      <a href="/#why" class="link featured__link">
+        查看全部模型
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M4 2.5l3.5 3.5L4 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+      <ul class="featured__taxonomy mono">
+        <li>LLM</li>
+        <li>图像</li>
+        <li>视频</li>
+        <li>音频</li>
+      </ul>
+    </div>
+
+    <ol class="featured__grid" data-reveal>
+      {featuredModels.map((m, i) => (
+        <li
+          class="modelcard"
+          style={`background: var(${m.bgVar}); color: var(${m.fgVar});`}
+          data-modality={m.modality}
+          data-index={i}
+        >
+          <div class="modelcard__top">
+            <span class="modelcard__monogram" style={`color: var(${m.fgVar});`}>
+              {m.vendorMonogram}
+            </span>
+            <span class="modelcard__vendor" style={`color: var(${m.fgMuteVar});`}>
+              {m.vendor}
+            </span>
+            <span class="modelcard__modality mono" style={`color: var(${m.fgMuteVar});`}>
+              {m.modalityLabel}
+            </span>
+          </div>
+          <div class="modelcard__body">
+            <p class="modelcard__id mono">{m.id}</p>
+            <p class="modelcard__blurb" style={`color: var(${m.fgMuteVar});`}>{m.blurb}</p>
+          </div>
+          <p class="modelcard__price mono" style={`color: var(${m.fgMuteVar});`}>
+            {m.priceLabel}
+          </p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .featured {
+    background: var(--color-canvas-soft);
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .featured__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.55fr) minmax(0, 1.2fr);
+    gap: clamp(40px, 5vw, 72px);
+    align-items: start;
+  }
+
+  .featured__lede {
+    position: sticky;
+    top: 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .featured__title {
+    font-size: var(--type-display-xl-size);
+    line-height: var(--type-display-xl-line);
+    letter-spacing: var(--type-display-xl-track);
+    font-weight: var(--weight-thin);
+    color: var(--color-ink);
+    margin-top: 4px;
+  }
+
+  .featured__num {
+    font-weight: var(--weight-medium);
+    color: var(--color-primary);
+    font-size: 0.95em;
+  }
+
+  .featured__body {
+    color: var(--color-ink-secondary);
+    font-size: var(--type-body-md-size);
+    line-height: 1.6;
+    max-width: 32ch;
+  }
+
+  .featured__link {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+  }
+
+  .featured__taxonomy {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 0;
+    margin-top: 8px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-hairline);
+    color: var(--color-ink-mute);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  .featured__taxonomy li {
+    padding: 4px 14px;
+    border-right: 1px solid var(--color-hairline);
+  }
+  .featured__taxonomy li:first-child { padding-left: 0; }
+  .featured__taxonomy li:last-child { border-right: 0; padding-right: 0; }
+
+  /* ── grid: asymmetric on desktop ──────────────────────────────────────── */
+  .featured__grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px;
+  }
+
+  /* card 1 (Anthropic) takes 3 cols on desktop, others fill in */
+  .modelcard {
+    border-radius: var(--radius-lg);
+    padding: 22px 22px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    aspect-ratio: 4 / 3;
+    position: relative;
+    overflow: hidden;
+    transition: transform 320ms var(--ease-out-quart),
+                box-shadow 320ms var(--ease-out-quart);
+    grid-column: span 2;
+  }
+
+  /* hover lift only */
+  .modelcard:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-2);
+  }
+
+  /* subtle inner gradient sheen to break flat color */
+  .modelcard::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 55%);
+    pointer-events: none;
+  }
+
+  .modelcard > * { position: relative; z-index: 1; }
+
+  .modelcard__top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .modelcard__monogram {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+    font-size: 13px;
+    font-weight: var(--weight-medium);
+    letter-spacing: -0.02em;
+    opacity: 0.85;
+    flex-shrink: 0;
+  }
+
+  .modelcard__vendor {
+    font-size: 13px;
+    letter-spacing: -0.01em;
+    flex: 1;
+  }
+
+  .modelcard__modality {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 3px 8px;
+    border: 1px solid currentColor;
+    border-radius: var(--radius-pill);
+    opacity: 0.6;
+  }
+
+  .modelcard__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .modelcard__id {
+    font-size: clamp(18px, 2vw, 22px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    font-weight: var(--weight-medium);
+    word-break: break-all;
+  }
+
+  .modelcard__blurb {
+    font-size: 13px;
+    line-height: 1.45;
+    opacity: 0.85;
+  }
+
+  .modelcard__price {
+    font-size: 11px;
+    letter-spacing: -0.005em;
+    border-top: 1px solid currentColor;
+    padding-top: 14px;
+    opacity: 0.65;
+  }
+
+  /* ── responsive ───────────────────────────────────────────────────────── */
+  @media (max-width: 1100px) {
+    .featured__inner {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+    .featured__lede {
+      position: static;
+      max-width: 540px;
+    }
+    .featured__grid { grid-template-columns: repeat(6, 1fr); }
+  }
+
+  @media (max-width: 720px) {
+    .featured__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .modelcard {
+      grid-column: span 1;
+      aspect-ratio: 5 / 4;
+      padding: 18px 16px 16px;
+      gap: 16px;
+    }
+    .modelcard__id { font-size: 17px; }
+  }
+</style>

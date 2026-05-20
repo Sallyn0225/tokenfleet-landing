@@ -1,0 +1,227 @@
+/* ============================================================================
+ * global.css — reset, font loading, base body
+ * ========================================================================== */
+
+@import url('./tokens.css');
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'ss01', 'cv11';
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--type-body-md-size);
+  line-height: var(--type-body-md-line);
+  font-weight: var(--weight-thin);
+  letter-spacing: var(--type-body-md-track);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6,
+p, figure, blockquote, dl, dd, ul, ol {
+  margin: 0;
+}
+
+ul, ol {
+  padding: 0;
+  list-style: none;
+}
+
+img, picture, svg, video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+code, pre, kbd, samp {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum', 'zero', 'ss02';
+  font-weight: var(--weight-regular);
+}
+
+/* ── focus ────────────────────────────────────────────────────────────────── */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: var(--radius-xs);
+}
+
+/* ── selection ────────────────────────────────────────────────────────────── */
+::selection {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+/* ── tabular numerics for any element with .mono / [data-mono] ───────────── */
+.mono,
+[data-mono] {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum', 'zero', 'ss02';
+}
+
+.tabular {
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── container ────────────────────────────────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.container-wide {
+  width: 100%;
+  max-width: var(--container-wide);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.container-narrow {
+  width: 100%;
+  max-width: var(--container-narrow);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ── section base ─────────────────────────────────────────────────────────── */
+section {
+  position: relative;
+  padding-block: var(--section-y);
+}
+
+section.tight {
+  padding-block: var(--section-y-tight);
+}
+
+/* ── visually hidden ──────────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── eyebrow micro-cap label ──────────────────────────────────────────────── */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--type-eyebrow-size);
+  letter-spacing: var(--type-eyebrow-track);
+  text-transform: uppercase;
+  color: var(--color-primary-deep);
+  font-weight: var(--weight-medium);
+  font-feature-settings: 'ss01';
+  display: inline-block;
+}
+
+.eyebrow--mute {
+  color: var(--color-ink-mute);
+}
+
+.eyebrow--on-dark {
+  color: var(--color-primary-soft);
+}
+
+/* ── voltage (indigo accent run) ─────────────────────────────────────────── */
+.voltage {
+  color: var(--color-primary);
+  font-weight: inherit;
+}
+
+/* ── inline link on light ─────────────────────────────────────────────────── */
+.link {
+  color: var(--color-primary);
+  font-weight: var(--weight-medium);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--motion-base) var(--ease-out-quart),
+              color var(--motion-base) var(--ease-out-quart);
+}
+
+.link:hover {
+  color: var(--color-primary-press);
+  border-bottom-color: currentColor;
+}
+
+/* ── motion: reveal on scroll (progressive enhancement) ──────────────────
+ * Default = visible (SSR-safe; works without JS, IO, or with reduced-motion).
+ * `.js-reveal` is added by JS only when reveal animation should engage; below-
+ * the-fold elements then get the hidden state and IO un-hides them on entry.
+ * ────────────────────────────────────────────────────────────────────────── */
+[data-reveal] {
+  /* visible by default */
+}
+
+.js-reveal [data-reveal]:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 560ms var(--ease-out-quart),
+              transform 560ms var(--ease-out-quart);
+}
+
+.js-reveal [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

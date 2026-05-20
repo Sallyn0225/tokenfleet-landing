@@ -1,0 +1,276 @@
+---
+/**
+ * BuiltForBusiness.astro — cream interlude section.
+ *
+ * New in v2 (Decision 12). Serves the finance / procurement / legal reader
+ * layer introduced in PRODUCT.md v2. Cream background creates a deliberate
+ * warm interlude in the otherwise canvas-soft-and-mesh page rhythm.
+ *
+ * Layout: editorial two-column, left ~40% headline + body + CTA, right ~60%
+ * 5-capability list rendered as numbered specimen rows (not card grid;
+ * cards here would feel like SaaS billing template). Each row carries a
+ * mono dimension label + sans descriptor.
+ *
+ * The capability list intentionally exits with a mocked admin role chip
+ * cluster to give the finance reader a concrete second-fold visual cue.
+ */
+
+const capabilities = [
+  {
+    n: '01',
+    label: '对公账户',
+    body: '中国大陆主体 · 合同主体 = 深圳市新云计算科技有限公司。',
+    mono: 'mainland-cn entity',
+  },
+  {
+    n: '02',
+    label: '人民币结算 / 增值税专票',
+    body: '月度自动开票或按需补开 · 支持专票 6% 与普票切换。',
+    mono: 'cny · vat invoice',
+  },
+  {
+    n: '03',
+    label: '多人协作权限',
+    body: '四档角色：Owner · Admin · Developer · Viewer，按团队 / 项目隔离。',
+    mono: 'rbac · scoped keys',
+  },
+  {
+    n: '04',
+    label: '用量看板与异常预警',
+    body: '按 model / 按 team / 按时段的实时用量，超阈值自动告警。',
+    mono: 'usage · anomaly',
+  },
+  {
+    n: '05',
+    label: '合同 SLA 与法务条款',
+    body: '可签 MSA / DPA / 中文合同 · 季度对账支持。',
+    mono: 'msa · dpa · sla',
+  },
+];
+---
+
+<section class="b4b" id="business" aria-labelledby="b4b-title">
+  <div class="container b4b__inner">
+    <div class="b4b__lede" data-reveal>
+      <span class="eyebrow eyebrow--mute">BUILT FOR BUSINESS</span>
+      <h2 class="b4b__title" id="b4b-title">
+        让财务也安心地把 AI 调用<br />
+        放进对公账单。
+      </h2>
+      <p class="b4b__body">
+        TokenFleet 不只服务工程师。从合同主体到月底发票，从权限分级到对账数据，按中国大陆企业财务流程交付。
+      </p>
+      <div class="b4b__cta">
+        <a href="mailto:sales@tokenfleet.cn?subject=预约销售对话" class="btn btn--outline-indigo">
+          预约销售对话
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <path d="M4.5 2.5l3 3.5-3 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+        <a href="mailto:sales@tokenfleet.cn?subject=索取%20DPA%20模板" class="link b4b__doc-link">
+          索取 DPA 模板
+        </a>
+      </div>
+
+      <figure class="b4b__roles" aria-label="账户角色示例">
+        <figcaption class="eyebrow eyebrow--mute">ACCOUNT ROLES</figcaption>
+        <ul class="b4b__role-chips">
+          <li class="role role--owner mono">Owner · 1</li>
+          <li class="role role--admin mono">Admin · 2</li>
+          <li class="role role--dev mono">Developer · 8</li>
+          <li class="role role--viewer mono">Viewer · 14</li>
+        </ul>
+      </figure>
+    </div>
+
+    <ol class="b4b__caps" data-reveal>
+      {capabilities.map((c) => (
+        <li class="cap">
+          <span class="cap__n mono">{c.n}</span>
+          <div class="cap__copy">
+            <h3 class="cap__label">{c.label}</h3>
+            <p class="cap__body">{c.body}</p>
+            <p class="cap__mono mono">{c.mono}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .b4b {
+    background: var(--color-canvas-cream);
+    color: var(--color-ink);
+    border-top: 1px solid var(--color-canvas-cream-deep);
+    border-bottom: 1px solid var(--color-canvas-cream-deep);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* warm subtle texture: very light dot pattern in cream tone */
+  .b4b::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(155, 104, 41, 0.06) 1px, transparent 1px);
+    background-size: 18px 18px;
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  .b4b__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.1fr);
+    gap: clamp(48px, 6vw, 96px);
+    align-items: start;
+    position: relative;
+    z-index: 1;
+  }
+
+  .b4b__lede {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .b4b__title {
+    font-size: var(--type-display-xl-size);
+    line-height: var(--type-display-xl-line);
+    letter-spacing: var(--type-display-xl-track);
+    font-weight: var(--weight-thin);
+    color: var(--color-ink);
+    margin-top: -4px;
+  }
+
+  .b4b__body {
+    font-size: var(--type-body-lg-size);
+    line-height: 1.6;
+    color: var(--color-ink-secondary);
+    max-width: 36ch;
+    font-weight: var(--weight-thin);
+  }
+
+  .b4b__cta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  .b4b__doc-link {
+    font-size: 14px;
+    color: var(--color-ink-secondary);
+    border-bottom-color: var(--color-ink-secondary);
+    opacity: 0.7;
+  }
+
+  .b4b__doc-link:hover {
+    color: var(--color-ink);
+    opacity: 1;
+  }
+
+  /* ── account roles vignette ───────────────────────────────────────────── */
+  .b4b__roles {
+    margin: 32px 0 0;
+    padding-top: 28px;
+    border-top: 1px solid var(--color-canvas-cream-deep);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .b4b__role-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .role {
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-canvas-cream-deep);
+    background: var(--color-canvas);
+    font-size: 12px;
+    color: var(--color-ink-secondary);
+    letter-spacing: -0.005em;
+  }
+
+  .role--owner   { background: var(--color-brand-dark-900); color: var(--color-on-primary); border-color: var(--color-brand-dark-900); }
+  .role--admin   { background: var(--color-primary); color: var(--color-on-primary); border-color: var(--color-primary); }
+
+  /* ── capability list ──────────────────────────────────────────────────── */
+  .b4b__caps {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .cap {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 20px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--color-canvas-cream-deep);
+    align-items: start;
+  }
+
+  .cap:first-child { padding-top: 8px; }
+  .cap:last-child  { border-bottom: 0; }
+
+  .cap__n {
+    font-size: 13px;
+    color: var(--color-primary);
+    font-weight: var(--weight-medium);
+    padding-top: 4px;
+    letter-spacing: -0.005em;
+  }
+
+  .cap__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .cap__label {
+    font-size: var(--type-heading-md-size);
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+    font-weight: var(--weight-regular);
+    color: var(--color-ink);
+  }
+
+  .cap__body {
+    font-size: 14px;
+    color: var(--color-ink-secondary);
+    line-height: 1.55;
+    max-width: 52ch;
+  }
+
+  .cap__mono {
+    font-size: 11px;
+    color: var(--color-ink-mute);
+    letter-spacing: 0.04em;
+    margin-top: 4px;
+    text-transform: lowercase;
+  }
+
+  /* ── responsive ───────────────────────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .b4b__inner {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+    .b4b__title { max-width: 18ch; }
+  }
+
+  @media (max-width: 640px) {
+    .cap {
+      grid-template-columns: 36px 1fr;
+      gap: 16px;
+      padding: 18px 0;
+    }
+    .cap__label { font-size: 17px; }
+  }
+</style>

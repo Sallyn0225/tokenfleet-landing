@@ -1,0 +1,303 @@
+---
+/**
+ * TopNav.astro — minimal nav floating over the mesh hero.
+ *
+ * Left: wordmark.
+ * Center (desktop): Models · Pricing · Docs · Blog 4 sans nav links.
+ * Right: 登录 (text), 开始接入 (indigo pill).
+ *
+ * Mobile (<768px): wordmark + indigo pill + hamburger trigger that toggles
+ * a vertical drawer (CSS :target, no JS dependency).
+ */
+
+import Wordmark from './Wordmark.astro';
+
+const navLinks = [
+  { href: '/#models', label: 'Models' },
+  { href: '/#business', label: 'Billing' },
+  { href: 'https://docs.tokenfleet.cn', label: 'Docs', external: true },
+  { href: '/#enterprise', label: 'Enterprise' },
+];
+---
+
+<header class="nav" role="banner">
+  <div class="container nav__inner">
+    <Wordmark size="md" class="nav__brand" />
+
+    <nav class="nav__links" aria-label="主导航">
+      <ul>
+        {navLinks.map(({ href, label, external }) => (
+          <li>
+            <a
+              href={href}
+              class="nav__link"
+              {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            >
+              {label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="nav__cta">
+      <a href="https://console.tokenfleet.cn" class="nav__signin" rel="noopener">登录</a>
+      <a href="https://console.tokenfleet.cn/signup" class="btn btn--primary btn--sm" rel="noopener">
+        开始接入
+      </a>
+    </div>
+
+    <button class="nav__hamburger" type="button" aria-controls="mobile-drawer" aria-expanded="false" aria-label="打开菜单" data-nav-toggle>
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="nav__drawer" id="mobile-drawer" data-nav-drawer hidden>
+    <ul>
+      {navLinks.map(({ href, label, external }) => (
+        <li>
+          <a
+            href={href}
+            class="nav__drawer-link"
+            {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+      <li class="nav__drawer-cta">
+        <a href="https://console.tokenfleet.cn" class="nav__signin">登录</a>
+        <a href="https://console.tokenfleet.cn/signup" class="btn btn--primary btn--sm">开始接入</a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-nav);
+    background: rgba(255, 255, 255, 0.74);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--motion-base) var(--ease-out-quart),
+                background-color var(--motion-base) var(--ease-out-quart);
+  }
+
+  .nav[data-scrolled='true'] {
+    border-bottom-color: var(--color-hairline);
+    background: rgba(255, 255, 255, 0.92);
+  }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    height: 64px;
+  }
+
+  .nav__brand {
+    flex-shrink: 0;
+  }
+
+  .nav__links {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .nav__links ul {
+    display: flex;
+    gap: 36px;
+    align-items: center;
+  }
+
+  .nav__link {
+    color: var(--color-ink-secondary);
+    font-size: var(--type-body-md-size);
+    font-weight: var(--weight-regular);
+    letter-spacing: -0.005em;
+    padding: 6px 0;
+    border-bottom: 1px solid transparent;
+    transition: color var(--motion-base) var(--ease-out-quart),
+                border-color var(--motion-base) var(--ease-out-quart);
+  }
+
+  .nav__link:hover {
+    color: var(--color-ink);
+    border-bottom-color: var(--color-ink);
+  }
+
+  .nav__cta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+  }
+
+  .nav__signin {
+    font-size: var(--type-body-md-size);
+    color: var(--color-ink-secondary);
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    transition: color var(--motion-base) var(--ease-out-quart);
+  }
+
+  .nav__signin:hover {
+    color: var(--color-ink);
+  }
+
+  .nav__hamburger {
+    display: none;
+    width: 36px;
+    height: 36px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    border-radius: var(--radius-sm);
+    transition: background-color var(--motion-base) var(--ease-out-quart);
+  }
+
+  .nav__hamburger span {
+    display: block;
+    width: 18px;
+    height: 1.5px;
+    background: var(--color-ink);
+    border-radius: 999px;
+    transition: transform var(--motion-base) var(--ease-out-quart),
+                opacity var(--motion-base) var(--ease-out-quart);
+  }
+
+  .nav__hamburger[aria-expanded='true'] span:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+  .nav__hamburger[aria-expanded='true'] span:nth-child(2) {
+    opacity: 0;
+  }
+  .nav__hamburger[aria-expanded='true'] span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+
+  .nav__drawer {
+    position: fixed;
+    inset: 64px 0 0 0;
+    background: var(--color-canvas);
+    z-index: calc(var(--z-nav) - 1);
+    padding: 24px var(--gutter);
+    border-top: 1px solid var(--color-hairline);
+    animation: drawer-in 220ms var(--ease-out-quart);
+  }
+
+  .nav__drawer ul {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .nav__drawer-link {
+    display: block;
+    padding: 14px 16px;
+    font-size: 17px;
+    color: var(--color-ink);
+    border-radius: var(--radius-md);
+  }
+
+  .nav__drawer-link:hover {
+    background: var(--color-canvas-soft);
+  }
+
+  .nav__drawer-cta {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-hairline);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .nav__drawer-cta .nav__signin {
+    text-align: center;
+    padding: 12px;
+    border: 1px solid var(--color-hairline-strong);
+    border-radius: var(--radius-pill);
+  }
+
+  @keyframes drawer-in {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav__drawer { animation: none; }
+  }
+
+  @media (max-width: 1024px) {
+    .nav__links ul { gap: 24px; }
+  }
+
+  @media (max-width: 880px) {
+    .nav__links { display: none; }
+    .nav__cta .nav__signin { display: none; }
+    .nav__hamburger {
+      display: flex;
+      margin-left: auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .nav__cta .btn { display: none; }
+  }
+</style>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('.nav');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+  const drawer = document.querySelector<HTMLElement>('[data-nav-drawer]');
+
+  if (toggle && drawer) {
+    const closeDrawer = () => {
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', '打开菜单');
+      drawer.hidden = true;
+      document.body.style.overflow = '';
+    };
+
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      if (expanded) {
+        closeDrawer();
+      } else {
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.setAttribute('aria-label', '关闭菜单');
+        drawer.hidden = false;
+        document.body.style.overflow = 'hidden';
+      }
+    });
+
+    drawer.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.matches('a')) {
+        closeDrawer();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        closeDrawer();
+        toggle.focus();
+      }
+    });
+  }
+
+  if (nav) {
+    const onScroll = () => {
+      const y = window.scrollY;
+      nav.dataset.scrolled = y > 8 ? 'true' : 'false';
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+</script>
