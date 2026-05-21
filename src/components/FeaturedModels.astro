@@ -1,6 +1,6 @@
 ---
 /**
- * FeaturedModels.astro — 5-up Featured Models gallery.
+ * FeaturedModels.astro — 6-up Featured Models gallery.
  *
  * Layout: left ~32% section title + intro link, right ~68% asymmetric model
  * grid. Each card = neutral surface +
@@ -8,10 +8,33 @@
  * model id (display-md, weight 300) + mono token cost.
  */
 
-import { featuredModels } from '../data/models.ts';
-import { totalModelCount } from '../data/pricing.ts';
+import { loadModels, modalityLabel, priceLabel, totalModelCount } from '../data/pricing.ts';
 
 const total = totalModelCount();
+const featuredModelIds = [
+  'gpt-5.4',
+  'claude-opus-4.7',
+  'gemini-3-pro-preview',
+  'DeepSeek-V3.2',
+  'kimi-k2.6',
+  'sora-2-pro',
+];
+const featuredBlurbs: Record<string, string> = {
+  'gpt-5.4': '前沿通用推理与多模态任务',
+  'claude-opus-4.7': '长任务代码与 Agent 工作流',
+  'gemini-3-pro-preview': '长上下文与多模态理解',
+  'DeepSeek-V3.2': '高性价比推理与工具调用',
+  'kimi-k2.6': '国产长文本与办公场景',
+  'sora-2-pro': '高保真视频生成',
+};
+const modelById = new Map(loadModels().map((model) => [model.model_name, model]));
+const featuredModels = featuredModelIds
+  .map((id) => modelById.get(id))
+  .filter(Boolean)
+  .map((model) => ({
+    ...model!,
+    blurb: featuredBlurbs[model!.model_name] ?? model!.description?.split('\n')[0] ?? '生产级模型接入',
+  }));
 ---
 
 <section class="featured" id="models" aria-labelledby="featured-title">
@@ -46,24 +69,24 @@ const total = totalModelCount();
           data-modality={m.modality}
           data-index={i}
         >
-          <img class="modelcard__watermark" src={m.logoSrc} alt="" loading="lazy" aria-hidden="true" />
+          <img class="modelcard__watermark" src={m.iconUrl} alt="" loading="lazy" aria-hidden="true" />
           <div class="modelcard__top">
             <span class="modelcard__logo">
-              <img src={m.logoSrc} alt={m.logoAlt} loading="lazy" />
+              <img src={m.iconUrl} alt={`${m.vendor.name} logo`} loading="lazy" />
             </span>
             <span class="modelcard__vendor">
-              {m.vendor}
+              {m.vendor.name}
             </span>
             <span class="modelcard__modality mono">
-              {m.modalityLabel}
+              {modalityLabel(m.modality)}
             </span>
           </div>
           <div class="modelcard__body">
-            <p class="modelcard__id mono">{m.id}</p>
+            <p class="modelcard__id mono">{m.model_name}</p>
             <p class="modelcard__blurb">{m.blurb}</p>
           </div>
           <p class="modelcard__price mono">
-            {m.priceLabel}
+            {priceLabel(m)}
           </p>
         </li>
       ))}

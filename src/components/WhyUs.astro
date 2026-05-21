@@ -2,7 +2,7 @@
 /**
  * WhyUs.astro — 2×2 grid replacing fal.ai's speed card variant.
  *
- * A: 34 个生产级模型 mono grid (35 cells, last one "+ 准备中" placeholder)
+ * A: current production model catalog mono grid.
  * B: 私有部署 / VPC 直连 schematic (240×160 box+arrow, indigo voltage on
  *    private boundary)
  * C: OpenAI SDK code diff (2 lines, indigo highlight on the swapped line)
@@ -12,46 +12,10 @@
  * §5 Built for Business) to a latency / 国内直连 demonstration.
  */
 
-const allModels = [
-  // LLM 15
-  ['claude-opus-4-7', 'Anthropic'],
-  ['claude-sonnet-4-6', 'Anthropic'],
-  ['claude-haiku-4-5', 'Anthropic'],
-  ['gpt-5', 'OpenAI'],
-  ['gpt-5-mini', 'OpenAI'],
-  ['o3-pro', 'OpenAI'],
-  ['gemini-3-pro', 'Google'],
-  ['gemini-3-flash', 'Google'],
-  ['deepseek-v3.5', 'DeepSeek'],
-  ['deepseek-r1', 'DeepSeek'],
-  ['qwen-3-max', 'Qwen'],
-  ['qwen-3-coder', 'Qwen'],
-  ['mistral-large-2', 'Mistral'],
-  ['llama-4-405b', 'Meta'],
-  ['yi-lightning', '01.AI'],
-  // 图像 10
-  ['flux-1.1-pro', 'BFL'],
-  ['flux-1.1-pro-ultra', 'BFL'],
-  ['sd-3.5-large', 'Stability'],
-  ['ideogram-3', 'Ideogram'],
-  ['recraft-v3', 'Recraft'],
-  ['midjourney-7', 'via fal'],
-  ['dall-e-3', 'OpenAI'],
-  ['seedream-3.0', 'ByteDance'],
-  ['wanxiang-2.1', 'Alibaba'],
-  ['cogview-4', 'Zhipu'],
-  // 视频 6
-  ['sora-2', 'OpenAI'],
-  ['kling-2.0', 'Kuaishou'],
-  ['runway-gen-4', 'Runway'],
-  ['veo-3', 'Google'],
-  ['minimax-i2v-01', 'MiniMax'],
-  ['luma-dream-machine', 'Luma'],
-  // 音频 3
-  ['eleven-v3', 'ElevenLabs'],
-  ['cosyvoice-2', 'Alibaba'],
-  ['whisper-large-v3', 'OpenAI'],
-];
+import { loadModels, totalModelCount } from '../data/pricing.ts';
+
+const allModels = loadModels();
+const total = totalModelCount();
 
 const cities = [
   { city: '北京', p50: '142' },
@@ -75,18 +39,18 @@ const cities = [
     </div>
 
     <div class="why__grid" data-reveal>
-      {/* A — 34 models mono grid */}
+      {/* A — production models mono grid */}
       <article class="whycard whycard--models">
         <header class="whycard__head">
           <span class="eyebrow eyebrow--mute">A</span>
-          <h3 class="whycard__title">34 个生产级模型，一个 endpoint</h3>
+          <h3 class="whycard__title">{total} 个生产级模型，一个 endpoint</h3>
           <p class="whycard__body">覆盖 LLM、图像、视频、音频，全部 OpenAI Chat / Images / Audio API 接口形态。</p>
         </header>
         <ul class="modelgrid mono">
-          {allModels.map(([id, vendor]) => (
+          {allModels.map((model) => (
             <li class="modelgrid__cell">
-              <span class="modelgrid__id">{id}</span>
-              <span class="modelgrid__vendor">{vendor}</span>
+              <span class="modelgrid__id">{model.model_name}</span>
+              <span class="modelgrid__vendor">{model.vendor.name}</span>
             </li>
           ))}
           <li class="modelgrid__cell modelgrid__cell--more">
