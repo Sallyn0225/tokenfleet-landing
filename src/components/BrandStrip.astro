@@ -1,0 +1,33 @@
+---
+import BrandLogoLoop from './react/BrandLogoLoop.jsx';
+---
+
+<section class="brandstrip" aria-labelledby="brandstrip-title">
+  <div class="container brandstrip__inner">
+    <p class="eyebrow eyebrow--mute" id="brandstrip-title">由这些模型驱动 · POWERED BY</p>
+    <div class="brandstrip__loop">
+      <BrandLogoLoop client:visible />
+    </div>
+  </div>
+</section>
+
+<style>
+  .brandstrip {
+    background: var(--color-canvas);
+    padding-block: clamp(40px, 5vw, 72px);
+    border-top: 1px solid var(--color-hairline);
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .brandstrip__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .brandstrip__loop {
+    position: relative;
+    height: 56px;
+    color: var(--color-ink);
+  }
+</style>
