@@ -13,8 +13,10 @@ TokenFleet Landing is the public Astro site for **TokenFleet**, a unified AI mod
 
 ## Highlights
 
-- **Astro 6 static site** with a small client-side footprint and no frontend framework runtime.
+- **Astro 6 static site** with small React islands for motion-heavy hero and logo experiences.
 - **Chinese-first landing page** for CTOs, engineers, and enterprise finance/procurement readers.
+- **Animated WebGL hero backdrop** built with OGL, with reduced-motion, visibility pause, and no-WebGL fallback handling.
+- **Local AI brand logo strip** with a horizontally looping vendor showcase.
 - **OpenAI SDK compatibility narrative** with copyable `curl`, Python, and Node examples.
 - **Static model catalog** at `/models`, currently built from `pricing-api.json` with **34 models**, **7 vendors**, and OpenAI / Anthropic / Gemini endpoint metadata.
 - **Catalog interactions** for vendor filters, modality filters, search, price sorting, URL-synced state, deep-linked model dialogs, and copyable model IDs.
@@ -24,6 +26,9 @@ TokenFleet Landing is the public Astro site for **TokenFleet**, a unified AI mod
 ## Tech Stack
 
 - [Astro](https://astro.build/) 6
+- React 19 islands through `@astrojs/react`
+- [OGL](https://github.com/oframe/ogl) for the animated terminal-style WebGL hero backdrop
+- Tailwind CSS 4 Vite plugin, available alongside the existing plain CSS system
 - TypeScript-enabled Astro components
 - Plain CSS split across global styles, design tokens, and button primitives
 - Vanilla browser JavaScript for navigation, reveal animations, code tabs, and the model explorer
@@ -84,6 +89,7 @@ npm run preview
 docs/              Product and design planning notes
 public/            Static images, favicons, Open Graph assets, and brand marks
 src/components/    Page sections and reusable Astro components
+src/components/react/ Hydrated React islands for the hero backdrop and logo loop
 src/data/          Featured model data, catalog metadata, and pricing utilities
 src/layouts/       Shared HTML shell and metadata
 src/pages/         Astro routes
@@ -94,6 +100,9 @@ src/styles/        Global styles, design tokens, and button styles
 
 - `src/pages/index.astro` composes the main landing page.
 - `src/pages/models.astro` renders the model catalog page.
+- `src/components/HeroBackdrop.astro` hosts the static fallback and hydrated WebGL terminal backdrop.
+- `src/components/react/FaultyTerminalIsland.jsx` wraps the OGL terminal effect with WebGL, reduced-motion, and visibility guards.
+- `src/components/BrandStrip.astro` and `src/components/react/BrandLogoLoop.jsx` render the animated AI vendor logo strip.
 - `src/data/pricing.ts` imports `pricing-api.json`, maps vendors, formats prices, detects modality, and exposes the static catalog.
 - `src/components/ModelsExplorer.astro` implements filtering, sorting, search, URL state, and model dialog wiring.
 - `src/components/ModelDialog.astro` pre-renders model detail HTML for the shared `<dialog>`.

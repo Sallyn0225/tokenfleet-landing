@@ -136,10 +136,10 @@ export function modalityLabel(mod: Modality): string {
 }
 
 // ──────────────────────────────────────────────────────────────────────────
-// Icon URL helpers (LobeHub Icons via unpkg CDN)
+// Icon URL helpers (local LobeHub Icons snapshots in public/ai-brand-logo)
 // ──────────────────────────────────────────────────────────────────────────
 
-const ICON_CDN = 'https://unpkg.com/@lobehub/icons-static-svg@latest/icons';
+const ICON_PATH = '/ai-brand-logo';
 
 /**
  * Some LobeHub brand icons ship mono-only — there is no `-color` variant on
@@ -161,13 +161,13 @@ export function iconSlugFromField(field: string | undefined): string {
 }
 
 export function iconUrlOf(slug: string): string {
-  return `${ICON_CDN}/${slug}.svg`;
+  return `${ICON_PATH}/${slug}.svg`;
 }
 
 export function iconMonoUrlOf(slug: string): string {
   // strip -color / -brand-color suffix for mono variant
   const mono = slug.replace(/-color$/, '').replace(/-brand-color$/, '-brand');
-  return `${ICON_CDN}/${mono}.svg`;
+  return `${ICON_PATH}/${mono}.svg`;
 }
 
 // ──────────────────────────────────────────────────────────────────────────

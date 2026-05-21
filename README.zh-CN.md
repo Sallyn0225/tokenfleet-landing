@@ -13,8 +13,10 @@ TokenFleet Landing 是 **TokenFleet** 的公开 Astro 站点。它以中文为�
 
 ## 亮点
 
-- **Astro 6 静态站点**，客户端脚本保持克制，不引入前端框架运行时。
+- **Astro 6 静态站点**，仅在高动效首屏和 logo 展示处使用小型 React islands。
 - **中文优先的产品叙事**，同时服务 CTO、工程师、企业财务与采购决策。
+- **WebGL 动效首屏背景** 基于 OGL 实现，并包含 reduced-motion、离屏暂停与无 WebGL fallback 处理。
+- **本地 AI 品牌 logo 横向循环展示**，用于呈现已接入的主流模型厂商。
 - **OpenAI SDK 兼容性展示**，首屏提供可复制的 `curl`、Python、Node 示例。
 - **静态模型目录** 位于 `/models`，当前由 `pricing-api.json` 构建，覆盖 **34 个模型**、**7 家厂商**，并包含 OpenAI / Anthropic / Gemini endpoint 元数据。
 - **目录交互完整**，支持厂商筛选、形态筛选、搜索、按价格排序、URL 状态同步、模型详情弹窗与 model id 复制。
@@ -24,6 +26,9 @@ TokenFleet Landing 是 **TokenFleet** 的公开 Astro 站点。它以中文为�
 ## 技术栈
 
 - [Astro](https://astro.build/) 6
+- 通过 `@astrojs/react` 使用 React 19 islands
+- [OGL](https://github.com/oframe/ogl) 用于终端风格 WebGL 首屏背景
+- Tailwind CSS 4 Vite plugin，与现有 plain CSS 体系并行可用
 - 支持 TypeScript 的 Astro 组件
 - Plain CSS，按全局样式、设计 token、按钮样式拆分
 - Vanilla browser JavaScript，用于导航、reveal 动画、代码 tab 与模型目录交互
@@ -84,6 +89,7 @@ npm run preview
 docs/              产品与设计规划文档
 public/            静态图片、favicon、Open Graph 资源与品牌标识
 src/components/    页面区块与可复用 Astro 组件
+src/components/react/ Hydrated React islands，用于首屏背景与 logo 循环
 src/data/          精选模型数据、目录元信息与价格工具
 src/layouts/       共享 HTML 外壳与元信息
 src/pages/         Astro 路由
@@ -94,6 +100,9 @@ src/styles/        全局样式、设计 token、按钮样式
 
 - `src/pages/index.astro` 负责组合主落地页。
 - `src/pages/models.astro` 渲染模型目录页。
+- `src/components/HeroBackdrop.astro` 承载静态 fallback 与 hydrated WebGL 终端背景。
+- `src/components/react/FaultyTerminalIsland.jsx` 为 OGL 终端动效补充 WebGL、reduced-motion 与可见性保护。
+- `src/components/BrandStrip.astro` 与 `src/components/react/BrandLogoLoop.jsx` 渲染 AI 厂商 logo 横向循环展示。
 - `src/data/pricing.ts` 导入 `pricing-api.json`，处理厂商映射、价格格式化、模型形态识别与静态目录导出。
 - `src/components/ModelsExplorer.astro` 实现筛选、排序、搜索、URL 状态和模型弹窗联动。
 - `src/components/ModelDialog.astro` 为共享 `<dialog>` 预渲染模型详情 HTML。
