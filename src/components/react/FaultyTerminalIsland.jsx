@@ -18,6 +18,7 @@ export default function FaultyTerminalIsland(props) {
   const wrapRef = useRef(null);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [outOfView, setOutOfView] = useState(false);
+  const [documentHidden, setDocumentHidden] = useState(false);
   const [webglOk, setWebglOk] = useState(true);
 
   useEffect(() => {
@@ -35,11 +36,18 @@ export default function FaultyTerminalIsland(props) {
   }, []);
 
   useEffect(() => {
+    const update = () => setDocumentHidden(document.hidden);
+    update();
+    document.addEventListener('visibilitychange', update);
+    return () => document.removeEventListener('visibilitychange', update);
+  }, []);
+
+  useEffect(() => {
     const node = wrapRef.current;
     if (!node || typeof IntersectionObserver === 'undefined') return;
     const io = new IntersectionObserver(
-      ([entry]) => setOutOfView(!entry.isIntersecting),
-      { threshold: 0 }
+      ([entry]) => setOutOfView(!entry.isIntersecting || entry.intersectionRatio < 0.08),
+      { threshold: [0, 0.08] }
     );
     io.observe(node);
     return () => io.disconnect();
@@ -59,7 +67,7 @@ export default function FaultyTerminalIsland(props) {
     <div ref={wrapRef} style={{ position: 'absolute', inset: 0 }}>
       <FaultyTerminal
         {...rest}
-        pause={pauseProp || outOfView || reducedMotion}
+        pause={pauseProp || outOfView || reducedMotion || documentHidden}
         glitchAmount={reducedMotion ? 0 : glitchAmount}
         flickerAmount={reducedMotion ? 0 : flickerAmount}
         scanlineIntensity={reducedMotion ? 0.15 : scanlineIntensity}

@@ -51,6 +51,15 @@ uniform float uBrightness;
 
 float time;
 
+float aspectCompensation() {
+  float gridRatio = max(uGridMul.x / max(uGridMul.y, 0.0001), 0.0001);
+  return iResolution.z / gridRatio;
+}
+
+vec2 terminalSpace(vec2 uv) {
+  return vec2(uv.x * aspectCompensation(), uv.y) * uScale;
+}
+
 float hash21(vec2 p){
   p = fract(p * 234.56);
   p += dot(p, p + 34.56);
@@ -110,7 +119,7 @@ float digit(vec2 p){
     float intensity = pattern(s * 0.1, q, r) * 1.3 - 0.03;
 
     if(uUseMouse > 0.5){
-        vec2 mouseWorld = uMouse * uScale;
+        vec2 mouseWorld = terminalSpace(uMouse);
         float distToMouse = distance(s, mouseWorld);
         float mouseInfluence = exp(-distToMouse * 8.0) * uMouseStrength * 10.0;
         intensity += mouseInfluence;
@@ -198,7 +207,7 @@ void main() {
       uv = barrel(uv);
     }
 
-    vec2 p = uv * uScale;
+    vec2 p = terminalSpace(uv);
     vec3 col = getColor(p);
 
     if(uChromaticAberration != 0.0){
@@ -258,14 +267,29 @@ export default function FaultyTerminal({
   const rendererRef = useRef(null);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const smoothMouseRef = useRef({ x: 0.5, y: 0.5 });
-  const frozenTimeRef = useRef(0);
   const rafRef = useRef(0);
+  const updateRef = useRef(null);
+  const pauseRef = useRef(pause);
   const loadAnimationStartRef = useRef(0);
   const timeOffsetRef = useRef(Math.random() * 100);
 
   const tintVec = useMemo(() => hexToRgb(tint), [tint]);
 
   const ditherValue = useMemo(() => (typeof dither === 'boolean' ? (dither ? 1 : 0) : dither), [dither]);
+
+  useEffect(() => {
+    const wasPaused = pauseRef.current;
+    pauseRef.current = pause;
+
+    if (pause && rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
+    }
+
+    if (!pause && wasPaused && updateRef.current && rafRef.current === 0) {
+      rafRef.current = requestAnimationFrame(updateRef.current);
+    }
+  }, [pause]);
 
   const handlePointerMove = useCallback(e => {
     const ctn = containerRef.current;
@@ -337,19 +361,16 @@ export default function FaultyTerminal({
     resize();
 
     const update = t => {
-      rafRef.current = requestAnimationFrame(update);
+      rafRef.current = 0;
+
+      if (pauseRef.current) return;
 
       if (pageLoadAnimation && loadAnimationStartRef.current === 0) {
         loadAnimationStartRef.current = t;
       }
 
-      if (!pause) {
-        const elapsed = (t * 0.001 + timeOffsetRef.current) * timeScale;
-        program.uniforms.iTime.value = elapsed;
-        frozenTimeRef.current = elapsed;
-      } else {
-        program.uniforms.iTime.value = frozenTimeRef.current;
-      }
+      const elapsed = (t * 0.001 + timeOffsetRef.current) * timeScale;
+      program.uniforms.iTime.value = elapsed;
 
       if (pageLoadAnimation && loadAnimationStartRef.current > 0) {
         const animationDuration = 2000;
@@ -371,8 +392,11 @@ export default function FaultyTerminal({
       }
 
       renderer.render({ scene: mesh });
+
+      rafRef.current = requestAnimationFrame(update);
     };
-    rafRef.current = requestAnimationFrame(update);
+    updateRef.current = update;
+    if (!pauseRef.current) rafRef.current = requestAnimationFrame(update);
     ctn.appendChild(gl.canvas);
 
     if (mouseReact) window.addEventListener('pointermove', handlePointerMove, { passive: true });
@@ -383,12 +407,12 @@ export default function FaultyTerminal({
       if (mouseReact) window.removeEventListener('pointermove', handlePointerMove);
       if (gl.canvas.parentElement === ctn) ctn.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
+      updateRef.current = null;
       loadAnimationStartRef.current = 0;
       timeOffsetRef.current = Math.random() * 100;
     };
   }, [
     dpr,
-    pause,
     timeScale,
     scale,
     gridMul,
