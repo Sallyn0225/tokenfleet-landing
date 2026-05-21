@@ -5,7 +5,7 @@
  * A: current production model catalog mono grid.
  * B: 私有部署 / VPC 直连 schematic (240×160 box+arrow, indigo voltage on
  *    private boundary)
- * C: OpenAI SDK code diff (2 lines, indigo highlight on the swapped line)
+ * C: unified endpoint code diff (2 lines, indigo highlight on the swapped line)
  * D: 国内直连 latency schematic + city latency table (P50 placeholder)
  *
  * Decision 7b v2: D card swapped from "统一计费 / 人民币发票" (now lives in
@@ -44,7 +44,7 @@ const cities = [
         <header class="whycard__head">
           <span class="eyebrow eyebrow--mute">A</span>
           <h3 class="whycard__title">{total} 个生产级模型，一个 endpoint</h3>
-          <p class="whycard__body">覆盖 LLM、图像、视频、音频，全部 OpenAI Chat / Images / Audio API 接口形态。</p>
+          <p class="whycard__body">覆盖 LLM、图像、视频、音频，通过统一 API 网关完成调用、计量与对账。</p>
         </header>
         <ul class="modelgrid mono">
           {allModels.map((model) => (
@@ -103,12 +103,12 @@ const cities = [
         </div>
       </article>
 
-      {/* C — OpenAI SDK diff */}
+      {/* C — unified endpoint diff */}
       <article class="whycard whycard--diff">
         <header class="whycard__head">
           <span class="eyebrow eyebrow--mute">C</span>
-          <h3 class="whycard__title">OpenAI SDK 即插即用</h3>
-          <p class="whycard__body">一行替换，零代码改动。Python / Node 同样兼容。</p>
+          <h3 class="whycard__title">统一 endpoint 接入</h3>
+          <p class="whycard__body">同一个 API key 调用多家模型，接入路径与用量记录保持一致。</p>
         </header>
         <pre class="diff mono"><code><span class="diff__line diff__line--rm"><span class="diff__sign">−</span> base_url=<span class="diff__str">"https://api.openai.com/v1"</span></span>
 <span class="diff__line diff__line--add"><span class="diff__sign">+</span> base_url=<span class="diff__str-on">"https://api.tokenfleet.cn/v1"</span></span></code></pre>

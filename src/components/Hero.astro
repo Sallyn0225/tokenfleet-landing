@@ -33,12 +33,12 @@ const total = totalModelCount();
       <span class="eyebrow">MODEL API · UNIFIED</span>
 
       <h1 class="hero__headline">
-        用 <span class="voltage">OpenAI SDK</span>，<br />
-        调用 Claude、Gemini、DeepSeek。
+        <span class="voltage">一个平台</span>，<br />
+        调用多家主流模型。
       </h1>
 
       <p class="hero__body">
-        聚合 OpenAI、Anthropic、Google、DeepSeek、Qwen 等
+        通过 TokenFleet 聚合 OpenAI、Anthropic、Google、DeepSeek、Qwen 等
         <strong class="hero__body-num mono">{total}</strong>
         个生产级 LLM、图像、视频模型。一个 API key，一份发票，国内直连。
       </p>
@@ -57,7 +57,7 @@ const total = totalModelCount();
 
       <ul class="hero__trust" aria-label="平台特性">
         <li><a class="hero__trust-link" href="/models"><span class="mono">{total}</span> 个生产级模型</a></li>
-        <li>OpenAI SDK 兼容</li>
+        <li>统一 API 网关</li>
         <li>国内直连</li>
       </ul>
     </div>
@@ -75,6 +75,21 @@ const total = totalModelCount();
     padding-bottom: clamp(64px, 9vw, 128px);
     overflow: hidden;
     color: var(--color-on-dark);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-mesh);
+    background: linear-gradient(
+      90deg,
+      rgba(3, 5, 13, 0.68) 0%,
+      rgba(3, 5, 13, 0.42) 38%,
+      rgba(3, 5, 13, 0.08) 66%,
+      rgba(3, 5, 13, 0) 100%
+    );
+    pointer-events: none;
   }
 
   .hero__inner {
@@ -96,6 +111,9 @@ const total = totalModelCount();
   .hero__copy :global(.eyebrow) {
     color: var(--color-on-dark-mute);
     margin-bottom: -4px;
+    text-shadow:
+      0 1px 6px rgba(0, 0, 0, 0.78),
+      0 8px 24px rgba(0, 0, 0, 0.6);
   }
 
   .hero__headline {
@@ -106,13 +124,20 @@ const total = totalModelCount();
     color: var(--color-on-dark);
     max-width: 18ch;
     overflow-wrap: anywhere;
-    text-shadow: 0 1px 24px rgba(0, 0, 0, 0.45);
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.82),
+      0 3px 16px rgba(0, 0, 0, 0.72),
+      0 14px 44px rgba(0, 0, 0, 0.62);
   }
 
   /* voltage is a global accent run; on dark we shift to the brighter
      primary-soft so it stays a vivid neon highlight against the CRT bg. */
   .hero__headline :global(.voltage) {
-    color: var(--color-primary-soft);
+    color: #aaa5ff;
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.86),
+      0 3px 16px rgba(0, 0, 0, 0.72),
+      0 0 24px rgba(83, 58, 253, 0.82);
   }
 
   .hero__body {
@@ -122,7 +147,9 @@ const total = totalModelCount();
     max-width: 36ch;
     font-weight: var(--weight-thin);
     overflow-wrap: anywhere;
-    text-shadow: 0 1px 16px rgba(0, 0, 0, 0.4);
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.78),
+      0 4px 18px rgba(0, 0, 0, 0.66);
   }
 
   .hero__body-num {
@@ -139,16 +166,24 @@ const total = totalModelCount();
     margin-top: 4px;
   }
 
-  /* outline button needs to flip its hairline + ink for dark surfaces */
+  /* Secondary CTA uses a white surface so it stays legible on the CRT field
+     while remaining quieter than the indigo primary action. */
   .hero__cta :global(.btn--outline) {
-    color: var(--color-on-dark);
-    border-color: rgba(246, 249, 252, 0.32);
-    background: rgba(255, 255, 255, 0.04);
+    color: var(--color-brand-dark-900);
+    border-color: rgba(255, 255, 255, 0.78);
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.72) inset,
+      0 10px 26px rgba(0, 0, 0, 0.18);
   }
   .hero__cta :global(.btn--outline:hover) {
-    color: var(--color-on-dark);
-    background: rgba(255, 255, 255, 0.10);
-    border-color: rgba(246, 249, 252, 0.55);
+    color: var(--color-primary-press);
+    background: var(--color-on-primary);
+    border-color: var(--color-on-primary);
+    transform: translateY(-1px);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.82) inset,
+      0 14px 32px rgba(0, 0, 0, 0.24);
   }
 
   .hero__trust {
@@ -158,6 +193,9 @@ const total = totalModelCount();
     color: rgba(246, 249, 252, 0.62);
     font-size: var(--type-caption-size);
     margin-top: 12px;
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.76),
+      0 4px 16px rgba(0, 0, 0, 0.58);
   }
 
   .hero__trust li {
