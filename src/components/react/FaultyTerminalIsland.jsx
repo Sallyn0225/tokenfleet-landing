@@ -19,12 +19,12 @@ export default function FaultyTerminalIsland(props) {
   const [reducedMotion, setReducedMotion] = useState(false);
   const [outOfView, setOutOfView] = useState(false);
   const [documentHidden, setDocumentHidden] = useState(false);
-  const [webglOk, setWebglOk] = useState(true);
+  const [webglOk, setWebglOk] = useState(null);
 
   useEffect(() => {
     const c = document.createElement('canvas');
     const gl = c.getContext('webgl2') || c.getContext('webgl') || c.getContext('experimental-webgl');
-    if (!gl) setWebglOk(false);
+    setWebglOk(Boolean(gl));
   }, []);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function FaultyTerminalIsland(props) {
     return () => io.disconnect();
   }, []);
 
-  if (!webglOk) return null;
+  if (webglOk !== true) return null;
 
   const {
     glitchAmount = 1,
