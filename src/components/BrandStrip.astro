@@ -14,7 +14,7 @@ import BrandLogoLoop from './react/BrandLogoLoop.jsx';
 <style>
   .brandstrip {
     background: var(--color-canvas);
-    padding-block: clamp(40px, 5vw, 72px);
+    padding-block: clamp(24px, 3vw, 40px);
     border-top: 1px solid var(--color-hairline);
     border-bottom: 1px solid var(--color-hairline);
   }
@@ -22,12 +22,37 @@ import BrandLogoLoop from './react/BrandLogoLoop.jsx';
   .brandstrip__inner {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: clamp(18px, 2.2vw, 28px);
   }
 
   .brandstrip__loop {
     position: relative;
-    height: 56px;
+    height: clamp(64px, 7vw, 92px);
     color: var(--color-ink);
+    display: flex;
+    align-items: center;
+  }
+
+  .brandstrip__loop :global(.logoloop) {
+    flex: 1 1 auto;
+  }
+
+  .brandstrip__loop :global(.logoloop img) {
+    height: clamp(52px, 5.2vw, 72px) !important;
+    width: auto;
+  }
+
+  @media (max-width: 640px) {
+    .brandstrip {
+      padding-block: 22px 28px;
+    }
+
+    .brandstrip__loop {
+      height: 64px;
+    }
+
+    .brandstrip__loop :global(.logoloop img) {
+      height: 48px !important;
+    }
   }
 </style>

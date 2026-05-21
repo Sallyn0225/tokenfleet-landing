@@ -35,13 +35,14 @@ export default function BrandLogoLoop() {
       logos={logos}
       speed={60}
       direction="left"
-      logoHeight={36}
-      gap={56}
+      logoHeight={64}
+      gap={64}
       hoverSpeed={0}
       scaleOnHover
       fadeOut
       fadeOutColor="#ffffff"
       ariaLabel="平台已接入的 AI 厂商与模型"
+      className="logoloop"
     />
   );
 }
