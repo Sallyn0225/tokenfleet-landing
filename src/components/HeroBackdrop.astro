@@ -1,0 +1,83 @@
+---
+/**
+ * HeroBackdrop.astro — dark CRT-terminal hero background.
+ *
+ * Renders a deep-navy fallback for SSR / WebGL-disabled clients, then
+ * hydrates the FaultyTerminal WebGL canvas on top via client:only="react".
+ *
+ * Replaces MeshBackdrop on the home hero only; mesh remains the universal
+ * marketing-hero default elsewhere (see DESIGN.md §"do's and don'ts").
+ */
+
+import FaultyTerminalIsland from './react/FaultyTerminalIsland.jsx';
+---
+
+<div class="hero-bg" aria-hidden="true">
+  <div class="hero-bg__fallback"></div>
+
+  <FaultyTerminalIsland
+    client:only="react"
+    scale={3}
+    gridMul={[2, 1]}
+    digitSize={0.9}
+    timeScale={1}
+    pause={false}
+    scanlineIntensity={1}
+    glitchAmount={1}
+    flickerAmount={1}
+    noiseAmp={1}
+    chromaticAberration={0}
+    dither={0}
+    curvature={0}
+    tint="#533afd"
+    mouseReact={true}
+    mouseStrength={0.5}
+    pageLoadAnimation={false}
+    brightness={1}
+  />
+
+  <div class="hero-bg__vignette"></div>
+</div>
+
+<style>
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-mesh);
+    overflow: hidden;
+    background: #06080f;
+    contain: layout paint;
+    pointer-events: none;
+  }
+
+  /* Static fallback shown before React hydrates / when WebGL is unavailable.
+     Mirrors the dark-with-purple-glow tone the canvas will paint over. */
+  .hero-bg__fallback {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 18% 28%, rgba(83, 58, 253, 0.28), transparent 60%),
+      radial-gradient(ellipse at 82% 72%, rgba(83, 58, 253, 0.14), transparent 55%),
+      #06080f;
+    pointer-events: none;
+  }
+
+  /* Soft inner vignette so the canvas edges don't feel hard-cut against the
+     glass nav and the centered content. Lives above the WebGL canvas. */
+  .hero-bg__vignette {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        ellipse at 50% 60%,
+        rgba(0, 0, 0, 0) 38%,
+        rgba(0, 0, 0, 0.32) 88%,
+        rgba(0, 0, 0, 0.5) 100%
+      );
+    pointer-events: none;
+  }
+
+  .hero-bg :global(canvas) {
+    display: block;
+  }
+</style>
