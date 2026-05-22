@@ -3,18 +3,28 @@
  * Footer.astro — 5-column footer + Chinese compliance strip.
  *
  * Columns:
- *  1 · Brand wordmark + tagline
+ *  1 · Brand wordmark + tagline + sales mailto + Follow (WeChat / Douyin)
  *  2 · Product (homepage anchors + external status)
  *  3 · Developers (Docs / SDK / API Reference / Cookbook)
  *  4 · Company (About / Blog / Careers / Contact)
  *  5 · Legal & Compliance (Terms / Privacy / DPA / Security)
+ *
+ * Follow (in brand column):
+ *  Three monochrome icon triggers — 微信社群 / 公众号 / 抖音.
+ *  Hover (desktop) or click (touch) reveals a popover with the QR code.
+ *  Source images live in src/assets/QRCode/ and are emitted as
+ *  optimized WebP via astro:assets (single 320×320 source, displayed at 160px).
  *
  * Bottom strip:
  *  Left: 深圳市新云计算科技有限公司 © 2026
  *  Right: 粤ICP备2022003994号-6 (links to https://beian.miit.gov.cn/)
  */
 
+import { Image } from 'astro:assets';
 import Wordmark from './Wordmark.astro';
+import wechatGroupQR from '../assets/QRCode/wechat-group.jpg';
+import wechatSubQR from '../assets/QRCode/wechat-sub.jpg';
+import douyinQR from '../assets/QRCode/douyin.webp';
 
 const cols = [
   {
@@ -52,6 +62,34 @@ const cols = [
     ],
   },
 ];
+
+const follow = [
+  {
+    id: 'qr-wechat-group',
+    label: '微信社群',
+    image: wechatGroupQR,
+    alt: 'TokenFleet 微信社群 QR 码',
+    icon: 'users',
+    surface: 'light',
+  },
+  {
+    id: 'qr-wechat-sub',
+    label: '微信公众号',
+    image: wechatSubQR,
+    alt: 'TokenFleet 微信公众号 QR 码',
+    icon: 'megaphone',
+    surface: 'light',
+  },
+  {
+    id: 'qr-douyin',
+    label: '抖音',
+    image: douyinQR,
+    alt: 'TokenFleet 抖音 QR 码',
+    icon: 'music',
+    // Source asset is white-on-transparent — needs a dark surface to read.
+    surface: 'dark',
+  },
+] as const;
 ---
 
 <footer class="footer" role="contentinfo">
@@ -64,6 +102,68 @@ const cols = [
       <a href="mailto:sales@tokenfleet.cn" class="footer__sales mono">
         sales@tokenfleet.cn
       </a>
+
+      <div class="footer__follow" data-qr-root>
+        <h3 class="footer__col-title">Follow</h3>
+        <ul class="footer__follow-list">
+          {follow.map((item, idx) => (
+            <li class="footer__follow-item" data-qr-item data-index={idx} data-surface={item.surface}>
+              <button
+                type="button"
+                class="footer__follow-trigger"
+                aria-expanded="false"
+                aria-controls={item.id}
+                aria-haspopup="dialog"
+                aria-label={item.label}
+                data-qr-trigger
+              >
+                {item.icon === 'users' && (
+                  <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="7" cy="7" r="2.5" />
+                    <path d="M2 16c0-2.6 2.2-4 5-4s5 1.4 5 4" />
+                    <circle cx="14" cy="6.5" r="1.8" />
+                    <path d="M14 11.5c2 0 3.5 1.2 3.5 3" />
+                  </svg>
+                )}
+                {item.icon === 'megaphone' && (
+                  <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M14 4 4 8H2v4h2l10 4Z" />
+                    <path d="M14 4v12" />
+                    <path d="M17 8a3 3 0 0 1 0 4" />
+                  </svg>
+                )}
+                {item.icon === 'music' && (
+                  <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M8 14V4l8-2v10" />
+                    <circle cx="6" cy="14.5" r="2" />
+                    <circle cx="14" cy="12.5" r="2" />
+                  </svg>
+                )}
+              </button>
+
+              <div
+                id={item.id}
+                class="footer__qr-popover"
+                role="dialog"
+                aria-label={`${item.label} QR 码`}
+                data-qr-popover
+              >
+                <Image
+                  src={item.image}
+                  width={320}
+                  height={320}
+                  format="webp"
+                  quality={85}
+                  loading="lazy"
+                  alt={item.alt}
+                  class="footer__qr-image"
+                />
+                <p class="footer__qr-caption">{item.label}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
 
     {cols.map((col) => (
@@ -170,6 +270,139 @@ const cols = [
     color: var(--color-primary);
   }
 
+  /* ── Follow / QR section ──────────────────────────────────────────────── */
+  .footer__follow {
+    margin-top: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .footer__follow-list {
+    display: flex;
+    gap: 4px;
+    /* allow popovers to escape this row, but clip nothing inside the column */
+  }
+
+  .footer__follow-item {
+    position: relative;
+  }
+
+  .footer__follow-trigger {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    color: var(--color-ink-mute);
+    cursor: pointer;
+    transition: color var(--motion-base) var(--ease-out-quart),
+                background-color var(--motion-base) var(--ease-out-quart),
+                border-color var(--motion-base) var(--ease-out-quart);
+  }
+
+  .footer__follow-trigger:hover,
+  .footer__follow-item[data-state='open'] .footer__follow-trigger {
+    color: var(--color-primary);
+    background: var(--color-primary-bg-subdued);
+    border-color: var(--color-primary-bg-subdued-hover);
+  }
+
+  .footer__follow-trigger:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* ── QR popover ───────────────────────────────────────────────────────── */
+  .footer__qr-popover {
+    position: absolute;
+    bottom: calc(100% + 14px);
+    left: 50%;
+    width: 184px;
+    padding: 12px 12px 10px;
+    background: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-2);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate(-50%, 6px);
+    transform-origin: 50% calc(100% + 14px);
+    transition: opacity var(--motion-base) var(--ease-out-quart),
+                transform var(--motion-base) var(--ease-out-quart),
+                visibility 0s linear var(--motion-base);
+    z-index: var(--z-overlay);
+  }
+
+  .footer__follow-item[data-state='open'] .footer__qr-popover {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+    transition: opacity var(--motion-base) var(--ease-out-quart),
+                transform var(--motion-base) var(--ease-out-quart),
+                visibility 0s;
+  }
+
+  /* tail pointing down to the trigger */
+  .footer__qr-popover::before,
+  .footer__qr-popover::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border: 7px solid transparent;
+    border-bottom: 0;
+    transform: translateX(-50%);
+  }
+  .footer__qr-popover::before {
+    border-top-color: var(--color-hairline);
+  }
+  .footer__qr-popover::after {
+    margin-top: -1px;
+    border-top-color: var(--color-canvas);
+  }
+
+  /* keep popovers from overflowing the brand column edges */
+  .footer__follow-item:first-child .footer__qr-popover {
+    left: 0;
+    transform: translate(0, 6px);
+  }
+  .footer__follow-item:first-child[data-state='open'] .footer__qr-popover {
+    transform: translate(0, 0);
+  }
+  .footer__follow-item:first-child .footer__qr-popover::before,
+  .footer__follow-item:first-child .footer__qr-popover::after {
+    left: 18px;
+  }
+
+  .footer__qr-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+    background: var(--color-canvas-soft);
+  }
+
+  .footer__follow-item[data-surface='dark'] .footer__qr-image {
+    background: var(--color-brand-dark-900);
+    padding: 6px;
+  }
+
+  .footer__qr-caption {
+    margin-top: 8px;
+    text-align: center;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+    color: var(--color-ink-mute);
+  }
+
   /* ── compliance strip ─────────────────────────────────────────────────── */
   .footer__strip {
     border-top: 1px solid var(--color-hairline);
@@ -221,4 +454,93 @@ const cols = [
       text-align: center;
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer__qr-popover {
+      transition: none !important;
+    }
+  }
 </style>
+
+<script>
+  /**
+   * Footer QR popover controller.
+   *  - Desktop: hover open / leave close (with a small grace delay)
+   *  - Touch & keyboard: click / Enter / Space toggles
+   *  - One popover open at a time; outside-click or Escape closes any open one.
+   */
+  const root = document.querySelector<HTMLElement>('[data-qr-root]');
+  if (root) {
+    const items = Array.from(root.querySelectorAll<HTMLElement>('[data-qr-item]'));
+    let openItem: HTMLElement | null = null;
+    let closeTimer: number | undefined;
+
+    const setState = (item: HTMLElement, open: boolean) => {
+      const trigger = item.querySelector<HTMLButtonElement>('[data-qr-trigger]');
+      item.dataset.state = open ? 'open' : 'closed';
+      trigger?.setAttribute('aria-expanded', String(open));
+    };
+
+    const closeAll = () => {
+      if (openItem) {
+        setState(openItem, false);
+        openItem = null;
+      }
+    };
+
+    const open = (item: HTMLElement) => {
+      window.clearTimeout(closeTimer);
+      if (openItem && openItem !== item) setState(openItem, false);
+      setState(item, true);
+      openItem = item;
+    };
+
+    const scheduleClose = (item: HTMLElement) => {
+      window.clearTimeout(closeTimer);
+      closeTimer = window.setTimeout(() => {
+        if (openItem === item) {
+          setState(item, false);
+          openItem = null;
+        }
+      }, 140);
+    };
+
+    items.forEach((item) => {
+      const trigger = item.querySelector<HTMLButtonElement>('[data-qr-trigger]');
+      if (!trigger) return;
+
+      // Pointer-aware open/close: hover for mouse, click for touch.
+      item.addEventListener('pointerenter', (e) => {
+        if (e.pointerType === 'mouse') open(item);
+      });
+      item.addEventListener('pointerleave', (e) => {
+        if (e.pointerType === 'mouse') scheduleClose(item);
+      });
+
+      trigger.addEventListener('click', () => {
+        if (openItem === item) {
+          setState(item, false);
+          openItem = null;
+        } else {
+          open(item);
+        }
+      });
+
+      trigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeAll();
+          trigger.focus();
+        }
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!openItem) return;
+      if (!openItem.contains(e.target as Node)) closeAll();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeAll();
+    });
+  }
+</script>
