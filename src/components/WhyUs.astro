@@ -529,10 +529,18 @@ const cities = [
     stroke-dasharray: 130;
     stroke-dashoffset: 130;
     transition: stroke-dashoffset 900ms var(--ease-out-expo) 240ms;
+    animation: vpc-private-pulse 2.8s ease-in-out 1.35s infinite;
+    animation-play-state: paused;
   }
   .whycard--vpc.is-visible .vpc-path--private,
   html:not(.js-reveal) .whycard--vpc .vpc-path--private {
     stroke-dashoffset: 0;
+    animation-play-state: running;
+  }
+
+  @keyframes vpc-private-pulse {
+    0%, 100% { stroke-width: 1.6; opacity: 0.85; }
+    45%      { stroke-width: 2.4; opacity: 1; }
   }
 
   /* enclosure soft pulse */
@@ -549,12 +557,12 @@ const cities = [
     animation-play-state: paused;
   }
   /* public — slow, dim, with mid-line opacity dip suggesting hop loss */
-  .vpc-pkt--p0 { animation: vpc-pub 3.6s 0s; }
-  .vpc-pkt--p1 { animation: vpc-pub 3.6s 1.8s; }
+  .vpc-pkt--p0 { animation-name: vpc-pub; animation-duration: 3.6s; animation-delay: 0s; }
+  .vpc-pkt--p1 { animation-name: vpc-pub; animation-duration: 3.6s; animation-delay: 1.8s; }
   /* private — fast, vivid, three of them in tight cadence */
-  .vpc-pkt--q0 { animation: vpc-priv 1.6s 0s; }
-  .vpc-pkt--q1 { animation: vpc-priv 1.6s 0.55s; }
-  .vpc-pkt--q2 { animation: vpc-priv 1.6s 1.1s; }
+  .vpc-pkt--q0 { animation-name: vpc-priv; animation-duration: 1.6s; animation-delay: 0s; }
+  .vpc-pkt--q1 { animation-name: vpc-priv; animation-duration: 1.6s; animation-delay: 0.55s; }
+  .vpc-pkt--q2 { animation-name: vpc-priv; animation-duration: 1.6s; animation-delay: 1.1s; }
 
   .whycard--vpc.is-visible .vpc-pkt,
   html:not(.js-reveal) .whycard--vpc .vpc-pkt {
@@ -956,6 +964,7 @@ const cities = [
   @media (prefers-reduced-motion: reduce) {
     .vpc-path--private {
       transition: none;
+      animation: none;
       stroke-dashoffset: 0;
     }
     .vpc-pkt,
