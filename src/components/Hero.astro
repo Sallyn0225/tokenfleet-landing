@@ -38,7 +38,9 @@ const total = totalModelCount();
       <span class="eyebrow">{t.hero.eyebrow}</span>
 
       <h1 class="hero__headline">
-        <span class="voltage">{t.hero.titlePrefix}</span>{locale === 'zh' ? '，' : ''}<br />
+        <span class="voltage">{t.hero.titlePrefix}</span>{
+          locale === 'zh' ? '，' : ''
+        }<br />
         {t.hero.titleRest}
       </h1>
 
@@ -49,19 +51,41 @@ const total = totalModelCount();
       </p>
 
       <div class="hero__cta">
-        <a href="https://tokenfleet.cn/console" class="btn btn--primary btn--lg">
+        <a
+          href="https://tokenfleet.cn/console"
+          class="btn btn--primary btn--lg"
+        >
           {t.nav.start}
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-            <path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M5 3l4 4-4 4"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
           </svg>
         </a>
-        <a href="https://docs.tokenfleet.cn" class="btn btn--outline btn--lg" rel="noopener">
+        <a
+          href="https://docs.tokenfleet.cn"
+          class="btn btn--outline btn--lg"
+          rel="noopener"
+        >
           {t.hero.docs}
         </a>
       </div>
 
       <ul class="hero__trust" aria-label={t.hero.trustAria}>
-        <li><a class="hero__trust-link" href={localePath(locale, '/models')}>{t.hero.trustModels(total)}</a></li>
+        <li>
+          <a class="hero__trust-link" href={localePath(locale, '/models')}
+            >{t.hero.trustModels(total)}</a
+          >
+        </li>
         <li>{t.hero.trustGateway}</li>
         <li>{t.hero.trustDirect}</li>
       </ul>
@@ -207,7 +231,9 @@ const total = totalModelCount();
     opacity: 0.8;
   }
 
-  .hero__trust li:last-child::after { display: none; }
+  .hero__trust li:last-child::after {
+    display: none;
+  }
 
   .hero__trust .mono {
     color: var(--color-primary-press);
@@ -217,8 +243,9 @@ const total = totalModelCount();
   .hero__trust-link {
     color: inherit;
     border-bottom: 1px solid transparent;
-    transition: border-color var(--motion-base) var(--ease-out-quart),
-                color var(--motion-base) var(--ease-out-quart);
+    transition:
+      border-color var(--motion-base) var(--ease-out-quart),
+      color var(--motion-base) var(--ease-out-quart);
   }
   .hero__trust-link:hover {
     color: var(--color-primary-soft);
@@ -230,7 +257,7 @@ const total = totalModelCount();
     min-width: 0;
     max-width: 100%;
     filter: drop-shadow(0 24px 48px rgba(83, 58, 253, 0.18))
-            drop-shadow(0 4px 10px rgba(28, 30, 84, 0.12));
+      drop-shadow(0 4px 10px rgba(28, 30, 84, 0.12));
   }
 
   @media (max-width: 960px) {
@@ -241,7 +268,9 @@ const total = totalModelCount();
     .hero__headline {
       max-width: 22ch;
     }
-    .hero__body { max-width: 48ch; }
+    .hero__body {
+      max-width: 48ch;
+    }
   }
 
   @media (max-width: 640px) {
@@ -265,7 +294,9 @@ const total = totalModelCount();
       font-size: 15px;
       line-height: 1.6;
     }
-    .hero__cta { gap: 10px; }
+    .hero__cta {
+      gap: 10px;
+    }
     .hero__cta .btn {
       flex: 1 1 144px;
       justify-content: center;

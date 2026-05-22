@@ -235,10 +235,14 @@ function hexToRgb(hex) {
   if (h.length === 3)
     h = h
       .split('')
-      .map(c => c + c)
+      .map((c) => c + c)
       .join('');
   const num = parseInt(h, 16);
-  return [((num >> 16) & 255) / 255, ((num >> 8) & 255) / 255, (num & 255) / 255];
+  return [
+    ((num >> 16) & 255) / 255,
+    ((num >> 8) & 255) / 255,
+    (num & 255) / 255,
+  ];
 }
 
 export default function FaultyTerminal({
@@ -257,7 +261,9 @@ export default function FaultyTerminal({
   tint = '#ffffff',
   mouseReact = true,
   mouseStrength = 0.2,
-  dpr = typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 2) : 1,
+  dpr = typeof window !== 'undefined'
+    ? Math.min(window.devicePixelRatio || 1, 2)
+    : 1,
   pageLoadAnimation = true,
   brightness = 1,
   backgroundColor = '#000000',
@@ -277,9 +283,15 @@ export default function FaultyTerminal({
   const timeOffsetRef = useRef(17.25);
 
   const tintVec = useMemo(() => hexToRgb(tint), [tint]);
-  const backgroundVec = useMemo(() => hexToRgb(backgroundColor), [backgroundColor]);
+  const backgroundVec = useMemo(
+    () => hexToRgb(backgroundColor),
+    [backgroundColor]
+  );
 
-  const ditherValue = useMemo(() => (typeof dither === 'boolean' ? (dither ? 1 : 0) : dither), [dither]);
+  const ditherValue = useMemo(
+    () => (typeof dither === 'boolean' ? (dither ? 1 : 0) : dither),
+    [dither]
+  );
 
   useEffect(() => {
     const wasPaused = pauseRef.current;
@@ -295,7 +307,7 @@ export default function FaultyTerminal({
     }
   }, [pause]);
 
-  const handlePointerMove = useCallback(e => {
+  const handlePointerMove = useCallback((e) => {
     const ctn = containerRef.current;
     if (!ctn) return;
     const rect = ctn.getBoundingClientRect();
@@ -322,7 +334,11 @@ export default function FaultyTerminal({
       uniforms: {
         iTime: { value: 0 },
         iResolution: {
-          value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height)
+          value: new Color(
+            gl.canvas.width,
+            gl.canvas.height,
+            gl.canvas.width / gl.canvas.height
+          ),
         },
         uScale: { value: scale },
 
@@ -337,15 +353,24 @@ export default function FaultyTerminal({
         uCurvature: { value: curvature },
         uTint: { value: new Color(tintVec[0], tintVec[1], tintVec[2]) },
         uMouse: {
-          value: new Float32Array([smoothMouseRef.current.x, smoothMouseRef.current.y])
+          value: new Float32Array([
+            smoothMouseRef.current.x,
+            smoothMouseRef.current.y,
+          ]),
         },
         uMouseStrength: { value: mouseStrength },
         uUseMouse: { value: mouseReact ? 1 : 0 },
         uPageLoadProgress: { value: pageLoadAnimation ? 0 : 1 },
         uUsePageLoadAnimation: { value: pageLoadAnimation ? 1 : 0 },
         uBrightness: { value: brightness },
-        uBackground: { value: new Color(backgroundVec[0], backgroundVec[1], backgroundVec[2]) }
-      }
+        uBackground: {
+          value: new Color(
+            backgroundVec[0],
+            backgroundVec[1],
+            backgroundVec[2]
+          ),
+        },
+      },
     });
     programRef.current = program;
 
@@ -365,7 +390,7 @@ export default function FaultyTerminal({
     resizeObserver.observe(ctn);
     resize();
 
-    const update = t => {
+    const update = (t) => {
       rafRef.current = 0;
 
       if (pauseRef.current) return;
@@ -407,12 +432,16 @@ export default function FaultyTerminal({
     ctn.appendChild(gl.canvas);
     if (!pauseRef.current) rafRef.current = requestAnimationFrame(update);
 
-    if (mouseReact) window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    if (mouseReact)
+      window.addEventListener('pointermove', handlePointerMove, {
+        passive: true,
+      });
 
     return () => {
       cancelAnimationFrame(rafRef.current);
       resizeObserver.disconnect();
-      if (mouseReact) window.removeEventListener('pointermove', handlePointerMove);
+      if (mouseReact)
+        window.removeEventListener('pointermove', handlePointerMove);
       if (gl.canvas.parentElement === ctn) ctn.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
       updateRef.current = null;
@@ -438,10 +467,15 @@ export default function FaultyTerminal({
     mouseStrength,
     pageLoadAnimation,
     brightness,
-    handlePointerMove
+    handlePointerMove,
   ]);
 
   return (
-    <div ref={containerRef} className={`w-full h-full relative overflow-hidden ${className}`} style={style} {...rest} />
+    <div
+      ref={containerRef}
+      className={`w-full h-full relative overflow-hidden ${className}`}
+      style={style}
+      {...rest}
+    />
   );
 }

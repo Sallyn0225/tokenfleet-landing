@@ -23,14 +23,14 @@
 
 TokenFleet Landing 是 **TokenFleet** 的公开站点。它以中文为主，面向工程团队与企业采购读者，传达“一把 API key、OpenAI 兼容接入、统一计费、统一开票，并覆盖 LLM、图像、视频模型目录”的产品定位。
 
-| 项目 | 说明 |
-| --- | --- |
-| 框架 | Astro 6 静态站点 |
+| 项目         | 说明                                     |
+| ------------ | ---------------------------------------- |
+| 框架         | Astro 6 静态站点                         |
 | 交互 islands | React 19、OGL WebGL 首屏、动画 logo 循环 |
-| 主要路由 | `/`、`/models` |
-| 目录数据源 | 根目录 `pricing-api.json` 快照 |
-| 当前目录 | 37 个模型、7 家已使用厂商 |
-| 构建产物 | 输出到 `dist/` 的静态文件 |
+| 主要路由     | `/`、`/models`                           |
+| 目录数据源   | 根目录 `pricing-api.json` 快照           |
+| 当前目录     | 37 个模型、7 家已使用厂商                |
+| 构建产物     | 输出到 `dist/` 的静态文件                |
 
 ## 目录
 
@@ -57,15 +57,15 @@ TokenFleet Landing 是 **TokenFleet** 的公开站点。它以中文为主，面
 
 ## 技术栈
 
-| 层级 | 技术 |
-| --- | --- |
-| 站点框架 | [Astro](https://astro.build/) 6 |
-| Islands | 通过 `@astrojs/react` 使用 React 19 |
-| 动效 / WebGL | [OGL](https://github.com/oframe/ogl) |
-| 样式 | Plain CSS、设计 token、按钮原语、Tailwind CSS 4 Vite plugin |
-| 语言 | 支持 TypeScript 的 Astro 组件 |
-| 浏览器行为 | Vanilla JavaScript，用于导航、reveal 动画、代码 tab 与模型目录交互 |
-| 静态资源 | 放在 `public/` |
+| 层级         | 技术                                                               |
+| ------------ | ------------------------------------------------------------------ |
+| 站点框架     | [Astro](https://astro.build/) 6                                    |
+| Islands      | 通过 `@astrojs/react` 使用 React 19                                |
+| 动效 / WebGL | [OGL](https://github.com/oframe/ogl)                               |
+| 样式         | Plain CSS、设计 token、按钮原语、Tailwind CSS 4 Vite plugin        |
+| 语言         | 支持 TypeScript 的 Astro 组件                                      |
+| 浏览器行为   | Vanilla JavaScript，用于导航、reveal 动画、代码 tab 与模型目录交互 |
+| 静态资源     | 放在 `public/`                                                     |
 
 ## 快速开始
 
@@ -102,19 +102,19 @@ npm run preview
 
 ## 可用脚本
 
-| 命令 | 说明 |
-| --- | --- |
-| `npm run dev` | 启动 Astro 开发服务器。 |
-| `npm run build` | 构建静态站点到 `dist/`。 |
+| 命令              | 说明                               |
+| ----------------- | ---------------------------------- |
+| `npm run dev`     | 启动 Astro 开发服务器。            |
+| `npm run build`   | 构建静态站点到 `dist/`。           |
 | `npm run preview` | 以 host 绑定方式本地预览生产构建。 |
-| `npm run astro` | 直接运行 Astro CLI 命令。 |
+| `npm run astro`   | 直接运行 Astro CLI 命令。          |
 
 ## 页面路由
 
-| 路由 | 用途 |
-| --- | --- |
-| `/` | 产品落地页，包含首屏、精选模型、计费、商务与企业部署区块。 |
-| `/models` | 基于价格快照构建的全量模型静态目录。 |
+| 路由      | 用途                                                       |
+| --------- | ---------------------------------------------------------- |
+| `/`       | 产品落地页，包含首屏、精选模型、计费、商务与企业部署区块。 |
+| `/models` | 基于价格快照构建的全量模型静态目录。                       |
 
 ## 项目结构
 
@@ -131,18 +131,18 @@ src/styles/            全局样式、设计 token、按钮样式
 
 ## 关键文件
 
-| 文件 | 作用 |
-| --- | --- |
-| `src/pages/index.astro` | 组合主落地页。 |
-| `src/pages/models.astro` | 渲染模型目录页。 |
-| `src/components/HeroBackdrop.astro` | 承载静态 fallback 与 hydrated WebGL 终端背景。 |
-| `src/components/react/FaultyTerminalIsland.jsx` | 为 OGL 终端动效补充 WebGL、reduced-motion 与可见性保护。 |
-| `src/components/BrandStrip.astro` | 与 `BrandLogoLoop.jsx` 一起渲染 AI 厂商 logo 横向循环展示。 |
-| `src/data/pricing.ts` | 导入 `pricing-api.json`，处理厂商映射、价格格式化、模型形态识别与静态目录导出。 |
-| `src/components/ModelsExplorer.astro` | 实现筛选、排序、搜索、URL 状态和模型弹窗联动。 |
-| `src/components/ModelDialog.astro` | 为共享 `<dialog>` 预渲染模型详情 HTML。 |
-| `src/layouts/Base.astro` | 定义 metadata、favicon、canonical、全局样式、skip link 与 reveal 行为。 |
-| `PRODUCT.md`、`DESIGN.md`、`docs/design-brief.md` | 记录页面背后的产品与设计决策。 |
+| 文件                                              | 作用                                                                            |
+| ------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `src/pages/index.astro`                           | 组合主落地页。                                                                  |
+| `src/pages/models.astro`                          | 渲染模型目录页。                                                                |
+| `src/components/HeroBackdrop.astro`               | 承载静态 fallback 与 hydrated WebGL 终端背景。                                  |
+| `src/components/react/FaultyTerminalIsland.jsx`   | 为 OGL 终端动效补充 WebGL、reduced-motion 与可见性保护。                        |
+| `src/components/BrandStrip.astro`                 | 与 `BrandLogoLoop.jsx` 一起渲染 AI 厂商 logo 横向循环展示。                     |
+| `src/data/pricing.ts`                             | 导入 `pricing-api.json`，处理厂商映射、价格格式化、模型形态识别与静态目录导出。 |
+| `src/components/ModelsExplorer.astro`             | 实现筛选、排序、搜索、URL 状态和模型弹窗联动。                                  |
+| `src/components/ModelDialog.astro`                | 为共享 `<dialog>` 预渲染模型详情 HTML。                                         |
+| `src/layouts/Base.astro`                          | 定义 metadata、favicon、canonical、全局样式、skip link 与 reveal 行为。         |
+| `PRODUCT.md`、`DESIGN.md`、`docs/design-brief.md` | 记录页面背后的产品与设计决策。                                                  |
 
 ## 更新模型价格
 

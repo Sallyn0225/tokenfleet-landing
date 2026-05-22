@@ -22,7 +22,9 @@ const {
 } = Astro.props as Props;
 
 const t = i18n[locale];
-const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).toString() : undefined;
+const ogImageUrl = ogImage
+  ? new URL(ogImage, Astro.site).toString()
+  : undefined;
 
 import '../styles/global.css';
 import '../styles/buttons.css';
@@ -33,14 +35,21 @@ import '../styles/tailwind.css';
 <html lang={t.htmlLang}>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
     <meta name="theme-color" content="#533afd" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="canonical" href={canonical} />
-    {alternateZh && <link rel="alternate" hreflang="zh-CN" href={alternateZh} />}
+    {
+      alternateZh && (
+        <link rel="alternate" hreflang="zh-CN" href={alternateZh} />
+      )
+    }
     {alternateEn && <link rel="alternate" hreflang="en" href={alternateEn} />}
 
     <title>{title}</title>
@@ -52,7 +61,10 @@ import '../styles/tailwind.css';
     <meta property="og:locale" content={ogLocale(locale)} />
     {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
 
-    <meta name="twitter:card" content={ogImageUrl ? 'summary_large_image' : 'summary'} />
+    <meta
+      name="twitter:card"
+      content={ogImageUrl ? 'summary_large_image' : 'summary'}
+    />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
@@ -84,10 +96,18 @@ import '../styles/tailwind.css';
     </style>
 
     <script>
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const reveals = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+      const prefersReduced = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      ).matches;
+      const reveals = Array.from(
+        document.querySelectorAll<HTMLElement>('[data-reveal]')
+      );
 
-      if (!prefersReduced && reveals.length && 'IntersectionObserver' in window) {
+      if (
+        !prefersReduced &&
+        reveals.length &&
+        'IntersectionObserver' in window
+      ) {
         // Only engage reveal animation when JS + IO + motion are all available.
         document.documentElement.classList.add('js-reveal');
 

@@ -69,10 +69,10 @@
 
   /* ── elevation ────────────────────────────────────────────────────────── */
   --shadow-1: 0 1px 3px rgba(0, 55, 112, 0.08);
-  --shadow-2: 0 8px 24px rgba(0, 55, 112, 0.08),
-              0 2px 6px rgba(0, 55, 112, 0.04);
-  --shadow-2-hover: 0 12px 32px rgba(0, 55, 112, 0.12),
-                    0 3px 8px rgba(0, 55, 112, 0.06);
+  --shadow-2:
+    0 8px 24px rgba(0, 55, 112, 0.08), 0 2px 6px rgba(0, 55, 112, 0.04);
+  --shadow-2-hover:
+    0 12px 32px rgba(0, 55, 112, 0.12), 0 3px 8px rgba(0, 55, 112, 0.06);
   --shadow-inset-soft: inset 0 1px 0 rgba(255, 255, 255, 0.6);
 
   /* ── radius ───────────────────────────────────────────────────────────── */
@@ -97,10 +97,12 @@
   --space-6xl: 128px;
 
   /* ── typography: families ─────────────────────────────────────────────── */
-  --font-sans: 'Inter', 'SF Pro Display', system-ui, -apple-system, 'Segoe UI',
-               'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-  --font-mono: 'Geist Mono', 'JetBrains Mono', 'SF Mono', ui-monospace,
-               'Cascadia Code', Consolas, 'Liberation Mono', monospace;
+  --font-sans:
+    'Inter', 'SF Pro Display', system-ui, -apple-system, 'Segoe UI',
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --font-mono:
+    'Geist Mono', 'JetBrains Mono', 'SF Mono', ui-monospace, 'Cascadia Code',
+    Consolas, 'Liberation Mono', monospace;
 
   /* ── typography: scale (Sohne-inspired, weight 300 + negative tracking) ─ */
   --type-display-xxl-size: clamp(40px, 6vw, 64px);

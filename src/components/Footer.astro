@@ -38,34 +38,81 @@ const cols = [
     title: t.footer.cols.product,
     items: [
       { label: t.footer.links.models, href: localePath(locale, '/models') },
-      { label: t.footer.links.billing, href: `${localePath(locale, '/')}#business` },
-      { label: t.footer.links.enterprise, href: `${localePath(locale, '/')}#enterprise` },
-      { label: t.footer.links.status, href: 'https://status.tokenfleet.cn', external: true },
+      {
+        label: t.footer.links.billing,
+        href: `${localePath(locale, '/')}#business`,
+      },
+      {
+        label: t.footer.links.enterprise,
+        href: `${localePath(locale, '/')}#enterprise`,
+      },
+      {
+        label: t.footer.links.status,
+        href: 'https://status.tokenfleet.cn',
+        external: true,
+      },
     ],
   },
   {
     title: t.footer.cols.developers,
     items: [
-      { label: t.footer.links.docs, href: 'https://docs.tokenfleet.cn', external: true },
-      { label: t.footer.links.apiReference, href: 'https://docs.tokenfleet.cn/api', external: true },
-      { label: t.footer.links.apiExamples, href: 'https://docs.tokenfleet.cn/sdk', external: true },
-      { label: t.footer.links.status, href: 'https://status.tokenfleet.cn', external: true },
+      {
+        label: t.footer.links.docs,
+        href: 'https://docs.tokenfleet.cn',
+        external: true,
+      },
+      {
+        label: t.footer.links.apiReference,
+        href: 'https://docs.tokenfleet.cn/api',
+        external: true,
+      },
+      {
+        label: t.footer.links.apiExamples,
+        href: 'https://docs.tokenfleet.cn/sdk',
+        external: true,
+      },
+      {
+        label: t.footer.links.status,
+        href: 'https://status.tokenfleet.cn',
+        external: true,
+      },
     ],
   },
   {
     title: t.footer.cols.company,
     items: [
-      { label: t.footer.links.blog, href: 'https://blog.tokenfleet.cn', external: true },
-      { label: t.footer.links.contactSales, href: 'mailto:sales@tokenfleet.cn' },
-      { label: t.footer.links.console, href: 'https://tokenfleet.cn/console', external: true },
+      {
+        label: t.footer.links.blog,
+        href: 'https://blog.tokenfleet.cn',
+        external: true,
+      },
+      {
+        label: t.footer.links.contactSales,
+        href: 'mailto:sales@tokenfleet.cn',
+      },
+      {
+        label: t.footer.links.console,
+        href: 'https://tokenfleet.cn/console',
+        external: true,
+      },
     ],
   },
   {
     title: t.footer.cols.compliance,
     items: [
-      { label: t.footer.links.entityInvoice, href: `${localePath(locale, '/')}#business` },
-      { label: t.footer.links.sla, href: `${localePath(locale, '/')}#enterprise` },
-      { label: t.footer.links.icp, href: 'https://beian.miit.gov.cn/', external: true },
+      {
+        label: t.footer.links.entityInvoice,
+        href: `${localePath(locale, '/')}#business`,
+      },
+      {
+        label: t.footer.links.sla,
+        href: `${localePath(locale, '/')}#enterprise`,
+      },
+      {
+        label: t.footer.links.icp,
+        href: 'https://beian.miit.gov.cn/',
+        external: true,
+      },
     ],
   },
 ];
@@ -113,84 +160,125 @@ const follow = [
       <div class="footer__follow" data-qr-root>
         <h3 class="footer__col-title">{t.footer.follow}</h3>
         <ul class="footer__follow-list">
-          {follow.map((item, idx) => (
-            <li class="footer__follow-item" data-qr-item data-index={idx} data-surface={item.surface}>
-              <button
-                type="button"
-                class="footer__follow-trigger"
-                aria-expanded="false"
-                aria-controls={item.id}
-                aria-haspopup="dialog"
-                aria-label={item.label}
-                data-qr-trigger
+          {
+            follow.map((item, idx) => (
+              <li
+                class="footer__follow-item"
+                data-qr-item
+                data-index={idx}
+                data-surface={item.surface}
               >
-                {item.icon === 'users' && (
-                  <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="7" cy="7" r="2.5" />
-                    <path d="M2 16c0-2.6 2.2-4 5-4s5 1.4 5 4" />
-                    <circle cx="14" cy="6.5" r="1.8" />
-                    <path d="M14 11.5c2 0 3.5 1.2 3.5 3" />
-                  </svg>
-                )}
-                {item.icon === 'megaphone' && (
-                  <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M14 4 4 8H2v4h2l10 4Z" />
-                    <path d="M14 4v12" />
-                    <path d="M17 8a3 3 0 0 1 0 4" />
-                  </svg>
-                )}
-                {item.icon === 'music' && (
-                  <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M8 14V4l8-2v10" />
-                    <circle cx="6" cy="14.5" r="2" />
-                    <circle cx="14" cy="12.5" r="2" />
-                  </svg>
-                )}
-              </button>
+                <button
+                  type="button"
+                  class="footer__follow-trigger"
+                  aria-expanded="false"
+                  aria-controls={item.id}
+                  aria-haspopup="dialog"
+                  aria-label={item.label}
+                  data-qr-trigger
+                >
+                  {item.icon === 'users' && (
+                    <svg
+                      viewBox="0 0 20 20"
+                      width="18"
+                      height="18"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <circle cx="7" cy="7" r="2.5" />
+                      <path d="M2 16c0-2.6 2.2-4 5-4s5 1.4 5 4" />
+                      <circle cx="14" cy="6.5" r="1.8" />
+                      <path d="M14 11.5c2 0 3.5 1.2 3.5 3" />
+                    </svg>
+                  )}
+                  {item.icon === 'megaphone' && (
+                    <svg
+                      viewBox="0 0 20 20"
+                      width="18"
+                      height="18"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M14 4 4 8H2v4h2l10 4Z" />
+                      <path d="M14 4v12" />
+                      <path d="M17 8a3 3 0 0 1 0 4" />
+                    </svg>
+                  )}
+                  {item.icon === 'music' && (
+                    <svg
+                      viewBox="0 0 20 20"
+                      width="18"
+                      height="18"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M8 14V4l8-2v10" />
+                      <circle cx="6" cy="14.5" r="2" />
+                      <circle cx="14" cy="12.5" r="2" />
+                    </svg>
+                  )}
+                </button>
 
-              <div
-                id={item.id}
-                class="footer__qr-popover"
-                role="dialog"
-                aria-label={t.footer.qrAria(item.label)}
-                data-qr-popover
-              >
-                <Image
-                  src={item.image}
-                  width={320}
-                  height={320}
-                  format="webp"
-                  quality={85}
-                  loading="lazy"
-                  alt={item.alt}
-                  class="footer__qr-image"
-                />
-                <p class="footer__qr-caption">{item.label}</p>
-              </div>
-            </li>
-          ))}
+                <div
+                  id={item.id}
+                  class="footer__qr-popover"
+                  role="dialog"
+                  aria-label={t.footer.qrAria(item.label)}
+                  data-qr-popover
+                >
+                  <Image
+                    src={item.image}
+                    width={320}
+                    height={320}
+                    format="webp"
+                    quality={85}
+                    loading="lazy"
+                    alt={item.alt}
+                    class="footer__qr-image"
+                  />
+                  <p class="footer__qr-caption">{item.label}</p>
+                </div>
+              </li>
+            ))
+          }
         </ul>
       </div>
     </div>
 
-    {cols.map((col) => (
-      <nav class="footer__col" aria-label={col.title}>
-        <h3 class="footer__col-title">{col.title}</h3>
-        <ul>
-          {col.items.map((item) => (
-            <li>
-              <a
-                href={item.href}
-                class="footer__link"
-                {...('external' in item && item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    ))}
+    {
+      cols.map((col) => (
+        <nav class="footer__col" aria-label={col.title}>
+          <h3 class="footer__col-title">{col.title}</h3>
+          <ul>
+            {col.items.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="footer__link"
+                  {...('external' in item && item.external
+                    ? { target: '_blank', rel: 'noopener noreferrer' }
+                    : {})}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))
+    }
   </div>
 
   <div class="footer__strip">
@@ -242,8 +330,9 @@ const follow = [
     font-size: 12px;
     color: var(--color-ink-mute);
     border-bottom: 1px solid var(--color-hairline-strong);
-    transition: color var(--motion-base) var(--ease-out-quart),
-                border-color var(--motion-base) var(--ease-out-quart);
+    transition:
+      color var(--motion-base) var(--ease-out-quart),
+      border-color var(--motion-base) var(--ease-out-quart);
   }
 
   .footer__sales:hover {
@@ -305,9 +394,10 @@ const follow = [
     border-radius: var(--radius-md);
     color: var(--color-ink-mute);
     cursor: pointer;
-    transition: color var(--motion-base) var(--ease-out-quart),
-                background-color var(--motion-base) var(--ease-out-quart),
-                border-color var(--motion-base) var(--ease-out-quart);
+    transition:
+      color var(--motion-base) var(--ease-out-quart),
+      background-color var(--motion-base) var(--ease-out-quart),
+      border-color var(--motion-base) var(--ease-out-quart);
   }
 
   .footer__follow-trigger:hover,
@@ -338,9 +428,10 @@ const follow = [
     pointer-events: none;
     transform: translate(-50%, 6px);
     transform-origin: 50% calc(100% + 14px);
-    transition: opacity var(--motion-base) var(--ease-out-quart),
-                transform var(--motion-base) var(--ease-out-quart),
-                visibility 0s linear var(--motion-base);
+    transition:
+      opacity var(--motion-base) var(--ease-out-quart),
+      transform var(--motion-base) var(--ease-out-quart),
+      visibility 0s linear var(--motion-base);
     z-index: var(--z-overlay);
   }
 
@@ -349,9 +440,10 @@ const follow = [
     visibility: visible;
     pointer-events: auto;
     transform: translate(-50%, 0);
-    transition: opacity var(--motion-base) var(--ease-out-quart),
-                transform var(--motion-base) var(--ease-out-quart),
-                visibility 0s;
+    transition:
+      opacity var(--motion-base) var(--ease-out-quart),
+      transform var(--motion-base) var(--ease-out-quart),
+      visibility 0s;
   }
 
   /* tail pointing down to the trigger */
@@ -429,8 +521,9 @@ const follow = [
   .footer__icp {
     color: var(--color-ink-mute);
     border-bottom: 1px solid transparent;
-    transition: color var(--motion-base) var(--ease-out-quart),
-                border-color var(--motion-base) var(--ease-out-quart);
+    transition:
+      color var(--motion-base) var(--ease-out-quart),
+      border-color var(--motion-base) var(--ease-out-quart);
   }
 
   .footer__icp:hover {
@@ -478,12 +571,15 @@ const follow = [
    */
   const root = document.querySelector<HTMLElement>('[data-qr-root]');
   if (root) {
-    const items = Array.from(root.querySelectorAll<HTMLElement>('[data-qr-item]'));
+    const items = Array.from(
+      root.querySelectorAll<HTMLElement>('[data-qr-item]')
+    );
     let openItem: HTMLElement | null = null;
     let closeTimer: number | undefined;
 
     const setState = (item: HTMLElement, open: boolean) => {
-      const trigger = item.querySelector<HTMLButtonElement>('[data-qr-trigger]');
+      const trigger =
+        item.querySelector<HTMLButtonElement>('[data-qr-trigger]');
       item.dataset.state = open ? 'open' : 'closed';
       trigger?.setAttribute('aria-expanded', String(open));
     };
@@ -513,7 +609,8 @@ const follow = [
     };
 
     items.forEach((item) => {
-      const trigger = item.querySelector<HTMLButtonElement>('[data-qr-trigger]');
+      const trigger =
+        item.querySelector<HTMLButtonElement>('[data-qr-trigger]');
       if (!trigger) return;
 
       // Pointer-aware open/close: hover for mouse, click for touch.

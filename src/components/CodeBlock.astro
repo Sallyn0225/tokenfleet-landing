@@ -107,43 +107,74 @@ console.log(resp.choices[0].message.content);`,
 <div class="cb" data-codeblock>
   <div class="cb__chrome" role="tablist" aria-label={t.code.aria}>
     <div class="cb__tabs">
-      {tabs.map((tab, i) => (
-        <button
-          type="button"
-          role="tab"
-          id={`cb-tab-${tab.id}`}
-          aria-controls={`cb-panel-${tab.id}`}
-          aria-selected={i === 0 ? 'true' : 'false'}
-          tabindex={i === 0 ? '0' : '-1'}
-          class="cb__tab"
-          data-cb-tab={tab.id}
-        >
-          {tab.label}
-        </button>
-      ))}
+      {
+        tabs.map((tab, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`cb-tab-${tab.id}`}
+            aria-controls={`cb-panel-${tab.id}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? '0' : '-1'}
+            class="cb__tab"
+            data-cb-tab={tab.id}
+          >
+            {tab.label}
+          </button>
+        ))
+      }
     </div>
-    <button type="button" class="cb__copy" data-cb-copy aria-live="polite" data-copy-label={t.code.copy} data-copied-label={t.code.copied} data-error-label={t.code.copyFailed}>
-      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-        <rect x="4.5" y="4.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3" />
-        <path d="M11.5 4.5V3a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v7.5a1 1 0 0 0 1 1h1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+    <button
+      type="button"
+      class="cb__copy"
+      data-cb-copy
+      aria-live="polite"
+      data-copy-label={t.code.copy}
+      data-copied-label={t.code.copied}
+      data-error-label={t.code.copyFailed}
+    >
+      <svg
+        width="13"
+        height="13"
+        viewBox="0 0 16 16"
+        fill="none"
+        aria-hidden="true"
+      >
+        <rect
+          x="4.5"
+          y="4.5"
+          width="9"
+          height="9"
+          rx="1.5"
+          stroke="currentColor"
+          stroke-width="1.3"></rect>
+        <path
+          d="M11.5 4.5V3a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v7.5a1 1 0 0 0 1 1h1.5"
+          stroke="currentColor"
+          stroke-width="1.3"
+          stroke-linecap="round"></path>
       </svg>
       <span data-cb-copy-label>{t.code.copy}</span>
     </button>
   </div>
 
-  {tabs.map((tab, i) => (
-    <div
-      role="tabpanel"
-      id={`cb-panel-${tab.id}`}
-      aria-labelledby={`cb-tab-${tab.id}`}
-      class="cb__panel"
-      data-cb-panel={tab.id}
-      data-cb-raw={tab.rawCopy}
-      hidden={i !== 0}
-    >
-      <pre class="cb__pre"><code set:html={tab.html} /></pre>
-    </div>
-  ))}
+  {
+    tabs.map((tab, i) => (
+      <div
+        role="tabpanel"
+        id={`cb-panel-${tab.id}`}
+        aria-labelledby={`cb-tab-${tab.id}`}
+        class="cb__panel"
+        data-cb-panel={tab.id}
+        data-cb-raw={tab.rawCopy}
+        hidden={i !== 0}
+      >
+        <pre class="cb__pre">
+          <code set:html={tab.html} />
+        </pre>
+      </div>
+    ))
+  }
 </div>
 
 <style>
@@ -182,8 +213,9 @@ console.log(resp.choices[0].message.content);`,
     padding: 8px 14px;
     border-radius: var(--radius-sm);
     border: 1px solid transparent;
-    transition: color var(--motion-base) var(--ease-out-quart),
-                background-color var(--motion-base) var(--ease-out-quart);
+    transition:
+      color var(--motion-base) var(--ease-out-quart),
+      background-color var(--motion-base) var(--ease-out-quart);
     letter-spacing: -0.005em;
     cursor: pointer;
   }
@@ -213,9 +245,10 @@ console.log(resp.choices[0].message.content);`,
     padding: 7px 12px;
     border-radius: var(--radius-sm);
     border: 1px solid transparent;
-    transition: color var(--motion-base) var(--ease-out-quart),
-                background-color var(--motion-base) var(--ease-out-quart),
-                border-color var(--motion-base) var(--ease-out-quart);
+    transition:
+      color var(--motion-base) var(--ease-out-quart),
+      background-color var(--motion-base) var(--ease-out-quart),
+      border-color var(--motion-base) var(--ease-out-quart);
   }
 
   .cb__copy:hover {
@@ -269,20 +302,39 @@ console.log(resp.choices[0].message.content);`,
     margin: 0 -2px;
   }
 
-  .cb__pre :global(.cb-cmt) { color: var(--color-ink-mute); font-style: italic; }
-  .cb__pre :global(.cb-kw)  { color: var(--color-ink-secondary); font-weight: var(--weight-medium); }
-  .cb__pre :global(.cb-str) { color: var(--color-lemon); }
-  .cb__pre :global(.cb-num) { color: var(--color-ruby); }
-  .cb__pre :global(.cb-fn)  { color: var(--color-shadow-blue); font-weight: var(--weight-medium); }
+  .cb__pre :global(.cb-cmt) {
+    color: var(--color-ink-mute);
+    font-style: italic;
+  }
+  .cb__pre :global(.cb-kw) {
+    color: var(--color-ink-secondary);
+    font-weight: var(--weight-medium);
+  }
+  .cb__pre :global(.cb-str) {
+    color: var(--color-lemon);
+  }
+  .cb__pre :global(.cb-num) {
+    color: var(--color-ruby);
+  }
+  .cb__pre :global(.cb-fn) {
+    color: var(--color-shadow-blue);
+    font-weight: var(--weight-medium);
+  }
 
   /* scrollbar */
-  .cb__pre::-webkit-scrollbar { height: 6px; }
-  .cb__pre::-webkit-scrollbar-track { background: transparent; }
+  .cb__pre::-webkit-scrollbar {
+    height: 6px;
+  }
+  .cb__pre::-webkit-scrollbar-track {
+    background: transparent;
+  }
   .cb__pre::-webkit-scrollbar-thumb {
     background: var(--color-hairline);
     border-radius: 999px;
   }
-  .cb__pre::-webkit-scrollbar-thumb:hover { background: var(--color-hairline-strong); }
+  .cb__pre::-webkit-scrollbar-thumb:hover {
+    background: var(--color-hairline-strong);
+  }
 
   @media (max-width: 640px) {
     .cb__chrome {
@@ -311,8 +363,12 @@ console.log(resp.choices[0].message.content);`,
   if (!root) {
     // no-op
   } else {
-    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-cb-tab]'));
-    const panels = Array.from(root.querySelectorAll<HTMLElement>('[data-cb-panel]'));
+    const tabs = Array.from(
+      root.querySelectorAll<HTMLButtonElement>('[data-cb-tab]')
+    );
+    const panels = Array.from(
+      root.querySelectorAll<HTMLElement>('[data-cb-panel]')
+    );
     const copyBtn = root.querySelector<HTMLButtonElement>('[data-cb-copy]');
     const copyLabel = root.querySelector<HTMLElement>('[data-cb-copy-label]');
 
@@ -328,13 +384,16 @@ console.log(resp.choices[0].message.content);`,
     }
 
     tabs.forEach((tab, idx) => {
-      tab.addEventListener('click', () => activate(tab.dataset.cbTab as string));
+      tab.addEventListener('click', () =>
+        activate(tab.dataset.cbTab as string)
+      );
       tab.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
           e.preventDefault();
-          const next = e.key === 'ArrowRight'
-            ? tabs[(idx + 1) % tabs.length]
-            : tabs[(idx - 1 + tabs.length) % tabs.length];
+          const next =
+            e.key === 'ArrowRight'
+              ? tabs[(idx + 1) % tabs.length]
+              : tabs[(idx - 1 + tabs.length) % tabs.length];
           activate(next.dataset.cbTab as string);
           next.focus();
         } else if (e.key === 'Home') {
@@ -351,9 +410,13 @@ console.log(resp.choices[0].message.content);`,
     });
 
     function getActiveRaw(): string {
-      const active = tabs.find((t) => t.getAttribute('aria-selected') === 'true');
+      const active = tabs.find(
+        (t) => t.getAttribute('aria-selected') === 'true'
+      );
       if (!active) return '';
-      const panel = panels.find((p) => p.dataset.cbPanel === active.dataset.cbTab);
+      const panel = panels.find(
+        (p) => p.dataset.cbPanel === active.dataset.cbTab
+      );
       return panel?.dataset.cbRaw ?? '';
     }
 
@@ -384,7 +447,7 @@ console.log(resp.choices[0].message.content);`,
           document.body.removeChild(ta);
         }
         flash('copied', `${copyBtn.dataset.copiedLabel || 'Copied'} ✓`);
-      } catch (err) {
+      } catch {
         flash('error', copyBtn.dataset.errorLabel || 'Copy failed');
       }
     });

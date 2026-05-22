@@ -101,7 +101,10 @@ export function vendorSlug(v: Vendor): string {
   return v.name.toLowerCase().replace(/\s+/g, '-');
 }
 
-export function vendorDisplayName(v: Vendor, locale: 'zh' | 'en' = 'zh'): string {
+export function vendorDisplayName(
+  v: Vendor,
+  locale: 'zh' | 'en' = 'zh'
+): string {
   if (locale === 'en') {
     if (v.id === 8) return 'Zhipu';
     if (v.id === 9) return 'Kuaishou';
@@ -118,8 +121,28 @@ export function vendorDisplayName(v: Vendor, locale: 'zh' | 'en' = 'zh'): string
  * name patterns + quota_type. Image/video models are call-billed and named
  * after their modality; everything else is chat/LLM.
  */
-const VIDEO_HINTS = ['sora', 'kling', 'runway', 'veo', 'wan-', 'minimax-i2v', 'luma', 'vidu'];
-const IMAGE_HINTS = ['nano-banana', 'flux', 'midjourney', 'recraft', 'ideogram', 'sd-', 'seedream', 'wanxiang', 'cogview', 'dall-e'];
+const VIDEO_HINTS = [
+  'sora',
+  'kling',
+  'runway',
+  'veo',
+  'wan-',
+  'minimax-i2v',
+  'luma',
+  'vidu',
+];
+const IMAGE_HINTS = [
+  'nano-banana',
+  'flux',
+  'midjourney',
+  'recraft',
+  'ideogram',
+  'sd-',
+  'seedream',
+  'wanxiang',
+  'cogview',
+  'dall-e',
+];
 const AUDIO_HINTS = ['whisper', 'cosyvoice', 'eleven', 'tts-', '-asr'];
 
 export function modalityOf(m: RawModel): Modality {
@@ -130,7 +153,10 @@ export function modalityOf(m: RawModel): Modality {
   return 'chat';
 }
 
-export function modalityLabel(mod: Modality, locale: 'zh' | 'en' = 'zh'): string {
+export function modalityLabel(
+  mod: Modality,
+  locale: 'zh' | 'en' = 'zh'
+): string {
   switch (mod) {
     case 'chat':
       return 'LLM';
@@ -207,18 +233,25 @@ export function priceBreakdown(m: RawModel): PriceBreakdown {
   }
   const baseInput = m.model_ratio * BASE_USD_PER_MTOK;
   const baseOutput = m.model_ratio * m.completion_ratio * BASE_USD_PER_MTOK;
-  const cached = m.cache_ratio !== undefined ? m.model_ratio * m.cache_ratio * BASE_USD_PER_MTOK : undefined;
-  const createCache = m.create_cache_ratio !== undefined ? m.model_ratio * m.create_cache_ratio * BASE_USD_PER_MTOK : undefined;
-  const tiers = m.has_graduated_pricing && m.pricing_tiers
-    ? m.pricing_tiers
-        .slice()
-        .sort((a, b) => a.tier_order - b.tier_order)
-        .map((t) => ({
-          label: t.description,
-          inputUsd: baseInput * t.input_ratio_multiplier,
-          outputUsd: baseOutput * t.output_ratio_multiplier,
-        }))
-    : undefined;
+  const cached =
+    m.cache_ratio !== undefined
+      ? m.model_ratio * m.cache_ratio * BASE_USD_PER_MTOK
+      : undefined;
+  const createCache =
+    m.create_cache_ratio !== undefined
+      ? m.model_ratio * m.create_cache_ratio * BASE_USD_PER_MTOK
+      : undefined;
+  const tiers =
+    m.has_graduated_pricing && m.pricing_tiers
+      ? m.pricing_tiers
+          .slice()
+          .sort((a, b) => a.tier_order - b.tier_order)
+          .map((t) => ({
+            label: t.description,
+            inputUsd: baseInput * t.input_ratio_multiplier,
+            outputUsd: baseOutput * t.output_ratio_multiplier,
+          }))
+      : undefined;
   return {
     kind: 'token',
     inputUsd: baseInput,
@@ -293,4 +326,7 @@ export function usedVendors(): Vendor[] {
 }
 
 /** Endpoint definitions (for dialog metadata strip). */
-export const endpointDefs = raw.supported_endpoint as Record<EndpointType, { path: string; method: string }>;
+export const endpointDefs = raw.supported_endpoint as Record<
+  EndpointType,
+  { path: string; method: string }
+>;

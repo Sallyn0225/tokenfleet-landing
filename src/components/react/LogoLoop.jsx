@@ -3,10 +3,11 @@ import { useCallback, useEffect, useMemo, useRef, useState, memo } from 'react';
 const ANIMATION_CONFIG = {
   SMOOTH_TAU: 0.25,
   MIN_COPIES: 2,
-  COPY_HEADROOM: 2
+  COPY_HEADROOM: 2,
 };
 
-const toCssLength = value => (typeof value === 'number' ? `${value}px` : (value ?? undefined));
+const toCssLength = (value) =>
+  typeof value === 'number' ? `${value}px` : (value ?? undefined);
 
 const cx = (...parts) => parts.filter(Boolean).join(' ');
 
@@ -19,7 +20,7 @@ const useResizeObserver = (callback, elements, dependencies) => {
       return () => window.removeEventListener('resize', handleResize);
     }
 
-    const observers = elements.map(ref => {
+    const observers = elements.map((ref) => {
       if (!ref.current) return null;
       const observer = new ResizeObserver(callback);
       observer.observe(ref.current);
@@ -28,7 +29,7 @@ const useResizeObserver = (callback, elements, dependencies) => {
 
     callback();
     return () => {
-      observers.forEach(observer => observer?.disconnect());
+      observers.forEach((observer) => observer?.disconnect());
     };
   }, [callback, elements, dependencies]);
 };
@@ -50,7 +51,7 @@ const useImageLoader = (seqRef, onLoad, dependencies) => {
       }
     };
 
-    images.forEach(img => {
+    images.forEach((img) => {
       const htmlImg = img;
       if (htmlImg.complete) {
         handleImageLoad();
@@ -61,7 +62,7 @@ const useImageLoader = (seqRef, onLoad, dependencies) => {
     });
 
     return () => {
-      images.forEach(img => {
+      images.forEach((img) => {
         img.removeEventListener('load', handleImageLoad);
         img.removeEventListener('error', handleImageLoad);
       });
@@ -69,7 +70,15 @@ const useImageLoader = (seqRef, onLoad, dependencies) => {
   }, [onLoad, seqRef, dependencies]);
 };
 
-const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical) => {
+const useAnimationLoop = (
+  trackRef,
+  targetVelocity,
+  seqWidth,
+  seqHeight,
+  isHovered,
+  hoverSpeed,
+  isVertical
+) => {
   const rafRef = useRef(null);
   const lastTimestampRef = useRef(null);
   const offsetRef = useRef(0);
@@ -95,23 +104,28 @@ const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHover
     }
 
     if (prefersReduced) {
-      track.style.transform = isVertical ? 'translate3d(0, 0, 0)' : 'translate3d(0, 0, 0)';
+      track.style.transform = isVertical
+        ? 'translate3d(0, 0, 0)'
+        : 'translate3d(0, 0, 0)';
       return () => {
         lastTimestampRef.current = null;
       };
     }
 
-    const animate = timestamp => {
+    const animate = (timestamp) => {
       if (lastTimestampRef.current === null) {
         lastTimestampRef.current = timestamp;
       }
 
-      const deltaTime = Math.max(0, timestamp - lastTimestampRef.current) / 1000;
+      const deltaTime =
+        Math.max(0, timestamp - lastTimestampRef.current) / 1000;
       lastTimestampRef.current = timestamp;
 
-      const target = isHovered && hoverSpeed !== undefined ? hoverSpeed : targetVelocity;
+      const target =
+        isHovered && hoverSpeed !== undefined ? hoverSpeed : targetVelocity;
 
-      const easingFactor = 1 - Math.exp(-deltaTime / ANIMATION_CONFIG.SMOOTH_TAU);
+      const easingFactor =
+        1 - Math.exp(-deltaTime / ANIMATION_CONFIG.SMOOTH_TAU);
       velocityRef.current += (target - velocityRef.current) * easingFactor;
 
       if (seqSize > 0) {
@@ -137,7 +151,15 @@ const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHover
       }
       lastTimestampRef.current = null;
     };
-  }, [targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical, trackRef]);
+  }, [
+    targetVelocity,
+    seqWidth,
+    seqHeight,
+    isHovered,
+    hoverSpeed,
+    isVertical,
+    trackRef,
+  ]);
 };
 
 export const LogoLoop = memo(
@@ -156,7 +178,7 @@ export const LogoLoop = memo(
     renderItem,
     ariaLabel = 'Partner logos',
     className,
-    style
+    style,
   }) => {
     const containerRef = useRef(null);
     const trackRef = useRef(null);
@@ -194,7 +216,8 @@ export const LogoLoop = memo(
       const sequenceWidth = sequenceRect?.width ?? 0;
       const sequenceHeight = sequenceRect?.height ?? 0;
       if (isVertical) {
-        const parentHeight = containerRef.current?.parentElement?.clientHeight ?? 0;
+        const parentHeight =
+          containerRef.current?.parentElement?.clientHeight ?? 0;
         if (containerRef.current && parentHeight > 0) {
           const targetHeight = Math.ceil(parentHeight);
           if (containerRef.current.style.height !== `${targetHeight}px`)
@@ -202,28 +225,52 @@ export const LogoLoop = memo(
         }
         if (sequenceHeight > 0) {
           setSeqHeight(Math.ceil(sequenceHeight));
-          const viewport = containerRef.current?.clientHeight ?? parentHeight ?? sequenceHeight;
-          const copiesNeeded = Math.ceil(viewport / sequenceHeight) + ANIMATION_CONFIG.COPY_HEADROOM;
+          const viewport =
+            containerRef.current?.clientHeight ??
+            parentHeight ??
+            sequenceHeight;
+          const copiesNeeded =
+            Math.ceil(viewport / sequenceHeight) +
+            ANIMATION_CONFIG.COPY_HEADROOM;
           setCopyCount(Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded));
         }
       } else if (sequenceWidth > 0) {
         setSeqWidth(Math.ceil(sequenceWidth));
-        const copiesNeeded = Math.ceil(containerWidth / sequenceWidth) + ANIMATION_CONFIG.COPY_HEADROOM;
+        const copiesNeeded =
+          Math.ceil(containerWidth / sequenceWidth) +
+          ANIMATION_CONFIG.COPY_HEADROOM;
         setCopyCount(Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded));
       }
     }, [isVertical]);
 
-    useResizeObserver(updateDimensions, [containerRef, seqRef], [logos, gap, logoHeight, isVertical]);
+    useResizeObserver(
+      updateDimensions,
+      [containerRef, seqRef],
+      [logos, gap, logoHeight, isVertical]
+    );
 
-    useImageLoader(seqRef, updateDimensions, [logos, gap, logoHeight, isVertical]);
+    useImageLoader(seqRef, updateDimensions, [
+      logos,
+      gap,
+      logoHeight,
+      isVertical,
+    ]);
 
-    useAnimationLoop(trackRef, targetVelocity, seqWidth, seqHeight, isHovered, effectiveHoverSpeed, isVertical);
+    useAnimationLoop(
+      trackRef,
+      targetVelocity,
+      seqWidth,
+      seqHeight,
+      isHovered,
+      effectiveHoverSpeed,
+      isVertical
+    );
 
     const cssVariables = useMemo(
       () => ({
         '--logoloop-gap': `${gap}px`,
         '--logoloop-logoHeight': toCssLength(logoHeight),
-        ...(fadeOutColor && { '--logoloop-fadeColor': fadeOutColor })
+        ...(fadeOutColor && { '--logoloop-fadeColor': fadeOutColor }),
       }),
       [gap, logoHeight, fadeOutColor]
     );
@@ -232,7 +279,9 @@ export const LogoLoop = memo(
       () =>
         cx(
           'relative group',
-          isVertical ? 'overflow-hidden h-full inline-block' : 'overflow-x-hidden',
+          isVertical
+            ? 'overflow-hidden h-full inline-block'
+            : 'overflow-x-hidden',
           '[--logoloop-gap:32px]',
           '[--logoloop-logoHeight:28px]',
           '[--logoloop-fadeColorAuto:#ffffff]',
@@ -257,7 +306,9 @@ export const LogoLoop = memo(
             <li
               className={cx(
                 'flex-none text-[length:var(--logoloop-logoHeight)] leading-[1]',
-                isVertical ? 'mb-[var(--logoloop-gap)]' : 'mr-[var(--logoloop-gap)]',
+                isVertical
+                  ? 'mb-[var(--logoloop-gap)]'
+                  : 'mr-[var(--logoloop-gap)]',
                 scaleOnHover && 'overflow-visible group/item'
               )}
               key={key}
@@ -305,7 +356,9 @@ export const LogoLoop = memo(
           />
         );
 
-        const itemAriaLabel = isNodeItem ? (item.ariaLabel ?? item.title) : (item.alt ?? item.title);
+        const itemAriaLabel = isNodeItem
+          ? (item.ariaLabel ?? item.title)
+          : (item.alt ?? item.title);
 
         const inner = item.href ? (
           <a
@@ -330,7 +383,9 @@ export const LogoLoop = memo(
           <li
             className={cx(
               'flex-none text-[length:var(--logoloop-logoHeight)] leading-[1]',
-              isVertical ? 'mb-[var(--logoloop-gap)]' : 'mr-[var(--logoloop-gap)]',
+              isVertical
+                ? 'mb-[var(--logoloop-gap)]'
+                : 'mr-[var(--logoloop-gap)]',
               scaleOnHover && 'overflow-visible group/item'
             )}
             key={key}
@@ -353,7 +408,9 @@ export const LogoLoop = memo(
             aria-hidden={copyIndex > 0}
             ref={copyIndex === 0 ? seqRef : undefined}
           >
-            {logos.map((item, itemIndex) => renderLogoItem(item, `${copyIndex}-${itemIndex}`))}
+            {logos.map((item, itemIndex) =>
+              renderLogoItem(item, `${copyIndex}-${itemIndex}`)
+            )}
           </ul>
         )),
       [copyCount, logos, renderLogoItem, isVertical]
@@ -367,7 +424,7 @@ export const LogoLoop = memo(
             : toCssLength(width)
           : (toCssLength(width) ?? '100%'),
         ...cssVariables,
-        ...style
+        ...style,
       }),
       [width, cssVariables, style, isVertical]
     );

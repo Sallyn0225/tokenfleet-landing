@@ -24,8 +24,15 @@ const altLocale = otherLocale(locale);
 const navLinks = [
   { href: localePath(locale, '/models'), label: t.nav.links.models },
   { href: `${localePath(locale, '/')}#business`, label: t.nav.links.billing },
-  { href: 'https://docs.tokenfleet.cn', label: t.nav.links.docs, external: true },
-  { href: `${localePath(locale, '/')}#enterprise`, label: t.nav.links.enterprise },
+  {
+    href: 'https://docs.tokenfleet.cn',
+    label: t.nav.links.docs,
+    external: true,
+  },
+  {
+    href: `${localePath(locale, '/')}#enterprise`,
+    label: t.nav.links.enterprise,
+  },
 ];
 const languageHref = localePath(altLocale, currentPath);
 ---
@@ -36,50 +43,81 @@ const languageHref = localePath(altLocale, currentPath);
 
     <nav class="nav__links" aria-label={t.nav.aria}>
       <ul>
-        {navLinks.map(({ href, label, external }) => (
-          <li>
-            <a
-              href={href}
-              class="nav__link"
-              {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-            >
-              {label}
-            </a>
-          </li>
-        ))}
+        {
+          navLinks.map(({ href, label, external }) => (
+            <li>
+              <a
+                href={href}
+                class="nav__link"
+                {...(external
+                  ? { target: '_blank', rel: 'noopener noreferrer' }
+                  : {})}
+              >
+                {label}
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </nav>
 
     <div class="nav__cta">
       <a href={languageHref} class="nav__signin">{t.switchLabel}</a>
-      <a href="https://tokenfleet.cn/login" class="nav__signin" rel="noopener">{t.nav.signIn}</a>
-      <a href="https://tokenfleet.cn/console" class="btn btn--primary btn--sm" rel="noopener">
+      <a href="https://tokenfleet.cn/login" class="nav__signin" rel="noopener"
+        >{t.nav.signIn}</a
+      >
+      <a
+        href="https://tokenfleet.cn/console"
+        class="btn btn--primary btn--sm"
+        rel="noopener"
+      >
         {t.nav.start}
       </a>
     </div>
 
-    <button class="nav__hamburger" type="button" aria-controls="mobile-drawer" aria-expanded="false" aria-label={t.nav.openMenu} data-nav-toggle data-open-label={t.nav.openMenu} data-close-label={t.nav.closeMenu}>
+    <button
+      class="nav__hamburger"
+      type="button"
+      aria-controls="mobile-drawer"
+      aria-expanded="false"
+      aria-label={t.nav.openMenu}
+      data-nav-toggle
+      data-open-label={t.nav.openMenu}
+      data-close-label={t.nav.closeMenu}
+    >
       <span></span><span></span><span></span>
     </button>
   </div>
 
   <div class="nav__drawer" id="mobile-drawer" data-nav-drawer hidden>
     <ul>
-      {navLinks.map(({ href, label, external }) => (
-        <li>
-          <a
-            href={href}
-            class="nav__drawer-link"
-            {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-          >
-            {label}
-          </a>
-        </li>
-      ))}
+      {
+        navLinks.map(({ href, label, external }) => (
+          <li>
+            <a
+              href={href}
+              class="nav__drawer-link"
+              {...(external
+                ? { target: '_blank', rel: 'noopener noreferrer' }
+                : {})}
+            >
+              {label}
+            </a>
+          </li>
+        ))
+      }
       <li class="nav__drawer-cta">
-        <a href={languageHref} class="btn btn--outline nav__drawer-button">{t.switchLabel}</a>
-        <a href="https://tokenfleet.cn/login" class="btn btn--outline nav__drawer-button">{t.nav.signIn}</a>
-        <a href="https://tokenfleet.cn/console" class="btn btn--primary nav__drawer-button">{t.nav.start}</a>
+        <a href={languageHref} class="btn btn--outline nav__drawer-button"
+          >{t.switchLabel}</a
+        >
+        <a
+          href="https://tokenfleet.cn/login"
+          class="btn btn--outline nav__drawer-button">{t.nav.signIn}</a
+        >
+        <a
+          href="https://tokenfleet.cn/console"
+          class="btn btn--primary nav__drawer-button">{t.nav.start}</a
+        >
       </li>
     </ul>
   </div>
@@ -94,8 +132,9 @@ const languageHref = localePath(altLocale, currentPath);
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     border-bottom: 1px solid transparent;
-    transition: border-color var(--motion-base) var(--ease-out-quart),
-                background-color var(--motion-base) var(--ease-out-quart);
+    transition:
+      border-color var(--motion-base) var(--ease-out-quart),
+      background-color var(--motion-base) var(--ease-out-quart);
   }
 
   .nav[data-scrolled='true'] {
@@ -133,8 +172,9 @@ const languageHref = localePath(altLocale, currentPath);
     letter-spacing: -0.005em;
     padding: 6px 0;
     border-bottom: 1px solid transparent;
-    transition: color var(--motion-base) var(--ease-out-quart),
-                border-color var(--motion-base) var(--ease-out-quart);
+    transition:
+      color var(--motion-base) var(--ease-out-quart),
+      border-color var(--motion-base) var(--ease-out-quart);
   }
 
   .nav__link:hover {
@@ -179,8 +219,9 @@ const languageHref = localePath(altLocale, currentPath);
     height: 1.5px;
     background: var(--color-ink);
     border-radius: 999px;
-    transition: transform var(--motion-base) var(--ease-out-quart),
-                opacity var(--motion-base) var(--ease-out-quart);
+    transition:
+      transform var(--motion-base) var(--ease-out-quart),
+      opacity var(--motion-base) var(--ease-out-quart);
   }
 
   .nav__hamburger[aria-expanded='true'] span:nth-child(1) {
@@ -201,7 +242,11 @@ const languageHref = localePath(altLocale, currentPath);
     min-height: calc(100dvh - 64px);
     overflow-y: auto;
     background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 249, 252, 0.98)),
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.98),
+        rgba(246, 249, 252, 0.98)
+      ),
       var(--color-canvas);
     padding: 24px var(--gutter);
     border-top: 1px solid var(--color-hairline);
@@ -244,21 +289,35 @@ const languageHref = localePath(altLocale, currentPath);
   }
 
   @keyframes drawer-in {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: none; }
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .nav__drawer { animation: none; }
+    .nav__drawer {
+      animation: none;
+    }
   }
 
   @media (max-width: 1024px) {
-    .nav__links ul { gap: 24px; }
+    .nav__links ul {
+      gap: 24px;
+    }
   }
 
   @media (max-width: 880px) {
-    .nav__links { display: none; }
-    .nav__cta .nav__signin { display: none; }
+    .nav__links {
+      display: none;
+    }
+    .nav__cta .nav__signin {
+      display: none;
+    }
     .nav__hamburger {
       display: flex;
       margin-left: auto;
@@ -266,7 +325,9 @@ const languageHref = localePath(altLocale, currentPath);
   }
 
   @media (max-width: 480px) {
-    .nav__cta .btn { display: none; }
+    .nav__cta .btn {
+      display: none;
+    }
 
     .nav__drawer {
       padding-top: 20px;
@@ -283,7 +344,10 @@ const languageHref = localePath(altLocale, currentPath);
   if (toggle && drawer) {
     const closeDrawer = () => {
       toggle.setAttribute('aria-expanded', 'false');
-      toggle.setAttribute('aria-label', toggle.dataset.openLabel || 'Open menu');
+      toggle.setAttribute(
+        'aria-label',
+        toggle.dataset.openLabel || 'Open menu'
+      );
       drawer.hidden = true;
       document.body.style.overflow = '';
     };
@@ -294,7 +358,10 @@ const languageHref = localePath(altLocale, currentPath);
         closeDrawer();
       } else {
         toggle.setAttribute('aria-expanded', 'true');
-        toggle.setAttribute('aria-label', toggle.dataset.closeLabel || 'Close menu');
+        toggle.setAttribute(
+          'aria-label',
+          toggle.dataset.closeLabel || 'Close menu'
+        );
         drawer.hidden = false;
         document.body.style.overflow = 'hidden';
       }
@@ -308,7 +375,10 @@ const languageHref = localePath(altLocale, currentPath);
     });
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+      if (
+        e.key === 'Escape' &&
+        toggle.getAttribute('aria-expanded') === 'true'
+      ) {
         closeDrawer();
         toggle.focus();
       }

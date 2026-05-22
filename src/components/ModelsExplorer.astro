@@ -15,7 +15,13 @@
  */
 import ModelCard from './ModelCard.astro';
 import ModelDialog from './ModelDialog.astro';
-import { loadModels, usedVendors, vendorSlug, vendorDisplayName, totalModelCount } from '../data/pricing.ts';
+import {
+  loadModels,
+  usedVendors,
+  vendorSlug,
+  vendorDisplayName,
+  totalModelCount,
+} from '../data/pricing.ts';
 import { i18n, type Locale } from '../i18n.ts';
 
 interface Props {
@@ -39,30 +45,68 @@ const modalities = [
 
 <section class="explorer" id="explorer" aria-label={t.models.filterAria}>
   <div class="container explorer__inner">
-    <div class="explorer__toolbar" data-toolbar data-counter-template={t.models.counter('__shown__', total)} data-copied-label={t.models.copied}>
-      <div class="explorer__chips" role="group" aria-label={t.models.vendorAria}>
-        <button type="button" class="chip is-active" data-vendor="all">{t.models.all} <span class="chip__count mono">{total}</span></button>
-        {vendors.map((v) => (
-          <button type="button" class="chip" data-vendor={vendorSlug(v)}>
-            {vendorDisplayName(v, locale)}
-          </button>
-        ))}
+    <div
+      class="explorer__toolbar"
+      data-toolbar
+      data-counter-template={t.models.counter('__shown__', total)}
+      data-copied-label={t.models.copied}
+    >
+      <div
+        class="explorer__chips"
+        role="group"
+        aria-label={t.models.vendorAria}
+      >
+        <button type="button" class="chip is-active" data-vendor="all"
+          >{t.models.all} <span class="chip__count mono">{total}</span></button
+        >
+        {
+          vendors.map((v) => (
+            <button type="button" class="chip" data-vendor={vendorSlug(v)}>
+              {vendorDisplayName(v, locale)}
+            </button>
+          ))
+        }
       </div>
 
-      <div class="explorer__chips explorer__chips--modality" role="group" aria-label={t.models.modalityAria}>
-        {modalities.map((m) => (
-          <button type="button" class={`chip chip--modality${m.slug === 'all' ? ' is-active' : ''}`} data-modality={m.slug}>
-            {m.label}
-          </button>
-        ))}
+      <div
+        class="explorer__chips explorer__chips--modality"
+        role="group"
+        aria-label={t.models.modalityAria}
+      >
+        {
+          modalities.map((m) => (
+            <button
+              type="button"
+              class={`chip chip--modality${m.slug === 'all' ? ' is-active' : ''}`}
+              data-modality={m.slug}
+            >
+              {m.label}
+            </button>
+          ))
+        }
       </div>
 
       <div class="explorer__controls">
         <label class="explorer__search">
           <span class="sr-only">{t.models.searchLabel}</span>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-            <circle cx="6" cy="6" r="4.25" stroke="currentColor" stroke-width="1.4" />
-            <path d="M9.2 9.2L12 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            aria-hidden="true"
+          >
+            <circle
+              cx="6"
+              cy="6"
+              r="4.25"
+              stroke="currentColor"
+              stroke-width="1.4"></circle>
+            <path
+              d="M9.2 9.2L12 12"
+              stroke="currentColor"
+              stroke-width="1.4"
+              stroke-linecap="round"></path>
           </svg>
           <input
             type="search"
@@ -90,9 +134,7 @@ const modalities = [
     </div>
 
     <ol class="explorer__grid" data-grid>
-      {models.map((m) => (
-        <ModelCard model={m} locale={locale} />
-      ))}
+      {models.map((m) => <ModelCard model={m} locale={locale} />)}
       <li class="explorer__empty" data-empty hidden>
         <p class="mono">{t.models.empty}</p>
         <button type="button" class="link" data-reset>{t.models.reset}</button>
@@ -148,9 +190,10 @@ const modalities = [
     color: var(--color-ink-secondary);
     font-size: 12.5px;
     letter-spacing: -0.005em;
-    transition: background-color var(--motion-base) var(--ease-out-quart),
-                border-color var(--motion-base) var(--ease-out-quart),
-                color var(--motion-base) var(--ease-out-quart);
+    transition:
+      background-color var(--motion-base) var(--ease-out-quart),
+      border-color var(--motion-base) var(--ease-out-quart),
+      color var(--motion-base) var(--ease-out-quart);
   }
   .chip:hover {
     border-color: var(--color-hairline-strong);
@@ -264,8 +307,12 @@ const modalities = [
       justify-self: stretch;
       flex-wrap: wrap;
     }
-    .explorer__search { flex: 1; }
-    .explorer__counter { justify-self: start; }
+    .explorer__search {
+      flex: 1;
+    }
+    .explorer__counter {
+      justify-self: start;
+    }
   }
 
   @media (max-width: 520px) {
@@ -276,7 +323,12 @@ const modalities = [
 </style>
 
 <script>
-  type SortKey = 'default' | 'input_asc' | 'input_desc' | 'output_asc' | 'output_desc';
+  type SortKey =
+    | 'default'
+    | 'input_asc'
+    | 'input_desc'
+    | 'output_asc'
+    | 'output_desc';
 
   interface State {
     vendor: string;
@@ -292,10 +344,15 @@ const modalities = [
   } else {
     const cards = Array.from(grid.querySelectorAll<HTMLElement>('.modelcard'));
     const empty = grid.querySelector<HTMLElement>('[data-empty]');
-    const searchInput = document.querySelector<HTMLInputElement>('[data-search]');
+    const searchInput =
+      document.querySelector<HTMLInputElement>('[data-search]');
     const sortSelect = document.querySelector<HTMLSelectElement>('[data-sort]');
-    const vendorChips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip[data-vendor]'));
-    const modalityChips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip[data-modality]'));
+    const vendorChips = Array.from(
+      document.querySelectorAll<HTMLButtonElement>('.chip[data-vendor]')
+    );
+    const modalityChips = Array.from(
+      document.querySelectorAll<HTMLButtonElement>('.chip[data-modality]')
+    );
     const resetBtn = document.querySelector<HTMLElement>('[data-reset]');
 
     const initialOrder = new Map<HTMLElement, number>();
@@ -306,7 +363,13 @@ const modalities = [
     function readUrlState(): State {
       const p = new URLSearchParams(window.location.search);
       const sort = p.get('sort') as SortKey | null;
-      const validSorts: SortKey[] = ['default', 'input_asc', 'input_desc', 'output_asc', 'output_desc'];
+      const validSorts: SortKey[] = [
+        'default',
+        'input_asc',
+        'input_desc',
+        'output_asc',
+        'output_desc',
+      ];
       return {
         vendor: p.get('vendor') || 'all',
         modality: p.get('modality') || 'all',
@@ -326,7 +389,11 @@ const modalities = [
       window.history.replaceState(null, '', url);
     }
 
-    function applyChipActive(chips: HTMLButtonElement[], attr: 'vendor' | 'modality', value: string) {
+    function applyChipActive(
+      chips: HTMLButtonElement[],
+      attr: 'vendor' | 'modality',
+      value: string
+    ) {
       chips.forEach((c) => {
         if (c.dataset[attr] === value) c.classList.add('is-active');
         else c.classList.remove('is-active');
@@ -337,8 +404,10 @@ const modalities = [
       // Sync UI controls with state.
       applyChipActive(vendorChips, 'vendor', state.vendor);
       applyChipActive(modalityChips, 'modality', state.modality);
-      if (sortSelect && sortSelect.value !== state.sort) sortSelect.value = state.sort;
-      if (searchInput && searchInput.value !== state.q) searchInput.value = state.q;
+      if (sortSelect && sortSelect.value !== state.sort)
+        sortSelect.value = state.sort;
+      if (searchInput && searchInput.value !== state.q)
+        searchInput.value = state.q;
 
       const q = state.q.trim().toLowerCase();
       let shown = 0;
@@ -357,10 +426,21 @@ const modalities = [
         // sort key
         let order = initialOrder.get(card) ?? 0;
         if (state.sort === 'input_asc' || state.sort === 'output_asc') {
-          const p = parseFloat(state.sort === 'input_asc' ? (card.dataset.inputPrice || '0') : (card.dataset.outputPrice || '0'));
+          const p = parseFloat(
+            state.sort === 'input_asc'
+              ? card.dataset.inputPrice || '0'
+              : card.dataset.outputPrice || '0'
+          );
           order = Math.round(p * 1000);
-        } else if (state.sort === 'input_desc' || state.sort === 'output_desc') {
-          const p = parseFloat(state.sort === 'input_desc' ? (card.dataset.inputPrice || '0') : (card.dataset.outputPrice || '0'));
+        } else if (
+          state.sort === 'input_desc' ||
+          state.sort === 'output_desc'
+        ) {
+          const p = parseFloat(
+            state.sort === 'input_desc'
+              ? card.dataset.inputPrice || '0'
+              : card.dataset.outputPrice || '0'
+          );
           order = 1_000_000_000 - Math.round(p * 1000);
         }
         card.style.order = String(order);
@@ -368,7 +448,8 @@ const modalities = [
 
       const counter = document.querySelector<HTMLElement>('[data-counter]');
       const template = toolbar?.dataset.counterTemplate || '__shown__';
-      if (counter) counter.textContent = template.replace('__shown__', String(shown));
+      if (counter)
+        counter.textContent = template.replace('__shown__', String(shown));
       if (empty) empty.hidden = shown !== 0;
     }
 
@@ -416,10 +497,16 @@ const modalities = [
     render();
 
     // ── Dialog wiring ───────────────────────────────────────────────────
-    const dialog = document.getElementById('model-dialog') as HTMLDialogElement | null;
-    const dialogInner = document.querySelector<HTMLElement>('[data-dialog-inner]');
+    const dialog = document.getElementById(
+      'model-dialog'
+    ) as HTMLDialogElement | null;
+    const dialogInner = document.querySelector<HTMLElement>(
+      '[data-dialog-inner]'
+    );
     const dataScript = document.getElementById('model-detail-data');
-    const detailMap: Record<string, string> = dataScript ? JSON.parse(dataScript.textContent || '{}') : {};
+    const detailMap: Record<string, string> = dataScript
+      ? JSON.parse(dataScript.textContent || '{}')
+      : {};
 
     function openModel(name: string) {
       if (!dialog || !dialogInner) return;
@@ -428,7 +515,9 @@ const modalities = [
       dialogInner.innerHTML = html;
       dialog.showModal();
       // give the dialog body focus for keyboard scrolling
-      const focusable = dialog.querySelector<HTMLElement>('[data-dialog-close]');
+      const focusable = dialog.querySelector<HTMLElement>(
+        '[data-dialog-close]'
+      );
       focusable?.focus();
     }
 

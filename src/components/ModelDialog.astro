@@ -35,13 +35,26 @@ function renderDetail(m: Model): string {
   const meta = metaOf(m.model_name);
   const p = priceBreakdown(m);
   const vendorName = vendorDisplayName(m.vendor, locale);
-  const tag = m.tags && (locale === 'zh' || !/[\u3400-\u9fff]/.test(m.tags)) ? ` · ${escapeHtml(m.tags)}` : '';
+  const tag =
+    m.tags && (locale === 'zh' || !/[\u3400-\u9fff]/.test(m.tags))
+      ? ` · ${escapeHtml(m.tags)}`
+      : '';
 
   const specRows: string[] = [];
-  if (meta?.contextK) specRows.push(`<dt>${t.models.context}</dt><dd class="mono">${meta.contextK >= 1000 ? (meta.contextK / 1000) + 'M' : meta.contextK + 'K'} tokens</dd>`);
-  if (meta?.maxOutputK) specRows.push(`<dt>${t.models.maxOutput}</dt><dd class="mono">${meta.maxOutputK}K tokens</dd>`);
-  specRows.push(`<dt>${t.models.billing}</dt><dd class="mono">${p.kind === 'token' ? t.models.billingToken : t.models.billingCall}</dd>`);
-  specRows.push(`<dt>${t.models.groups}</dt><dd class="mono">${m.enable_groups.map(escapeHtml).join(' · ')}</dd>`);
+  if (meta?.contextK)
+    specRows.push(
+      `<dt>${t.models.context}</dt><dd class="mono">${meta.contextK >= 1000 ? meta.contextK / 1000 + 'M' : meta.contextK + 'K'} tokens</dd>`
+    );
+  if (meta?.maxOutputK)
+    specRows.push(
+      `<dt>${t.models.maxOutput}</dt><dd class="mono">${meta.maxOutputK}K tokens</dd>`
+    );
+  specRows.push(
+    `<dt>${t.models.billing}</dt><dd class="mono">${p.kind === 'token' ? t.models.billingToken : t.models.billingCall}</dd>`
+  );
+  specRows.push(
+    `<dt>${t.models.groups}</dt><dd class="mono">${m.enable_groups.map(escapeHtml).join(' · ')}</dd>`
+  );
 
   const endpoints = m.supported_endpoint_types
     .map((e) => {
@@ -82,10 +95,13 @@ function renderDetail(m: Model): string {
     `;
   }
 
-  const canUseDescription = Boolean(m.description) && (locale === 'zh' || !/[\u3400-\u9fff]/.test(m.description ?? ''));
-  const description = canUseDescription && m.description
-    ? `<p class="dialog__desc">${escapeHtml(m.description).replace(/\n/g, '<br />')}</p>`
-    : `<p class="dialog__desc dialog__desc--mute">${t.models.noDescription}</p>`;
+  const canUseDescription =
+    Boolean(m.description) &&
+    (locale === 'zh' || !/[\u3400-\u9fff]/.test(m.description ?? ''));
+  const description =
+    canUseDescription && m.description
+      ? `<p class="dialog__desc">${escapeHtml(m.description).replace(/\n/g, '<br />')}</p>`
+      : `<p class="dialog__desc dialog__desc--mute">${t.models.noDescription}</p>`;
 
   const docsLink = meta?.docs
     ? `<a class="link dialog__docs" href="${escapeHtml(meta.docs)}" target="_blank" rel="noopener noreferrer">${t.models.docs}</a>`
@@ -156,7 +172,7 @@ const detailJson = JSON.stringify(detailMap);
   </div>
 </dialog>
 
-<script type="application/json" id="model-detail-data" set:html={detailJson}></script>
+<script type="application/json" id="model-detail-data" set:html={detailJson} />
 
 <style>
   .modeldialog {
@@ -253,8 +269,9 @@ const detailJson = JSON.stringify(detailMap);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: background-color var(--motion-base) var(--ease-out-quart),
-                color var(--motion-base) var(--ease-out-quart);
+    transition:
+      background-color var(--motion-base) var(--ease-out-quart),
+      color var(--motion-base) var(--ease-out-quart);
     flex-shrink: 0;
   }
   :global(.modeldialog .dialog__close:hover) {

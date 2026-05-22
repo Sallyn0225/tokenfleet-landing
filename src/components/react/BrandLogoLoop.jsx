@@ -41,7 +41,10 @@ const enLogos = zhLogos.map((logo) => ({
     .replace('豆包 Doubao', 'Doubao'),
 }));
 
-export default function BrandLogoLoop({ ariaLabel = '平台已接入的 AI 厂商与模型', locale = 'zh' }) {
+export default function BrandLogoLoop({
+  ariaLabel = '平台已接入的 AI 厂商与模型',
+  locale = 'zh',
+}) {
   const logos = locale === 'en' ? enLogos : zhLogos;
   return (
     <LogoLoop

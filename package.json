@@ -10,6 +10,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "check": "astro check",
+    "lint": "eslint .",
+    "format:check": "prettier --check .",
     "preview": "astro preview --host",
     "astro": "astro"
   },
@@ -22,10 +24,19 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@astrojs/react": "^5.0.5",
+    "@eslint/js": "^9.39.4",
     "@tailwindcss/vite": "^4.3.0",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.4",
+    "eslint-plugin-astro": "^1.7.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.6.0",
+    "prettier": "^3.8.3",
+    "prettier-plugin-astro": "^0.14.1",
     "tailwindcss": "^4.3.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.4"
   }
 }
