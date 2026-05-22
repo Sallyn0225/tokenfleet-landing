@@ -48,6 +48,7 @@ uniform float uUseMouse;
 uniform float uPageLoadProgress;
 uniform float uUsePageLoadAnimation;
 uniform float uBrightness;
+uniform vec3  uBackground;
 
 float time;
 
@@ -218,6 +219,7 @@ void main() {
 
     col *= uTint;
     col *= uBrightness;
+    col = min(uBackground + col, vec3(1.0));
 
     if(uDither > 0.0){
       float rnd = hash21(gl_FragCoord.xy);
@@ -258,6 +260,7 @@ export default function FaultyTerminal({
   dpr = typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 2) : 1,
   pageLoadAnimation = true,
   brightness = 1,
+  backgroundColor = '#000000',
   className = '',
   style,
   ...rest
@@ -271,9 +274,10 @@ export default function FaultyTerminal({
   const updateRef = useRef(null);
   const pauseRef = useRef(pause);
   const loadAnimationStartRef = useRef(0);
-  const timeOffsetRef = useRef(Math.random() * 100);
+  const timeOffsetRef = useRef(17.25);
 
   const tintVec = useMemo(() => hexToRgb(tint), [tint]);
+  const backgroundVec = useMemo(() => hexToRgb(backgroundColor), [backgroundColor]);
 
   const ditherValue = useMemo(() => (typeof dither === 'boolean' ? (dither ? 1 : 0) : dither), [dither]);
 
@@ -308,7 +312,7 @@ export default function FaultyTerminal({
     const renderer = new Renderer({ dpr });
     rendererRef.current = renderer;
     const gl = renderer.gl;
-    gl.clearColor(0, 0, 0, 1);
+    gl.clearColor(backgroundVec[0], backgroundVec[1], backgroundVec[2], 1);
 
     const geometry = new Triangle(gl);
 
@@ -339,7 +343,8 @@ export default function FaultyTerminal({
         uUseMouse: { value: mouseReact ? 1 : 0 },
         uPageLoadProgress: { value: pageLoadAnimation ? 0 : 1 },
         uUsePageLoadAnimation: { value: pageLoadAnimation ? 1 : 0 },
-        uBrightness: { value: brightness }
+        uBrightness: { value: brightness },
+        uBackground: { value: new Color(backgroundVec[0], backgroundVec[1], backgroundVec[2]) }
       }
     });
     programRef.current = program;
@@ -396,8 +401,11 @@ export default function FaultyTerminal({
       rafRef.current = requestAnimationFrame(update);
     };
     updateRef.current = update;
-    if (!pauseRef.current) rafRef.current = requestAnimationFrame(update);
+
+    program.uniforms.iTime.value = timeOffsetRef.current * timeScale;
+    renderer.render({ scene: mesh });
     ctn.appendChild(gl.canvas);
+    if (!pauseRef.current) rafRef.current = requestAnimationFrame(update);
 
     if (mouseReact) window.addEventListener('pointermove', handlePointerMove, { passive: true });
 
@@ -409,7 +417,7 @@ export default function FaultyTerminal({
       gl.getExtension('WEBGL_lose_context')?.loseContext();
       updateRef.current = null;
       loadAnimationStartRef.current = 0;
-      timeOffsetRef.current = Math.random() * 100;
+      timeOffsetRef.current = 17.25;
     };
   }, [
     dpr,
@@ -425,6 +433,7 @@ export default function FaultyTerminal({
     ditherValue,
     curvature,
     tintVec,
+    backgroundVec,
     mouseReact,
     mouseStrength,
     pageLoadAnimation,

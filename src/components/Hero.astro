@@ -3,15 +3,13 @@
  * Hero.astro — fal.ai-style two-column hero on a FaultyTerminal CRT backdrop.
  *
  * Left:   eyebrow → Sohne thin headline → body lead → primary + outline CTA →
- *         mono trust line. Rendered in on-dark tokens against the dark canvas.
+ *         mono trust line. Rendered in dark ink over a pale terminal field.
  * Right:  three-tab code block (curl / Python / Node) — kept on its white
- *         surface so the panel reads as "terminal-on-terminal", a literal
- *         code window floating on a CRT.
+ *         surface so the panel reads as a code window floating above the
+ *         white-purple WebGL field.
  *
- * Background: HeroBackdrop hosts the WebGL FaultyTerminal island + a deep
- * dark CSS fallback (SSR / no-WebGL safety). Hero ink tokens are locally
- * overridden to the on-dark family inside `.hero` only; nothing leaks to other
- * sections.
+ * Background: HeroBackdrop hosts the WebGL FaultyTerminal island + a pale
+ * white-purple CSS fallback (SSR / no-WebGL safety).
  *
  * Keyboard: ←/→ cycle tabs; Tab+Enter activates copy.
  * Mobile (<880px): columns collapse vertically, code block keeps horizontal
@@ -33,8 +31,8 @@ const total = totalModelCount();
       <span class="eyebrow">MODEL API · UNIFIED</span>
 
       <h1 class="hero__headline">
-        <span class="voltage">一个平台</span>，<br />
-        调用多家主流模型。
+        <span class="voltage">一个平台</span><br />
+        调度主流 AI 模型
       </h1>
 
       <p class="hero__body">
@@ -74,7 +72,7 @@ const total = totalModelCount();
     padding-top: clamp(48px, 8vw, 96px);
     padding-bottom: clamp(64px, 9vw, 128px);
     overflow: hidden;
-    color: var(--color-on-dark);
+    color: var(--color-ink);
   }
 
   .hero::after {
@@ -84,10 +82,10 @@ const total = totalModelCount();
     z-index: var(--z-mesh);
     background: linear-gradient(
       90deg,
-      rgba(3, 5, 13, 0.68) 0%,
-      rgba(3, 5, 13, 0.42) 38%,
-      rgba(3, 5, 13, 0.08) 66%,
-      rgba(3, 5, 13, 0) 100%
+      rgba(255, 255, 255, 0.76) 0%,
+      rgba(255, 255, 255, 0.48) 38%,
+      rgba(255, 255, 255, 0.16) 66%,
+      rgba(255, 255, 255, 0) 100%
     );
     pointer-events: none;
   }
@@ -109,52 +107,42 @@ const total = totalModelCount();
   }
 
   .hero__copy :global(.eyebrow) {
-    color: var(--color-on-dark-mute);
+    color: var(--color-primary-press);
     margin-bottom: -4px;
-    text-shadow:
-      0 1px 6px rgba(0, 0, 0, 0.78),
-      0 8px 24px rgba(0, 0, 0, 0.6);
   }
 
   .hero__headline {
     font-size: var(--type-display-xxl-size);
     line-height: var(--type-display-xxl-line);
     letter-spacing: var(--type-display-xxl-track);
-    font-weight: var(--weight-thin);
-    color: var(--color-on-dark);
+    font-weight: var(--weight-medium);
+    color: var(--color-ink);
     max-width: 18ch;
     overflow-wrap: anywhere;
-    text-shadow:
-      0 1px 2px rgba(0, 0, 0, 0.82),
-      0 3px 16px rgba(0, 0, 0, 0.72),
-      0 14px 44px rgba(0, 0, 0, 0.62);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72);
   }
 
-  /* voltage is a global accent run; on dark we shift to the brighter
-     primary-soft so it stays a vivid neon highlight against the CRT bg. */
   .hero__headline :global(.voltage) {
-    color: #aaa5ff;
+    color: var(--color-primary);
+    font-weight: var(--weight-semibold);
     text-shadow:
-      0 1px 2px rgba(0, 0, 0, 0.86),
-      0 3px 16px rgba(0, 0, 0, 0.72),
-      0 0 24px rgba(83, 58, 253, 0.82);
+      0 1px 0 rgba(255, 255, 255, 0.72),
+      0 0 24px rgba(83, 58, 253, 0.2);
   }
 
   .hero__body {
     font-size: var(--type-body-lg-size);
     line-height: 1.55;
-    color: rgba(246, 249, 252, 0.82);
+    color: var(--color-ink-secondary);
     max-width: 36ch;
     font-weight: var(--weight-thin);
     overflow-wrap: anywhere;
-    text-shadow:
-      0 1px 2px rgba(0, 0, 0, 0.78),
-      0 4px 18px rgba(0, 0, 0, 0.66);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.68);
   }
 
   .hero__body-num {
     font-weight: var(--weight-medium);
-    color: var(--color-on-dark);
+    color: var(--color-primary-press);
     font-size: 1.06em;
     margin: 0 2px;
   }
@@ -166,15 +154,15 @@ const total = totalModelCount();
     margin-top: 4px;
   }
 
-  /* Secondary CTA uses a white surface so it stays legible on the CRT field
-     while remaining quieter than the indigo primary action. */
+  /* Secondary CTA sits on a white surface so it remains crisp on the pale
+     terminal field while staying quieter than the indigo primary action. */
   .hero__cta :global(.btn--outline) {
     color: var(--color-brand-dark-900);
-    border-color: rgba(255, 255, 255, 0.78);
-    background: rgba(255, 255, 255, 0.94);
+    border-color: rgba(83, 58, 253, 0.28);
+    background: rgba(255, 255, 255, 0.86);
     box-shadow:
       0 1px 0 rgba(255, 255, 255, 0.72) inset,
-      0 10px 26px rgba(0, 0, 0, 0.18);
+      0 10px 26px rgba(83, 58, 253, 0.1);
   }
   .hero__cta :global(.btn--outline:hover) {
     color: var(--color-primary-press);
@@ -190,12 +178,9 @@ const total = totalModelCount();
     display: flex;
     flex-wrap: wrap;
     gap: 8px 20px;
-    color: rgba(246, 249, 252, 0.62);
+    color: var(--color-ink-mute);
     font-size: var(--type-caption-size);
     margin-top: 12px;
-    text-shadow:
-      0 1px 2px rgba(0, 0, 0, 0.76),
-      0 4px 16px rgba(0, 0, 0, 0.58);
   }
 
   .hero__trust li {
@@ -210,7 +195,7 @@ const total = totalModelCount();
     width: 3px;
     height: 3px;
     border-radius: 999px;
-    background: rgba(246, 249, 252, 0.45);
+    background: rgba(83, 58, 253, 0.28);
     margin-left: 12px;
     opacity: 0.8;
   }
@@ -218,7 +203,7 @@ const total = totalModelCount();
   .hero__trust li:last-child::after { display: none; }
 
   .hero__trust .mono {
-    color: var(--color-on-dark);
+    color: var(--color-primary-press);
     font-weight: var(--weight-medium);
   }
 
@@ -237,10 +222,8 @@ const total = totalModelCount();
     position: relative;
     min-width: 0;
     max-width: 100%;
-    /* Lift the white code panel above the dark backdrop with a stronger
-       shadow so it reads as a literal window floating on the CRT. */
-    filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.5))
-            drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
+    filter: drop-shadow(0 24px 48px rgba(83, 58, 253, 0.18))
+            drop-shadow(0 4px 10px rgba(28, 30, 84, 0.12));
   }
 
   @media (max-width: 960px) {
