@@ -15,34 +15,41 @@
  */
 import ModelCard from './ModelCard.astro';
 import ModelDialog from './ModelDialog.astro';
-import { loadModels, usedVendors, vendorSlug, totalModelCount } from '../data/pricing.ts';
+import { loadModels, usedVendors, vendorSlug, vendorDisplayName, totalModelCount } from '../data/pricing.ts';
+import { i18n, type Locale } from '../i18n.ts';
 
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'zh' } = Astro.props as Props;
+const t = i18n[locale];
 const models = loadModels();
 const vendors = usedVendors();
 const total = totalModelCount();
 
 const modalities = [
-  { slug: 'all', label: '全部' },
-  { slug: 'chat', label: 'LLM' },
-  { slug: 'image', label: '图像' },
-  { slug: 'video', label: '视频' },
-  { slug: 'audio', label: '音频' },
+  { slug: 'all', label: t.models.all },
+  { slug: 'chat', label: t.models.modalities.chat },
+  { slug: 'image', label: t.models.modalities.image },
+  { slug: 'video', label: t.models.modalities.video },
+  { slug: 'audio', label: t.models.modalities.audio },
 ];
 ---
 
-<section class="explorer" id="explorer" aria-label="模型筛选">
+<section class="explorer" id="explorer" aria-label={t.models.filterAria}>
   <div class="container explorer__inner">
-    <div class="explorer__toolbar" data-toolbar>
-      <div class="explorer__chips" role="group" aria-label="按厂商筛选">
-        <button type="button" class="chip is-active" data-vendor="all">全部 <span class="chip__count mono">{total}</span></button>
+    <div class="explorer__toolbar" data-toolbar data-counter-template={t.models.counter('__shown__', total)} data-copied-label={t.models.copied}>
+      <div class="explorer__chips" role="group" aria-label={t.models.vendorAria}>
+        <button type="button" class="chip is-active" data-vendor="all">{t.models.all} <span class="chip__count mono">{total}</span></button>
         {vendors.map((v) => (
           <button type="button" class="chip" data-vendor={vendorSlug(v)}>
-            {v.name}
+            {vendorDisplayName(v, locale)}
           </button>
         ))}
       </div>
 
-      <div class="explorer__chips explorer__chips--modality" role="group" aria-label="按形态筛选">
+      <div class="explorer__chips explorer__chips--modality" role="group" aria-label={t.models.modalityAria}>
         {modalities.map((m) => (
           <button type="button" class={`chip chip--modality${m.slug === 'all' ? ' is-active' : ''}`} data-modality={m.slug}>
             {m.label}
@@ -52,49 +59,49 @@ const modalities = [
 
       <div class="explorer__controls">
         <label class="explorer__search">
-          <span class="sr-only">搜索模型名</span>
+          <span class="sr-only">{t.models.searchLabel}</span>
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
             <circle cx="6" cy="6" r="4.25" stroke="currentColor" stroke-width="1.4" />
             <path d="M9.2 9.2L12 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
           </svg>
           <input
             type="search"
-            placeholder="搜索模型名"
+            placeholder={t.models.searchPlaceholder}
             data-search
             autocomplete="off"
           />
         </label>
 
         <label class="explorer__sort">
-          <span class="sr-only">排序</span>
+          <span class="sr-only">{t.models.sortLabel}</span>
           <select data-sort>
-            <option value="default">默认顺序</option>
-            <option value="input_asc">输入价 ↑</option>
-            <option value="input_desc">输入价 ↓</option>
-            <option value="output_asc">输出价 ↑</option>
-            <option value="output_desc">输出价 ↓</option>
+            <option value="default">{t.models.sortDefault}</option>
+            <option value="input_asc">{t.models.sortInputAsc}</option>
+            <option value="input_desc">{t.models.sortInputDesc}</option>
+            <option value="output_asc">{t.models.sortOutputAsc}</option>
+            <option value="output_desc">{t.models.sortOutputDesc}</option>
           </select>
         </label>
       </div>
 
       <p class="explorer__counter mono" data-counter>
-        <span data-counter-shown>{total}</span> / <span data-counter-total>{total}</span> 个模型
+        {t.models.counter(total, total)}
       </p>
     </div>
 
     <ol class="explorer__grid" data-grid>
-      {models.map((m, i) => (
-        <ModelCard model={m} />
+      {models.map((m) => (
+        <ModelCard model={m} locale={locale} />
       ))}
       <li class="explorer__empty" data-empty hidden>
-        <p class="mono">未找到匹配的模型。</p>
-        <button type="button" class="link" data-reset>清除筛选</button>
+        <p class="mono">{t.models.empty}</p>
+        <button type="button" class="link" data-reset>{t.models.reset}</button>
       </li>
     </ol>
   </div>
 </section>
 
-<ModelDialog />
+<ModelDialog locale={locale} />
 
 <style>
   .explorer {
@@ -285,7 +292,6 @@ const modalities = [
   } else {
     const cards = Array.from(grid.querySelectorAll<HTMLElement>('.modelcard'));
     const empty = grid.querySelector<HTMLElement>('[data-empty]');
-    const counterShown = document.querySelector<HTMLElement>('[data-counter-shown]');
     const searchInput = document.querySelector<HTMLInputElement>('[data-search]');
     const sortSelect = document.querySelector<HTMLSelectElement>('[data-sort]');
     const vendorChips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip[data-vendor]'));
@@ -360,7 +366,9 @@ const modalities = [
         card.style.order = String(order);
       });
 
-      if (counterShown) counterShown.textContent = String(shown);
+      const counter = document.querySelector<HTMLElement>('[data-counter]');
+      const template = toolbar?.dataset.counterTemplate || '__shown__';
+      if (counter) counter.textContent = template.replace('__shown__', String(shown));
       if (empty) empty.hidden = shown !== 0;
     }
 
@@ -465,7 +473,7 @@ const modalities = [
           const id = copyBtn.dataset.id || '';
           navigator.clipboard?.writeText(id).then(() => {
             const original = copyBtn.textContent;
-            copyBtn.textContent = '已复制 ✓';
+            copyBtn.textContent = `${toolbar.dataset.copiedLabel || 'Copied'} ✓`;
             window.setTimeout(() => {
               copyBtn.textContent = original;
             }, 1400);

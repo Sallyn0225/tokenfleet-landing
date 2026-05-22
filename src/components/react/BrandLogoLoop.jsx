@@ -6,7 +6,7 @@ const brandIcon = (file, title) => ({
   title,
 });
 
-const logos = [
+const zhLogos = [
   brandIcon('openai.svg', 'OpenAI'),
   brandIcon('anthropic.svg', 'Anthropic'),
   brandIcon('gemini-color.svg', 'Google Gemini'),
@@ -29,7 +29,20 @@ const logos = [
   brandIcon('elevenlabs.svg', 'ElevenLabs'),
 ];
 
-export default function BrandLogoLoop() {
+const enLogos = zhLogos.map((logo) => ({
+  ...logo,
+  alt: logo.alt
+    .replace('通义千问 Qwen', 'Qwen')
+    .replace('智谱 GLM', 'Zhipu GLM')
+    .replace('豆包 Doubao', 'Doubao'),
+  title: logo.title
+    .replace('通义千问 Qwen', 'Qwen')
+    .replace('智谱 GLM', 'Zhipu GLM')
+    .replace('豆包 Doubao', 'Doubao'),
+}));
+
+export default function BrandLogoLoop({ ariaLabel = '平台已接入的 AI 厂商与模型', locale = 'zh' }) {
+  const logos = locale === 'en' ? enLogos : zhLogos;
   return (
     <LogoLoop
       logos={logos}
@@ -41,7 +54,7 @@ export default function BrandLogoLoop() {
       scaleOnHover
       fadeOut
       fadeOutColor="#ffffff"
-      ariaLabel="平台已接入的 AI 厂商与模型"
+      ariaLabel={ariaLabel}
       className="logoloop"
     />
   );

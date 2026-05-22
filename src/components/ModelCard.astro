@@ -11,15 +11,20 @@
  * touching markup.
  */
 import type { Model } from '../data/pricing.ts';
-import { priceLabel, modalityLabel, vendorSlug } from '../data/pricing.ts';
+import { priceLabel, modalityLabel, vendorSlug, vendorDisplayName } from '../data/pricing.ts';
+import { i18n, type Locale } from '../i18n.ts';
 
 interface Props {
   model: Model;
+  locale?: Locale;
 }
-const { model } = Astro.props;
+const { model, locale = 'zh' } = Astro.props as Props;
+const t = i18n[locale];
 
 const vSlug = vendorSlug(model.vendor);
-const price = priceLabel(model);
+const price = priceLabel(model, locale);
+const vendorName = vendorDisplayName(model.vendor, locale);
+const showTags = Boolean(model.tags) && (locale === 'zh' || !/[\u3400-\u9fff]/.test(model.tags ?? ''));
 const sortInput = model.inputPriceUsd;
 const sortOutput = model.outputPriceUsd;
 ---
@@ -36,7 +41,7 @@ const sortOutput = model.outputPriceUsd;
     type="button"
     class="modelcard__open"
     data-model={model.model_name}
-    aria-label={`查看 ${model.model_name} 详情`}
+    aria-label={t.models.cardAria(model.model_name)}
   >
     <img
       class="modelcard__watermark"
@@ -51,18 +56,18 @@ const sortOutput = model.outputPriceUsd;
       <span class="modelcard__logo">
         <img
           src={model.iconUrl}
-          alt={`${model.vendor.name} logo`}
+          alt={`${vendorName} logo`}
           loading="lazy"
           onerror="this.style.display='none'"
         />
       </span>
-      <span class="modelcard__vendor">{model.vendor.name}</span>
-      <span class="modelcard__modality mono">{modalityLabel(model.modality)}</span>
+      <span class="modelcard__vendor">{vendorName}</span>
+      <span class="modelcard__modality mono">{modalityLabel(model.modality, locale)}</span>
     </div>
 
     <div class="modelcard__body">
       <p class="modelcard__id mono">{model.model_name}</p>
-      {model.tags && <p class="modelcard__tag mono">{model.tags}</p>}
+      {showTags && <p class="modelcard__tag mono">{model.tags}</p>}
     </div>
 
     <p class="modelcard__price mono">

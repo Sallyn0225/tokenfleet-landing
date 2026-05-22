@@ -1,12 +1,20 @@
 ---
 import BrandLogoLoop from './react/BrandLogoLoop.jsx';
+import { i18n, type Locale } from '../i18n.ts';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'zh' } = Astro.props as Props;
+const t = i18n[locale];
 ---
 
 <section class="brandstrip" aria-labelledby="brandstrip-title">
   <div class="container brandstrip__inner">
-    <p class="eyebrow eyebrow--mute" id="brandstrip-title">由这些模型驱动 · POWERED BY</p>
+    <p class="eyebrow eyebrow--mute" id="brandstrip-title">{t.brandStrip.title}</p>
     <div class="brandstrip__loop">
-      <BrandLogoLoop client:visible />
+      <BrandLogoLoop ariaLabel={t.brandStrip.aria} locale={locale} client:visible />
     </div>
   </div>
 </section>

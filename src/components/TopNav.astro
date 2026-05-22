@@ -11,20 +11,30 @@
  */
 
 import Wordmark from './Wordmark.astro';
+import { i18n, localePath, otherLocale, type Locale } from '../i18n.ts';
 
+interface Props {
+  locale?: Locale;
+  currentPath?: string;
+}
+
+const { locale = 'zh', currentPath = '/' } = Astro.props as Props;
+const t = i18n[locale];
+const altLocale = otherLocale(locale);
 const navLinks = [
-  { href: '/models', label: '模型' },
-  { href: '/#business', label: '费用' },
-  { href: 'https://docs.tokenfleet.cn', label: '文档', external: true },
-  { href: '/#enterprise', label: '企业服务' },
+  { href: localePath(locale, '/models'), label: t.nav.links.models },
+  { href: `${localePath(locale, '/')}#business`, label: t.nav.links.billing },
+  { href: 'https://docs.tokenfleet.cn', label: t.nav.links.docs, external: true },
+  { href: `${localePath(locale, '/')}#enterprise`, label: t.nav.links.enterprise },
 ];
+const languageHref = localePath(altLocale, currentPath);
 ---
 
 <header class="nav" role="banner">
   <div class="container nav__inner">
-    <Wordmark size="md" class="nav__brand" />
+    <Wordmark size="md" class="nav__brand" locale={locale} />
 
-    <nav class="nav__links" aria-label="主导航">
+    <nav class="nav__links" aria-label={t.nav.aria}>
       <ul>
         {navLinks.map(({ href, label, external }) => (
           <li>
@@ -41,13 +51,14 @@ const navLinks = [
     </nav>
 
     <div class="nav__cta">
-      <a href="https://tokenfleet.cn/login" class="nav__signin" rel="noopener">登录</a>
+      <a href={languageHref} class="nav__signin">{t.switchLabel}</a>
+      <a href="https://tokenfleet.cn/login" class="nav__signin" rel="noopener">{t.nav.signIn}</a>
       <a href="https://tokenfleet.cn/console" class="btn btn--primary btn--sm" rel="noopener">
-        开始接入
+        {t.nav.start}
       </a>
     </div>
 
-    <button class="nav__hamburger" type="button" aria-controls="mobile-drawer" aria-expanded="false" aria-label="打开菜单" data-nav-toggle>
+    <button class="nav__hamburger" type="button" aria-controls="mobile-drawer" aria-expanded="false" aria-label={t.nav.openMenu} data-nav-toggle data-open-label={t.nav.openMenu} data-close-label={t.nav.closeMenu}>
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -66,8 +77,9 @@ const navLinks = [
         </li>
       ))}
       <li class="nav__drawer-cta">
-        <a href="https://tokenfleet.cn/login" class="btn btn--outline nav__drawer-button">登录</a>
-        <a href="https://tokenfleet.cn/console" class="btn btn--primary nav__drawer-button">开始接入</a>
+        <a href={languageHref} class="btn btn--outline nav__drawer-button">{t.switchLabel}</a>
+        <a href="https://tokenfleet.cn/login" class="btn btn--outline nav__drawer-button">{t.nav.signIn}</a>
+        <a href="https://tokenfleet.cn/console" class="btn btn--primary nav__drawer-button">{t.nav.start}</a>
       </li>
     </ul>
   </div>
@@ -271,7 +283,7 @@ const navLinks = [
   if (toggle && drawer) {
     const closeDrawer = () => {
       toggle.setAttribute('aria-expanded', 'false');
-      toggle.setAttribute('aria-label', '打开菜单');
+      toggle.setAttribute('aria-label', toggle.dataset.openLabel || 'Open menu');
       drawer.hidden = true;
       document.body.style.overflow = '';
     };
@@ -282,7 +294,7 @@ const navLinks = [
         closeDrawer();
       } else {
         toggle.setAttribute('aria-expanded', 'true');
-        toggle.setAttribute('aria-label', '关闭菜单');
+        toggle.setAttribute('aria-label', toggle.dataset.closeLabel || 'Close menu');
         drawer.hidden = false;
         document.body.style.overflow = 'hidden';
       }

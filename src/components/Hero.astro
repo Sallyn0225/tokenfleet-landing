@@ -19,49 +19,56 @@
 import HeroBackdrop from './HeroBackdrop.astro';
 import CodeBlock from './CodeBlock.astro';
 import { totalModelCount } from '../data/pricing.ts';
+import { i18n, localePath, type Locale } from '../i18n.ts';
 
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'zh' } = Astro.props as Props;
+const t = i18n[locale];
 const total = totalModelCount();
 ---
 
-<section class="hero" id="main">
+<section class="hero">
   <HeroBackdrop />
 
   <div class="container hero__inner">
     <div class="hero__copy">
-      <span class="eyebrow">MODEL API · UNIFIED</span>
+      <span class="eyebrow">{t.hero.eyebrow}</span>
 
       <h1 class="hero__headline">
-        <span class="voltage">一个平台</span><br />
-        调度主流 AI 模型
+        <span class="voltage">{t.hero.titlePrefix}</span>{locale === 'zh' ? '，' : ''}<br />
+        {t.hero.titleRest}
       </h1>
 
       <p class="hero__body">
-        通过 TokenFleet 聚合 OpenAI、Anthropic、Google、DeepSeek、Qwen 等
+        {t.hero.bodyBefore}
         <strong class="hero__body-num mono">{total}</strong>
-        个生产级 LLM、图像、视频模型。一个 API key，一份发票，国内直连。
+        {t.hero.bodyAfter}
       </p>
 
       <div class="hero__cta">
         <a href="https://tokenfleet.cn/console" class="btn btn--primary btn--lg">
-          开始接入
+          {t.nav.start}
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
             <path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </a>
         <a href="https://docs.tokenfleet.cn" class="btn btn--outline btn--lg" rel="noopener">
-          查看文档
+          {t.hero.docs}
         </a>
       </div>
 
-      <ul class="hero__trust" aria-label="平台特性">
-        <li><a class="hero__trust-link" href="/models"><span class="mono">{total}</span> 个生产级模型</a></li>
-        <li>统一 API 网关</li>
-        <li>国内直连</li>
+      <ul class="hero__trust" aria-label={t.hero.trustAria}>
+        <li><a class="hero__trust-link" href={localePath(locale, '/models')}>{t.hero.trustModels(total)}</a></li>
+        <li>{t.hero.trustGateway}</li>
+        <li>{t.hero.trustDirect}</li>
       </ul>
     </div>
 
     <div class="hero__panel">
-      <CodeBlock />
+      <CodeBlock locale={locale} />
     </div>
   </div>
 </section>

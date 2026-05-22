@@ -9,15 +9,19 @@ interface Props {
   size?: 'sm' | 'md' | 'lg';
   variant?: 'on-light' | 'on-dark';
   class?: string;
+  locale?: 'zh' | 'en';
 }
 
-const { size = 'md', variant = 'on-light', class: className = '' } = Astro.props;
+import { i18n, localePath } from '../i18n.ts';
+
+const { size = 'md', variant = 'on-light', class: className = '', locale = 'zh' } = Astro.props as Props;
+const t = i18n[locale];
 ---
 
 <a
-  href="/"
+  href={localePath(locale, '/')}
   class={`wordmark wordmark--${size} wordmark--${variant} ${className}`}
-  aria-label="TokenFleet 首页"
+  aria-label={t.homeAria}
 >
   <picture class="wordmark__mark" aria-hidden="true">
     <source srcset="/xy-mark-small.webp" type="image/webp" />

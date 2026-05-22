@@ -11,24 +11,16 @@
  * percentages we have not actually contracted for. Copy reflects "可商谈
  * / 可定制" wording until the legal team confirms each badge.
  */
+import { i18n, type Locale } from '../i18n.ts';
 
-const labels = [
-  {
-    eyebrow: 'SLA',
-    title: '企业级 SLA',
-    body: '按用量等级与团队规模定制承诺，月度可对账。',
-  },
-  {
-    eyebrow: 'VPC',
-    title: '私有部署 / VPC 直连',
-    body: '请求不出私网边界。具体形态按规模商谈。',
-  },
-  {
-    eyebrow: 'SUPPORT',
-    title: '专属技术对接',
-    body: '7×24 中文工程支持渠道，故障一线响应。',
-  },
-];
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'zh' } = Astro.props as Props;
+const t = i18n[locale];
+const labels = t.enterprise.labels.map(([eyebrow, title, body]) => ({ eyebrow, title, body }));
+const salesSubject = locale === 'zh' ? '企业用量咨询' : 'Enterprise usage inquiry';
 ---
 
 <section class="enterprise" id="enterprise" aria-labelledby="enterprise-title">
@@ -36,12 +28,12 @@ const labels = [
 
   <div class="container enterprise__inner">
     <div class="enterprise__lede" data-reveal>
-      <span class="eyebrow eyebrow--on-dark">FOR PRODUCTION SCALE</span>
+      <span class="eyebrow eyebrow--on-dark">{t.enterprise.eyebrow}</span>
       <h2 class="enterprise__title" id="enterprise-title">
-        服务大规模生产用量。
+        {t.enterprise.title}
       </h2>
       <p class="enterprise__body">
-        当 token 用量越过自服务的边界，我们与你的工程团队直接对接：单点接入、容量规划、独立路由、定制条款。
+        {t.enterprise.body}
       </p>
     </div>
 
@@ -56,14 +48,14 @@ const labels = [
     </ol>
 
     <div class="enterprise__cta" data-reveal>
-      <a href="mailto:sales@tokenfleet.cn?subject=企业用量咨询" class="btn btn--primary btn--lg">
-        联系销售
+      <a href={`mailto:sales@tokenfleet.cn?subject=${encodeURIComponent(salesSubject)}`} class="btn btn--primary btn--lg">
+        {t.enterprise.cta}
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </a>
       <p class="enterprise__cta-note mono">
-        通常 24 小时内回复 · sales@tokenfleet.cn
+        {t.enterprise.note}
       </p>
     </div>
   </div>

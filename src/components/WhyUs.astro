@@ -12,8 +12,15 @@
  * §5 Built for Business) to a latency / 国内直连 demonstration.
  */
 
-import { loadModels, totalModelCount } from '../data/pricing.ts';
+import { loadModels, totalModelCount, vendorDisplayName } from '../data/pricing.ts';
+import { i18n, localePath, type Locale } from '../i18n.ts';
 
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'zh' } = Astro.props as Props;
+const t = i18n[locale];
 const allModels = loadModels();
 const total = totalModelCount();
 
@@ -42,23 +49,23 @@ const marquee = marqueeIds.map((id) => byId.get(id)).filter(Boolean) as typeof a
 const remaining = total - marquee.length;
 
 const cities = [
-  { city: '北京', p50: '142' },
-  { city: '上海', p50: '128' },
-  { city: '广州', p50: '156' },
-  { city: '深圳', p50: '149' },
-  { city: '杭州', p50: '134' },
-];
+  { city: t.why.cities[0], p50: '142' },
+  { city: t.why.cities[1], p50: '128' },
+  { city: t.why.cities[2], p50: '156' },
+  { city: t.why.cities[3], p50: '149' },
+  { city: t.why.cities[4], p50: '134' },
+] as const;
 ---
 
 <section class="why" id="why" aria-labelledby="why-title">
   <div class="container why__inner">
     <div class="why__header" data-reveal>
-      <span class="eyebrow eyebrow--mute">WHY TOKENFLEET</span>
+      <span class="eyebrow eyebrow--mute">{t.why.eyebrow}</span>
       <h2 class="why__title" id="why-title">
-        为什么选 TokenFleet。
+        {t.why.title}
       </h2>
       <p class="why__body">
-        四件可被验证的事，不是四条形容词。
+        {t.why.body}
       </p>
     </div>
 
@@ -67,19 +74,19 @@ const cities = [
       <article class="whycard whycard--models" data-reveal style="--reveal-delay:0ms">
         <header class="whycard__head">
           <span class="eyebrow eyebrow--mute">A</span>
-          <h3 class="whycard__title">{total} 个生产级模型，一个 endpoint</h3>
-          <p class="whycard__body">覆盖 LLM、图像、视频、音频，通过统一 API 网关完成调用、计量与对账。</p>
+          <h3 class="whycard__title">{t.why.cards.modelsTitle(total)}</h3>
+          <p class="whycard__body">{t.why.cards.modelsBody}</p>
         </header>
         <ul class="modelgrid mono">
           {marquee.map((model) => (
             <li class="modelgrid__cell">
               <span class="modelgrid__id">{model.model_name}</span>
-              <span class="modelgrid__vendor">{model.vendor.name}</span>
+              <span class="modelgrid__vendor">{vendorDisplayName(model.vendor, locale)}</span>
             </li>
           ))}
         </ul>
-        <a href="/models" class="modelgrid__more-link">
-          <span>+{remaining}<span class="modelgrid__more-label"> 更多生产级模型</span></span>
+        <a href={localePath(locale, '/models')} class="modelgrid__more-link">
+          <span>+{remaining}<span class="modelgrid__more-label"> {t.why.cards.moreModels}</span></span>
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
             <path d="M4 2.5l3.5 3.5L4 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
@@ -90,8 +97,8 @@ const cities = [
       <article class="whycard whycard--vpc" data-reveal style="--reveal-delay:80ms">
         <header class="whycard__head">
           <span class="eyebrow eyebrow--mute">B</span>
-          <h3 class="whycard__title">私有部署 / VPC 直连</h3>
-          <p class="whycard__body">用量到达一定规模可申请 VPC 直连 endpoint，请求不离开你的私网边界。</p>
+          <h3 class="whycard__title">{t.why.cards.vpcTitle}</h3>
+          <p class="whycard__body">{t.why.cards.vpcBody}</p>
         </header>
         <div class="vpc" aria-hidden="true">
           <svg viewBox="0 0 360 210" fill="none" xmlns="http://www.w3.org/2000/svg" class="vpc-svg">
@@ -187,7 +194,7 @@ const cities = [
           </div>
           <div class="vpc-spec__item">
             <dt>egress</dt>
-            <dd><span class="vpc-spec__dot" /> 不出私网</dd>
+            <dd><span class="vpc-spec__dot" /> {t.why.cards.privateEgress}</dd>
           </div>
         </dl>
       </article>
@@ -196,8 +203,8 @@ const cities = [
       <article class="whycard whycard--diff" data-reveal style="--reveal-delay:160ms">
         <header class="whycard__head">
           <span class="eyebrow eyebrow--mute">C</span>
-          <h3 class="whycard__title">统一 endpoint 接入</h3>
-          <p class="whycard__body">同一个 API key 调用多家模型，接入路径与用量记录保持一致。</p>
+          <h3 class="whycard__title">{t.why.cards.endpointTitle}</h3>
+          <p class="whycard__body">{t.why.cards.endpointBody}</p>
         </header>
         <pre class="diff mono"><code><span class="diff__line diff__line--rm"><span class="diff__sign">−</span> base_url=<span class="diff__str">"https://api.openai.com/v1"</span></span>
 <span class="diff__line diff__line--add"><span class="diff__sign">+</span> base_url=<span class="diff__str-on">"https://api.tokenfleet.cn/v1"</span><span class="diff__caret" aria-hidden="true"></span></span></code></pre>
@@ -225,20 +232,20 @@ const cities = [
           </div>
         </div>
 
-        <p class="whycard__caption mono">每月 token 用量、错误率、模型分布 → 控制台一站可见。</p>
+        <p class="whycard__caption mono">{t.why.cards.endpointCaption}</p>
       </article>
 
       {/* D — Domestic latency */}
       <article class="whycard whycard--latency" data-reveal style="--reveal-delay:240ms">
         <header class="whycard__head">
           <span class="eyebrow eyebrow--mute">D</span>
-          <h3 class="whycard__title">国内直连，毫秒级延迟</h3>
-          <p class="whycard__body">五大城市平均首字延迟（P50），按真实生产请求样本。</p>
+          <h3 class="whycard__title">{t.why.cards.latencyTitle}</h3>
+          <p class="whycard__body">{t.why.cards.latencyBody}</p>
         </header>
         <table class="latency mono">
           <thead>
             <tr>
-              <th>城市</th>
+              <th>{t.why.cards.city}</th>
               <th>P50</th>
               <th>
                 <span class="latency__th-bar">
@@ -266,7 +273,7 @@ const cities = [
               </tr>
             ))}
             <tr class="latency__row--ghost">
-              <td>海外直连</td>
+              <td>{t.why.cards.overseas}</td>
               <td class="latency__num latency__num--ghost tabular">≥ 800<span class="latency__unit">ms</span></td>
               <td class="latency__bar-cell">
                 <span class="latency__bar latency__bar--ghost" style="--w: 100%; --delay: 480ms;" aria-hidden="true"></span>
@@ -275,7 +282,7 @@ const cities = [
           </tbody>
         </table>
         <p class="whycard__caption mono">
-          数据样本 2026-04 · <a href="https://status.tokenfleet.cn" rel="noopener noreferrer" target="_blank">查看 status</a>
+          {t.why.cards.statusPrefix} <a href="https://status.tokenfleet.cn" rel="noopener noreferrer" target="_blank">{t.why.cards.statusLink}</a>
         </p>
       </article>
     </div>

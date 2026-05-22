@@ -25,40 +25,47 @@ import Wordmark from './Wordmark.astro';
 import wechatGroupQR from '../assets/QRCode/wechat-group.jpg';
 import wechatSubQR from '../assets/QRCode/wechat-sub.jpg';
 import douyinQR from '../assets/QRCode/douyin.webp';
+import { i18n, localePath, type Locale } from '../i18n.ts';
 
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'zh' } = Astro.props as Props;
+const t = i18n[locale];
 const cols = [
   {
-    title: 'Product',
+    title: t.footer.cols.product,
     items: [
-      { label: '模型', href: '/models' },
-      { label: '费用', href: '/#business' },
-      { label: '企业服务', href: '/#enterprise' },
-      { label: 'Status', href: 'https://status.tokenfleet.cn', external: true },
+      { label: t.footer.links.models, href: localePath(locale, '/models') },
+      { label: t.footer.links.billing, href: `${localePath(locale, '/')}#business` },
+      { label: t.footer.links.enterprise, href: `${localePath(locale, '/')}#enterprise` },
+      { label: t.footer.links.status, href: 'https://status.tokenfleet.cn', external: true },
     ],
   },
   {
-    title: 'Developers',
+    title: t.footer.cols.developers,
     items: [
-      { label: '文档', href: 'https://docs.tokenfleet.cn', external: true },
-      { label: 'API Reference', href: 'https://docs.tokenfleet.cn/api', external: true },
-      { label: 'API Examples', href: 'https://docs.tokenfleet.cn/sdk', external: true },
-      { label: 'Status', href: 'https://status.tokenfleet.cn', external: true },
+      { label: t.footer.links.docs, href: 'https://docs.tokenfleet.cn', external: true },
+      { label: t.footer.links.apiReference, href: 'https://docs.tokenfleet.cn/api', external: true },
+      { label: t.footer.links.apiExamples, href: 'https://docs.tokenfleet.cn/sdk', external: true },
+      { label: t.footer.links.status, href: 'https://status.tokenfleet.cn', external: true },
     ],
   },
   {
-    title: 'Company',
+    title: t.footer.cols.company,
     items: [
-      { label: 'Blog', href: 'https://blog.tokenfleet.cn', external: true },
-      { label: 'Contact Sales', href: 'mailto:sales@tokenfleet.cn' },
-      { label: 'Console', href: 'https://tokenfleet.cn/console', external: true },
+      { label: t.footer.links.blog, href: 'https://blog.tokenfleet.cn', external: true },
+      { label: t.footer.links.contactSales, href: 'mailto:sales@tokenfleet.cn' },
+      { label: t.footer.links.console, href: 'https://tokenfleet.cn/console', external: true },
     ],
   },
   {
-    title: 'Compliance',
+    title: t.footer.cols.compliance,
     items: [
-      { label: '主体与发票', href: '/#business' },
-      { label: 'SLA 咨询', href: '/#enterprise' },
-      { label: 'ICP 备案', href: 'https://beian.miit.gov.cn/', external: true },
+      { label: t.footer.links.entityInvoice, href: `${localePath(locale, '/')}#business` },
+      { label: t.footer.links.sla, href: `${localePath(locale, '/')}#enterprise` },
+      { label: t.footer.links.icp, href: 'https://beian.miit.gov.cn/', external: true },
     ],
   },
 ];
@@ -66,25 +73,25 @@ const cols = [
 const follow = [
   {
     id: 'qr-wechat-group',
-    label: '微信社群',
+    label: t.footer.followItems[0][0],
     image: wechatGroupQR,
-    alt: 'TokenFleet 微信社群 QR 码',
+    alt: t.footer.followItems[0][1],
     icon: 'users',
     surface: 'light',
   },
   {
     id: 'qr-wechat-sub',
-    label: '微信公众号',
+    label: t.footer.followItems[1][0],
     image: wechatSubQR,
-    alt: 'TokenFleet 微信公众号 QR 码',
+    alt: t.footer.followItems[1][1],
     icon: 'megaphone',
     surface: 'light',
   },
   {
     id: 'qr-douyin',
-    label: '抖音',
+    label: t.footer.followItems[2][0],
     image: douyinQR,
-    alt: 'TokenFleet 抖音 QR 码',
+    alt: t.footer.followItems[2][1],
     icon: 'music',
     // Source asset is white-on-transparent — needs a dark surface to read.
     surface: 'dark',
@@ -95,16 +102,16 @@ const follow = [
 <footer class="footer" role="contentinfo">
   <div class="container footer__inner">
     <div class="footer__brand">
-      <Wordmark size="md" />
+      <Wordmark size="md" locale={locale} />
       <p class="footer__tagline">
-        一站式 AI 模型 API 网关。一个 API key 接所有模型，一份对公账单结全部账。
+        {t.footer.tagline}
       </p>
       <a href="mailto:sales@tokenfleet.cn" class="footer__sales mono">
         sales@tokenfleet.cn
       </a>
 
       <div class="footer__follow" data-qr-root>
-        <h3 class="footer__col-title">Follow</h3>
+        <h3 class="footer__col-title">{t.footer.follow}</h3>
         <ul class="footer__follow-list">
           {follow.map((item, idx) => (
             <li class="footer__follow-item" data-qr-item data-index={idx} data-surface={item.surface}>
@@ -145,7 +152,7 @@ const follow = [
                 id={item.id}
                 class="footer__qr-popover"
                 role="dialog"
-                aria-label={`${item.label} QR 码`}
+                aria-label={t.footer.qrAria(item.label)}
                 data-qr-popover
               >
                 <Image
@@ -188,14 +195,14 @@ const follow = [
 
   <div class="footer__strip">
     <div class="container footer__strip-inner mono">
-      <p class="footer__copy">深圳市新云计算科技有限公司 © 2026</p>
+      <p class="footer__copy">{t.footer.company}</p>
       <a
         href="https://beian.miit.gov.cn/"
         class="footer__icp"
         target="_blank"
         rel="noopener noreferrer"
       >
-        粤ICP备2022003994号-6
+        {t.footer.icp}
       </a>
     </div>
   </div>
