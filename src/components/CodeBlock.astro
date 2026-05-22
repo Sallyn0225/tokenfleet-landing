@@ -15,6 +15,15 @@
  * ring on every tab and the copy button. Copy degrades to execCommand if
  * clipboard API is unavailable; failure surfaces inline.
  */
+import { i18n, type Locale } from '../i18n.ts';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'zh' } = Astro.props as Props;
+const t = i18n[locale];
+const prompt = t.code.prompt;
 
 const tabs = [
   {
@@ -25,15 +34,15 @@ const tabs = [
   -H "Content-Type: application/json" \\
   -d '{
     "model": "claude-opus-4-7",
-    "messages": [{"role": "user", "content": "用一句话解释 RAG。"}]
+    "messages": [{"role": "user", "content": "${prompt}"}]
   }'`,
-    html: `<span class="cb-cmt"># 同样的请求体，换 base_url 即接入</span>
+    html: `<span class="cb-cmt"># ${t.code.comment}</span>
 <span class="cb-fn">curl</span> <span class="cb-hl">https://api.tokenfleet.cn/v1</span>/chat/completions \\
   -H <span class="cb-str">"Authorization: Bearer $TOKENFLEET_API_KEY"</span> \\
   -H <span class="cb-str">"Content-Type: application/json"</span> \\
   -d <span class="cb-str">'{
     "model": <span class="cb-hl">"claude-opus-4-7"</span>,
-    "messages": [{"role": "user", "content": "用一句话解释 RAG。"}]
+    "messages": [{"role": "user", "content": "${prompt}"}]
   }'</span>`,
   },
   {
@@ -48,7 +57,7 @@ client = OpenAI(
 
 resp = client.chat.completions.create(
     model="claude-opus-4-7",
-    messages=[{"role": "user", "content": "用一句话解释 RAG。"}],
+    messages=[{"role": "user", "content": "${prompt}"}],
 )
 print(resp.choices[0].message.content)`,
     html: `<span class="cb-kw">from</span> openai <span class="cb-kw">import</span> OpenAI
@@ -60,7 +69,7 @@ client = OpenAI(
 
 resp = client.chat.completions.create(
     model=<span class="cb-hl">"claude-opus-4-7"</span>,
-    messages=[{<span class="cb-str">"role"</span>: <span class="cb-str">"user"</span>, <span class="cb-str">"content"</span>: <span class="cb-str">"用一句话解释 RAG。"</span>}],
+    messages=[{<span class="cb-str">"role"</span>: <span class="cb-str">"user"</span>, <span class="cb-str">"content"</span>: <span class="cb-str">"${prompt}"</span>}],
 )
 <span class="cb-fn">print</span>(resp.choices[<span class="cb-num">0</span>].message.content)`,
   },
@@ -76,7 +85,7 @@ const client = new OpenAI({
 
 const resp = await client.chat.completions.create({
   model: "claude-opus-4-7",
-  messages: [{ role: "user", content: "用一句话解释 RAG。" }],
+  messages: [{ role: "user", content: "${prompt}" }],
 });
 console.log(resp.choices[0].message.content);`,
     html: `<span class="cb-kw">import</span> OpenAI <span class="cb-kw">from</span> <span class="cb-str">"openai"</span>;
@@ -88,7 +97,7 @@ console.log(resp.choices[0].message.content);`,
 
 <span class="cb-kw">const</span> resp = <span class="cb-kw">await</span> client.chat.completions.<span class="cb-fn">create</span>({
   model: <span class="cb-hl">"claude-opus-4-7"</span>,
-  messages: [{ role: <span class="cb-str">"user"</span>, content: <span class="cb-str">"用一句话解释 RAG。"</span> }],
+  messages: [{ role: <span class="cb-str">"user"</span>, content: <span class="cb-str">"${prompt}"</span> }],
 });
 <span class="cb-fn">console</span>.log(resp.choices[<span class="cb-num">0</span>].message.content);`,
   },
@@ -96,7 +105,7 @@ console.log(resp.choices[0].message.content);`,
 ---
 
 <div class="cb" data-codeblock>
-  <div class="cb__chrome" role="tablist" aria-label="代码示例语言">
+  <div class="cb__chrome" role="tablist" aria-label={t.code.aria}>
     <div class="cb__tabs">
       {tabs.map((tab, i) => (
         <button
@@ -113,12 +122,12 @@ console.log(resp.choices[0].message.content);`,
         </button>
       ))}
     </div>
-    <button type="button" class="cb__copy" data-cb-copy aria-live="polite">
+    <button type="button" class="cb__copy" data-cb-copy aria-live="polite" data-copy-label={t.code.copy} data-copied-label={t.code.copied} data-error-label={t.code.copyFailed}>
       <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
         <rect x="4.5" y="4.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3" />
         <path d="M11.5 4.5V3a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v7.5a1 1 0 0 0 1 1h1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
       </svg>
-      <span data-cb-copy-label>复制</span>
+      <span data-cb-copy-label>{t.code.copy}</span>
     </button>
   </div>
 
@@ -354,7 +363,7 @@ console.log(resp.choices[0].message.content);`,
       copyLabel.textContent = text;
       window.setTimeout(() => {
         copyBtn.removeAttribute('data-state');
-        copyLabel.textContent = '复制';
+        copyLabel.textContent = copyBtn.dataset.copyLabel || 'Copy';
       }, 1200);
     }
 
@@ -374,9 +383,9 @@ console.log(resp.choices[0].message.content);`,
           document.execCommand('copy');
           document.body.removeChild(ta);
         }
-        flash('copied', '已复制 ✓');
+        flash('copied', `${copyBtn.dataset.copiedLabel || 'Copied'} ✓`);
       } catch (err) {
-        flash('error', '复制失败');
+        flash('error', copyBtn.dataset.errorLabel || 'Copy failed');
       }
     });
   }

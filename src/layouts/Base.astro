@@ -4,15 +4,24 @@ interface Props {
   description?: string;
   ogImage?: string;
   canonical?: string;
+  locale?: 'zh' | 'en';
+  alternateZh?: string;
+  alternateEn?: string;
 }
 
+import { i18n, ogLocale } from '../i18n.ts';
+
 const {
-  title = 'TokenFleet · 一个 API key，接入全部主流大模型',
-  description = '通过统一 API 网关聚合 OpenAI、Anthropic、Google、DeepSeek、Qwen 等 34 个生产级 LLM、图像、视频模型。一个 API key，一份发票，国内直连。',
+  locale = 'zh',
+  title = i18n[locale].seo.homeTitle,
+  description = i18n[locale].seo.homeDescription,
   ogImage,
   canonical = Astro.url.href,
-} = Astro.props;
+  alternateZh,
+  alternateEn,
+} = Astro.props as Props;
 
+const t = i18n[locale];
 const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).toString() : undefined;
 
 import '../styles/global.css';
@@ -21,7 +30,7 @@ import '../styles/tailwind.css';
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang={t.htmlLang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -31,6 +40,8 @@ import '../styles/tailwind.css';
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="canonical" href={canonical} />
+    {alternateZh && <link rel="alternate" hreflang="zh-CN" href={alternateZh} />}
+    {alternateEn && <link rel="alternate" hreflang="en" href={alternateEn} />}
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -38,7 +49,7 @@ import '../styles/tailwind.css';
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:locale" content={ogLocale(locale)} />
     {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
 
     <meta name="twitter:card" content={ogImageUrl ? 'summary_large_image' : 'summary'} />
@@ -50,7 +61,7 @@ import '../styles/tailwind.css';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   </head>
   <body>
-    <a href="#main" class="skip-link">跳到主要内容</a>
+    <a href="#main" class="skip-link">{t.skipToMain}</a>
     <slot />
 
     <style is:global>

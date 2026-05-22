@@ -11,14 +11,24 @@
  * Card 3: GPU 算力出租 — stylized rack with vent slats, capacity labels,
  *         status LEDs that breathe out-of-phase. COMING SOON state.
  */
+import { i18n, localePath, type Locale } from '../i18n.ts';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'zh' } = Astro.props as Props;
+const t = i18n[locale];
+const [gateway, billing, gpu] = t.product.cards;
+const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute rental inquiry';
 ---
 
 <section class="tri" id="products" aria-labelledby="tri-title">
   <div class="container tri__inner">
     <div class="tri__header" data-reveal>
-      <span class="eyebrow eyebrow--mute">WHAT TOKENFLEET SHIPS</span>
+      <span class="eyebrow eyebrow--mute">{t.product.eyebrow}</span>
       <h2 class="tri__title" id="tri-title">
-        三条产品线，一条 endpoint，一份对公账单。
+        {t.product.title}
       </h2>
     </div>
 
@@ -26,11 +36,10 @@
       {/* Card 1 — Unified API Gateway */}
       <li class="tri-card tri-card--primary" data-reveal style="--reveal-delay:0ms">
         <div class="tri-card__inner">
-          <span class="eyebrow">PRODUCT 01</span>
-          <h3 class="tri-card__title">统一 API 网关</h3>
+          <span class="eyebrow">{gateway.eyebrow}</span>
+          <h3 class="tri-card__title">{gateway.title}</h3>
           <p class="tri-card__body">
-            34 个生产级模型聚合在同一个 API 网关下。一个 API key，
-            今天接入多家模型。
+            {gateway.body}
           </p>
 
           <div class="tri-card__media tri-card__media--schematic" aria-hidden="true">
@@ -101,13 +110,11 @@
           </div>
 
           <ul class="tri-card__bullets">
-            <li>统一 endpoint 与 API key</li>
-            <li>同账户、同对账、同发票</li>
-            <li>国内直连，低延迟</li>
+            {gateway.bullets?.map((item) => <li>{item}</li>)}
           </ul>
 
-          <a href="/models" class="btn btn--outline-indigo btn--sm tri-card__cta">
-            查看支持的模型
+          <a href={localePath(locale, '/models')} class="btn btn--outline-indigo btn--sm tri-card__cta">
+            {gateway.cta}
             <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
               <path d="M3.5 2l3 3.5-3 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
@@ -118,27 +125,27 @@
       {/* Card 2 — Unified Billing & Invoicing */}
       <li class="tri-card tri-card--billing" data-reveal style="--reveal-delay:80ms">
         <div class="tri-card__inner">
-          <span class="eyebrow">PRODUCT 02</span>
-          <h3 class="tri-card__title">统一计费与发票</h3>
+          <span class="eyebrow">{billing.eyebrow}</span>
+          <h3 class="tri-card__title">{billing.title}</h3>
           <p class="tri-card__body">
-            一个对公账户，自动汇总跨厂商用量。月底一张人民币增值税专票。
+            {billing.body}
           </p>
 
-          <figure class="invoice" data-invoice-anim aria-label="增值税专用发票示意">
+          <figure class="invoice" data-invoice-anim aria-label={t.product.invoice.aria}>
             {/* faux 对公专票 chop in bottom-right */}
             <svg class="invoice__chop" viewBox="0 0 72 72" aria-hidden="true">
               <rect x="3" y="3" width="66" height="66" rx="4" fill="none" stroke="currentColor" stroke-width="2.4" />
               <rect x="9" y="9" width="54" height="54" rx="2" fill="none" stroke="currentColor" stroke-width="0.8" />
               <g font-family="var(--font-sans)" font-weight="600" font-size="17" fill="currentColor" text-anchor="middle">
-                <text x="24" y="32">对</text>
-                <text x="48" y="32">公</text>
-                <text x="24" y="56">专</text>
-                <text x="48" y="56">票</text>
+                <text x="24" y="32">{t.product.invoice.chop[0]}</text>
+                <text x="48" y="32">{t.product.invoice.chop[1]}</text>
+                <text x="24" y="56">{t.product.invoice.chop[2]}</text>
+                <text x="48" y="56">{t.product.invoice.chop[3]}</text>
               </g>
             </svg>
 
             <div class="invoice__head">
-              <span class="invoice__brand mono">TokenFleet · 增值税专用发票</span>
+              <span class="invoice__brand mono">{t.product.invoice.title}</span>
               <span class="invoice__no mono">№ 2026-04-018</span>
             </div>
 
@@ -168,7 +175,7 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <td>合计（含税 6%）</td>
+                  <td>{t.product.invoice.total}</td>
                   <td class="invoice__total mono tabular"><span data-amt="11170.60">¥&thinsp;11,170.60</span></td>
                 </tr>
               </tfoot>
@@ -179,19 +186,17 @@
             </svg>
 
             <div class="invoice__foot mono">
-              <span>购方：示例企业有限公司</span>
-              <span>开票日期 2026-04-30</span>
+              <span>{t.product.invoice.buyer}</span>
+              <span>{t.product.invoice.date}</span>
             </div>
           </figure>
 
           <ul class="tri-card__bullets">
-            <li>跨厂商用量统一对账</li>
-            <li>月度自动开票或按需补开</li>
-            <li>团队 / 项目维度的成本归属</li>
+            {billing.bullets?.map((item) => <li>{item}</li>)}
           </ul>
 
-          <a href="/#business" class="btn btn--outline-indigo btn--sm tri-card__cta">
-            查看计费机制
+          <a href={`${localePath(locale, '/')}#business`} class="btn btn--outline-indigo btn--sm tri-card__cta">
+            {billing.cta}
             <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
               <path d="M3.5 2l3 3.5-3 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
@@ -202,10 +207,10 @@
       {/* Card 3 — GPU Coming-soon */}
       <li class="tri-card tri-card--soon" data-reveal style="--reveal-delay:160ms">
         <div class="tri-card__inner">
-          <span class="eyebrow eyebrow--mute">PRODUCT 03 · COMING SOON</span>
-          <h3 class="tri-card__title">GPU 算力出租</h3>
+          <span class="eyebrow eyebrow--mute">{gpu.eyebrow}</span>
+          <h3 class="tri-card__title">{gpu.title}</h3>
           <p class="tri-card__body">
-            按小时计费的 H100 / H200 集群，跑你自己的训练与微调任务。准备中。
+            {gpu.body}
           </p>
 
           <div class="tri-card__media tri-card__media--rack" aria-hidden="true">
@@ -268,10 +273,10 @@
 
           <div class="gpu-contact">
             <a
-              href="mailto:sales@tokenfleet.cn?subject=GPU%20算力出租咨询"
+              href={`mailto:sales@tokenfleet.cn?subject=${encodeURIComponent(gpuSubject)}`}
               class="btn btn--outline-indigo btn--sm gpu-contact__btn"
             >
-              联系销售咨询
+              {gpu.cta}
             </a>
             <p class="gpu-contact__note mono">sales@tokenfleet.cn</p>
           </div>
@@ -285,9 +290,10 @@
   /* Count-up: animate invoice numbers when the figure enters view. */
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  const invoiceLocale = document.documentElement.lang || 'zh-CN';
   const formatRMB = (n: number) =>
     '¥ ' +
-    n.toLocaleString('zh-CN', {
+    n.toLocaleString(invoiceLocale, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });

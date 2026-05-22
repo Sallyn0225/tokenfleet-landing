@@ -8,8 +8,15 @@
  * model id (display-md, weight 300) + mono token cost.
  */
 
-import { loadModels, modalityLabel, priceLabel, totalModelCount } from '../data/pricing.ts';
+import { loadModels, modalityLabel, priceLabel, totalModelCount, vendorDisplayName } from '../data/pricing.ts';
+import { i18n, localePath, type Locale } from '../i18n.ts';
 
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'zh' } = Astro.props as Props;
+const t = i18n[locale];
 const total = totalModelCount();
 const featuredModelIds = [
   'gpt-5.4',
@@ -19,46 +26,41 @@ const featuredModelIds = [
   'kimi-k2.6',
   'sora-2-pro',
 ];
-const featuredBlurbs: Record<string, string> = {
-  'gpt-5.4': '前沿通用推理与多模态任务',
-  'claude-opus-4.7': '长任务代码与 Agent 工作流',
-  'gemini-3-pro-preview': '长上下文与多模态理解',
-  'DeepSeek-V3.2': '高性价比推理与工具调用',
-  'kimi-k2.6': '国产长文本与办公场景',
-  'sora-2-pro': '高保真视频生成',
-};
+const featuredBlurbs: Record<string, string> = t.featured.blurbs;
 const modelById = new Map(loadModels().map((model) => [model.model_name, model]));
 const featuredModels = featuredModelIds
   .map((id) => modelById.get(id))
   .filter(Boolean)
   .map((model) => ({
     ...model!,
-    blurb: featuredBlurbs[model!.model_name] ?? model!.description?.split('\n')[0] ?? '生产级模型接入',
+    blurb: featuredBlurbs[model!.model_name] ?? model!.description?.split('\n')[0] ?? t.featured.fallbackBlurb,
   }));
+const featuredTitle = t.featured.title(total).split('\n');
 ---
 
 <section class="featured" id="models" aria-labelledby="featured-title">
   <div class="container featured__inner">
     <div class="featured__lede" data-reveal>
-      <span class="eyebrow eyebrow--mute">MODELS GALLERY</span>
+      <span class="eyebrow eyebrow--mute">{t.featured.eyebrow}</span>
       <h2 class="featured__title" id="featured-title">
-        <span class="mono featured__num">{total}</span> 个生产级模型，<br />
-        一份计费。
+        {featuredTitle[0].startsWith(String(total)) ? <span class="mono featured__num">{total}</span> : null}
+        {featuredTitle[0].replace(String(total), '')}<br />
+        {featuredTitle[1]}
       </h2>
       <p class="featured__body">
-        从 LLM、图像、视频到音频，全部走同一个 endpoint 与同一个对公账户。
+        {t.featured.body}
       </p>
-      <a href="/models" class="link featured__link">
-        查看全部模型
+      <a href={localePath(locale, '/models')} class="link featured__link">
+        {t.featured.viewAll}
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
           <path d="M4 2.5l3.5 3.5L4 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </a>
       <ul class="featured__taxonomy mono">
-        <li><a href="/models?modality=chat">LLM</a></li>
-        <li><a href="/models?modality=image">图像</a></li>
-        <li><a href="/models?modality=video">视频</a></li>
-        <li><a href="/models?modality=audio">音频</a></li>
+        <li><a href={`${localePath(locale, '/models')}?modality=chat`}>{t.models.modalities.chat}</a></li>
+        <li><a href={`${localePath(locale, '/models')}?modality=image`}>{t.models.modalities.image}</a></li>
+        <li><a href={`${localePath(locale, '/models')}?modality=video`}>{t.models.modalities.video}</a></li>
+        <li><a href={`${localePath(locale, '/models')}?modality=audio`}>{t.models.modalities.audio}</a></li>
       </ul>
     </div>
 
@@ -72,13 +74,13 @@ const featuredModels = featuredModelIds
           <img class="modelcard__watermark" src={m.iconUrl} alt="" loading="lazy" aria-hidden="true" />
           <div class="modelcard__top">
             <span class="modelcard__logo">
-              <img src={m.iconUrl} alt={`${m.vendor.name} logo`} loading="lazy" />
+              <img src={m.iconUrl} alt={`${vendorDisplayName(m.vendor, locale)} logo`} loading="lazy" />
             </span>
             <span class="modelcard__vendor">
-              {m.vendor.name}
+              {vendorDisplayName(m.vendor, locale)}
             </span>
             <span class="modelcard__modality mono">
-              {modalityLabel(m.modality)}
+              {modalityLabel(m.modality, locale)}
             </span>
           </div>
           <div class="modelcard__body">
@@ -86,7 +88,7 @@ const featuredModels = featuredModelIds
             <p class="modelcard__blurb">{m.blurb}</p>
           </div>
           <p class="modelcard__price mono">
-            {priceLabel(m)}
+            {priceLabel(m, locale)}
           </p>
         </li>
       ))}

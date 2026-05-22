@@ -101,6 +101,14 @@ export function vendorSlug(v: Vendor): string {
   return v.name.toLowerCase().replace(/\s+/g, '-');
 }
 
+export function vendorDisplayName(v: Vendor, locale: 'zh' | 'en' = 'zh'): string {
+  if (locale === 'en') {
+    if (v.id === 8) return 'Zhipu';
+    if (v.id === 9) return 'Kuaishou';
+  }
+  return v.name;
+}
+
 // ──────────────────────────────────────────────────────────────────────────
 // Modality detection
 // ──────────────────────────────────────────────────────────────────────────
@@ -122,16 +130,16 @@ export function modalityOf(m: RawModel): Modality {
   return 'chat';
 }
 
-export function modalityLabel(mod: Modality): string {
+export function modalityLabel(mod: Modality, locale: 'zh' | 'en' = 'zh'): string {
   switch (mod) {
     case 'chat':
       return 'LLM';
     case 'image':
-      return '图像';
+      return locale === 'en' ? 'Image' : '图像';
     case 'video':
-      return '视频';
+      return locale === 'en' ? 'Video' : '视频';
     case 'audio':
-      return '音频';
+      return locale === 'en' ? 'Audio' : '音频';
   }
 }
 
@@ -222,10 +230,10 @@ export function priceBreakdown(m: RawModel): PriceBreakdown {
 }
 
 /** Compact mono label for cards: e.g. '$5 / $25 per 1M' or '$0.5 / image'. */
-export function priceLabel(m: RawModel): string {
+export function priceLabel(m: RawModel, locale: 'zh' | 'en' = 'zh'): string {
   const p = priceBreakdown(m);
   if (p.kind === 'call') {
-    return `${fmtUsd(p.inputUsd)} / 次`;
+    return `${fmtUsd(p.inputUsd)} / ${locale === 'en' ? 'call' : '次'}`;
   }
   return `${fmtUsd(p.inputUsd)} / ${fmtUsd(p.outputUsd!)} per 1M`;
 }
