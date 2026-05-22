@@ -24,7 +24,7 @@ const t = i18n[locale];
   alternateEn={new URL('/en', Astro.site).toString()}
 >
   <TopNav locale={locale} currentPath="/" />
-  <main>
+  <main id="main">
     <Hero locale={locale} />
     <BrandStrip locale={locale} />
     <FeaturedModels locale={locale} />
