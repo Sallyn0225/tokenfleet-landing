@@ -78,16 +78,22 @@ const labels = [
     isolation: isolate;
   }
 
-  /* atmospheric inner glow (very subtle; not a marketing glow) */
+  /* Photo-backed infrastructure atmosphere, kept dark enough for copy. */
   .enterprise__bg {
     position: absolute;
     inset: 0;
     pointer-events: none;
     z-index: 0;
-    opacity: 0.55;
+    opacity: 1;
     background:
-      radial-gradient(ellipse 60% 50% at 20% 0%, rgba(83, 58, 253, 0.35), transparent 65%),
-      radial-gradient(ellipse 50% 40% at 90% 100%, rgba(234, 34, 97, 0.18), transparent 60%);
+      linear-gradient(90deg, rgba(7, 12, 30, 0.96) 0%, rgba(10, 16, 42, 0.9) 36%, rgba(13, 18, 46, 0.58) 100%),
+      linear-gradient(180deg, rgba(28, 30, 84, 0.2), rgba(11, 14, 36, 0.88)),
+      image-set(
+        url('/images/enterprise-production-scale-bg-1600.avif') type('image/avif'),
+        url('/images/enterprise-production-scale-bg-1600.webp') type('image/webp')
+      );
+    background-size: cover;
+    background-position: center right;
   }
 
   .enterprise__inner {
@@ -165,6 +171,18 @@ const labels = [
   }
 
   @media (max-width: 768px) {
+    .enterprise__bg {
+      background:
+        linear-gradient(90deg, rgba(7, 12, 30, 0.98) 0%, rgba(10, 16, 42, 0.92) 48%, rgba(13, 18, 46, 0.74) 100%),
+        linear-gradient(180deg, rgba(28, 30, 84, 0.24), rgba(11, 14, 36, 0.9)),
+        image-set(
+          url('/images/enterprise-production-scale-bg-960.avif') type('image/avif'),
+          url('/images/enterprise-production-scale-bg-960.webp') type('image/webp')
+        );
+      background-size: cover;
+      background-position: 58% center;
+    }
+
     .enterprise__labels {
       grid-template-columns: 1fr;
       gap: 24px;
