@@ -25,12 +25,14 @@ const t = i18n[locale];
 const title = t.business.title.split('\n');
 const salesSubject = locale === 'zh' ? '预约销售对话' : 'Book a sales call';
 const dpaSubject = locale === 'zh' ? '索取 DPA 模板' : 'Request DPA template';
-const capabilities = t.business.capabilities.map(([label, body, mono], index) => ({
-  n: String(index + 1).padStart(2, '0'),
-  label,
-  body,
-  mono,
-}));
+const capabilities = t.business.capabilities.map(
+  ([label, body, mono], index) => ({
+    n: String(index + 1).padStart(2, '0'),
+    label,
+    body,
+    mono,
+  })
+);
 ---
 
 <section class="b4b" id="business" aria-labelledby="b4b-title">
@@ -38,25 +40,51 @@ const capabilities = t.business.capabilities.map(([label, body, mono], index) =>
     <div class="b4b__lede" data-reveal>
       <span class="eyebrow eyebrow--mute">{t.business.eyebrow}</span>
       <h2 class="b4b__title" id="b4b-title">
-        {title[0]}{title[1] && <><br />{title[1]}</>}
+        {title[0]}{
+          title[1] && (
+            <>
+              <br />
+              {title[1]}
+            </>
+          )
+        }
       </h2>
       <p class="b4b__body">
         {t.business.body}
       </p>
       <div class="b4b__cta">
-        <a href={`mailto:sales@tokenfleet.cn?subject=${encodeURIComponent(salesSubject)}`} class="btn btn--outline-indigo">
+        <a
+          href={`mailto:sales@tokenfleet.cn?subject=${encodeURIComponent(salesSubject)}`}
+          class="btn btn--outline-indigo"
+        >
           {t.business.sales}
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
-            <path d="M4.5 2.5l3 3.5-3 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 13 13"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M4.5 2.5l3 3.5-3 3.5"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
           </svg>
         </a>
-        <a href={`mailto:sales@tokenfleet.cn?subject=${encodeURIComponent(dpaSubject)}`} class="link b4b__doc-link">
+        <a
+          href={`mailto:sales@tokenfleet.cn?subject=${encodeURIComponent(dpaSubject)}`}
+          class="link b4b__doc-link"
+        >
           {t.business.dpa}
         </a>
       </div>
 
       <figure class="b4b__roles" aria-label={t.business.rolesAria}>
-        <figcaption class="eyebrow eyebrow--mute">{t.business.rolesTitle}</figcaption>
+        <figcaption class="eyebrow eyebrow--mute">
+          {t.business.rolesTitle}
+        </figcaption>
         <ul class="b4b__role-chips">
           <li class="role role--owner mono">Owner · 1</li>
           <li class="role role--admin mono">Admin · 2</li>
@@ -67,16 +95,18 @@ const capabilities = t.business.capabilities.map(([label, body, mono], index) =>
     </div>
 
     <ol class="b4b__caps" data-reveal>
-      {capabilities.map((c) => (
-        <li class="cap">
-          <span class="cap__n mono">{c.n}</span>
-          <div class="cap__copy">
-            <h3 class="cap__label">{c.label}</h3>
-            <p class="cap__body">{c.body}</p>
-            <p class="cap__mono mono">{c.mono}</p>
-          </div>
-        </li>
-      ))}
+      {
+        capabilities.map((c) => (
+          <li class="cap">
+            <span class="cap__n mono">{c.n}</span>
+            <div class="cap__copy">
+              <h3 class="cap__label">{c.label}</h3>
+              <p class="cap__body">{c.body}</p>
+              <p class="cap__mono mono">{c.mono}</p>
+            </div>
+          </li>
+        ))
+      }
     </ol>
   </div>
 </section>
@@ -96,7 +126,11 @@ const capabilities = t.business.capabilities.map(([label, body, mono], index) =>
     content: '';
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(circle, rgba(155, 104, 41, 0.06) 1px, transparent 1px);
+    background-image: radial-gradient(
+      circle,
+      rgba(155, 104, 41, 0.06) 1px,
+      transparent 1px
+    );
     background-size: 18px 18px;
     pointer-events: none;
     opacity: 0.7;
@@ -180,8 +214,16 @@ const capabilities = t.business.capabilities.map(([label, body, mono], index) =>
     letter-spacing: -0.005em;
   }
 
-  .role--owner   { background: var(--color-brand-dark-900); color: var(--color-on-primary); border-color: var(--color-brand-dark-900); }
-  .role--admin   { background: var(--color-primary); color: var(--color-on-primary); border-color: var(--color-primary); }
+  .role--owner {
+    background: var(--color-brand-dark-900);
+    color: var(--color-on-primary);
+    border-color: var(--color-brand-dark-900);
+  }
+  .role--admin {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    border-color: var(--color-primary);
+  }
 
   /* ── capability list ──────────────────────────────────────────────────── */
   .b4b__caps {
@@ -199,8 +241,12 @@ const capabilities = t.business.capabilities.map(([label, body, mono], index) =>
     align-items: start;
   }
 
-  .cap:first-child { padding-top: 8px; }
-  .cap:last-child  { border-bottom: 0; }
+  .cap:first-child {
+    padding-top: 8px;
+  }
+  .cap:last-child {
+    border-bottom: 0;
+  }
 
   .cap__n {
     font-size: 13px;
@@ -245,7 +291,9 @@ const capabilities = t.business.capabilities.map(([label, body, mono], index) =>
       grid-template-columns: 1fr;
       gap: 48px;
     }
-    .b4b__title { max-width: 18ch; }
+    .b4b__title {
+      max-width: 18ch;
+    }
   }
 
   @media (max-width: 640px) {
@@ -254,6 +302,8 @@ const capabilities = t.business.capabilities.map(([label, body, mono], index) =>
       gap: 16px;
       padding: 18px 0;
     }
-    .cap__label { font-size: 17px; }
+    .cap__label {
+      font-size: 17px;
+    }
   }
 </style>

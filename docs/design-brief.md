@@ -8,6 +8,7 @@
 ## 1. Feature Summary
 
 TokenFleet 简体中文落地页（单页 / production-ready / 9 段）。fal.ai 信息骨架 × Stripe atmospheric editorial visual system。同时为两个读者层服务：
+
 - **工程负责人 / CTO**：5 秒内理解"一个 API key 接所有主流大模型"，验证 OpenAI SDK 兼容性，决定点 `开始接入` 注册。
 - **企业采购 / 财务 / 法务**：在专属 "Built for Business" 段确认"对公账户 / 增值税专票 / 多人权限 / 用量看板 / 合同 SLA"五项能力，决定预约销售。
 
@@ -17,6 +18,7 @@ TokenFleet 简体中文落地页（单页 / production-ready / 9 段）。fal.ai
 
 **首屏 5 秒内**：工程师抓住 hero 多 tab 代码块（curl / Python / Node），感知 `base_url=https://api.tokenfleet.cn/v1` 一行替换即可复用 OpenAI 官方 SDK。
 **次级动作**：
+
 - 工程读者 → indigo pill `开始接入` 注册 API key，或滚动至 Why-us 卡 C 验证 SDK 兼容差异。
 - 财务 / 采购读者 → 直接跳至 Built for Business 段，或在 Enterprise band 点 `联系销售`。
 
@@ -28,7 +30,7 @@ TokenFleet 简体中文落地页（单页 / production-ready / 9 段）。fal.ai
   - **Dark band** = Enterprise 段 `{colors.brand-dark-900}` (#1c1e54)，承担工程侧 enterprise 能力（SLA / VPC / SSO）的权威感。
   - 其余段 = `{colors.canvas}` (白) / `{colors.canvas-soft}` (#f6f9fc) 交替。
   - **Indigo** `{colors.primary}` (#533afd) 仅用于 CTA pill、wordmark voltage、code 高亮、inline link，face ratio 仍 ≤10%，但 mesh + cream + dark band 让整体不再是 "Restrained"。
-- **Theme scene sentence**: *"一位 32 岁 CTO，周二上午 10 点在杭州办公室双屏环境（左 14 寸 MacBook、右 27 寸外接），刚被 CFO 推了一封 'AI 调用账单不规范' 的邮件，要求 1 周内换一家能开人民币专票、能签合同的供应商，桌灯关、自然光，正打开第 3 个评估页准备按 F12 验证延迟同时把 link 转发给采购同事。"* → **light-by-default**（白天 / 决策审视 / 双读者并行）。唯一 dark band 留给 Enterprise 段制造 mood-room 反差节奏。
+- **Theme scene sentence**: _"一位 32 岁 CTO，周二上午 10 点在杭州办公室双屏环境（左 14 寸 MacBook、右 27 寸外接），刚被 CFO 推了一封 'AI 调用账单不规范' 的邮件，要求 1 周内换一家能开人民币专票、能签合同的供应商，桌灯关、自然光，正打开第 3 个评估页准备按 F12 验证延迟同时把 link 转发给采购同事。"_ → **light-by-default**（白天 / 决策审视 / 双读者并行）。唯一 dark band 留给 Enterprise 段制造 mood-room 反差节奏。
 - **Anchor references (2)**:
   - **stripe.com** (主页 / payments / billing) — atmospheric mesh hero、Sohne thin 编辑级排版、indigo pill CTA、tabular figures、composited dashboard mockup、cream interlude band、pill button geometry。
   - **vercel.com** (主页 / docs) — 代码块作为 first-class hero element、mono tab + Copy 微交互、冷峻黑白 + accent color 的工程师向密度感。
@@ -94,18 +96,18 @@ editorial-calm 主体 + 三色区轮换（mesh / cream / dark）制造节奏。S
 
 ## 6. Key States
 
-| Surface | Default | Loading | Error | Edge / a11y |
-|---|---|---|---|---|
-| Hero code tab | curl 默认激活 | n/a (静态) | n/a | 长内容 mono 横向滚动；键盘 ←/→ 切 tab；focus ring indigo 2px |
-| Code copy 按钮 | mono `复制` | 按下 → 100ms 内 `已复制 ✓` (indigo)，800ms 回退 | `无法复制，请手动选中` | clipboard API 不可用 → execCommand fallback |
-| Featured 5-up | 全展示 | n/a | n/a | mobile 2 / tablet 3 / desktop 5；keyboard tabbable |
-| Tri-card 主卡 2 mini 发票 | 静态 mockup | n/a | n/a | 全 mono tabular figures；contrast AA |
-| Built for Business CTA | outline pill | mailto / placeholder | n/a | n/a |
-| Coming-soon 邮件 | placeholder `your@email.com` | `submitting...` 灰 | inline indigo text invalid | 重复订阅：`您已在候补名单` |
-| Enterprise CTA | indigo pill | mailto / 表单 placeholder | n/a | n/a |
-| ICP 链接 | underline-on-hover | n/a | n/a | `target="_blank" rel="noopener noreferrer"` |
-| Reduced motion | 关闭所有 reveal 动画 + mesh 静止 | — | — | `prefers-reduced-motion: reduce` |
-| 焦点态 | 2px indigo ring + 2px offset | — | — | 键盘 Tab 覆盖全部 interactive |
+| Surface                   | Default                          | Loading                                         | Error                      | Edge / a11y                                                  |
+| ------------------------- | -------------------------------- | ----------------------------------------------- | -------------------------- | ------------------------------------------------------------ |
+| Hero code tab             | curl 默认激活                    | n/a (静态)                                      | n/a                        | 长内容 mono 横向滚动；键盘 ←/→ 切 tab；focus ring indigo 2px |
+| Code copy 按钮            | mono `复制`                      | 按下 → 100ms 内 `已复制 ✓` (indigo)，800ms 回退 | `无法复制，请手动选中`     | clipboard API 不可用 → execCommand fallback                  |
+| Featured 5-up             | 全展示                           | n/a                                             | n/a                        | mobile 2 / tablet 3 / desktop 5；keyboard tabbable           |
+| Tri-card 主卡 2 mini 发票 | 静态 mockup                      | n/a                                             | n/a                        | 全 mono tabular figures；contrast AA                         |
+| Built for Business CTA    | outline pill                     | mailto / placeholder                            | n/a                        | n/a                                                          |
+| Coming-soon 邮件          | placeholder `your@email.com`     | `submitting...` 灰                              | inline indigo text invalid | 重复订阅：`您已在候补名单`                                   |
+| Enterprise CTA            | indigo pill                      | mailto / 表单 placeholder                       | n/a                        | n/a                                                          |
+| ICP 链接                  | underline-on-hover               | n/a                                             | n/a                        | `target="_blank" rel="noopener noreferrer"`                  |
+| Reduced motion            | 关闭所有 reveal 动画 + mesh 静止 | —                                               | —                          | `prefers-reduced-motion: reduce`                             |
+| 焦点态                    | 2px indigo ring + 2px offset     | —                                               | —                          | 键盘 Tab 覆盖全部 interactive                                |
 
 ## 7. Interaction Model
 

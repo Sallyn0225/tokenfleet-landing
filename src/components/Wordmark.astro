@@ -14,7 +14,12 @@ interface Props {
 
 import { i18n, localePath } from '../i18n.ts';
 
-const { size = 'md', variant = 'on-light', class: className = '', locale = 'zh' } = Astro.props as Props;
+const {
+  size = 'md',
+  variant = 'on-light',
+  class: className = '',
+  locale = 'zh',
+} = Astro.props as Props;
 const t = i18n[locale];
 ---
 
@@ -36,7 +41,9 @@ const t = i18n[locale];
     />
   </picture>
   <span class="wordmark__text">
-    <span class="wordmark__token">Token</span><span class="wordmark__fleet">Fleet</span><span class="wordmark__dot" aria-hidden="true">.</span>
+    <span class="wordmark__token">Token</span><span class="wordmark__fleet"
+      >Fleet</span
+    ><span class="wordmark__dot" aria-hidden="true">.</span>
   </span>
 </a>
 
@@ -99,8 +106,12 @@ const t = i18n[locale];
     align-items: baseline;
   }
 
-  .wordmark--on-dark { color: var(--color-on-primary); }
-  .wordmark--on-dark .wordmark__token { color: var(--color-on-primary); }
+  .wordmark--on-dark {
+    color: var(--color-on-primary);
+  }
+  .wordmark--on-dark .wordmark__token {
+    color: var(--color-on-primary);
+  }
 
   .wordmark__token {
     color: var(--color-ink);

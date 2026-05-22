@@ -12,7 +12,11 @@
  * §5 Built for Business) to a latency / 国内直连 demonstration.
  */
 
-import { loadModels, totalModelCount, vendorDisplayName } from '../data/pricing.ts';
+import {
+  loadModels,
+  totalModelCount,
+  vendorDisplayName,
+} from '../data/pricing.ts';
 import { i18n, localePath, type Locale } from '../i18n.ts';
 
 interface Props {
@@ -45,7 +49,9 @@ const marqueeIds = [
   'nano-banana-pro-reverse',
 ];
 const byId = new Map(allModels.map((m) => [m.model_name, m]));
-const marquee = marqueeIds.map((id) => byId.get(id)).filter(Boolean) as typeof allModels;
+const marquee = marqueeIds
+  .map((id) => byId.get(id))
+  .filter(Boolean) as typeof allModels;
 const remaining = total - marquee.length;
 
 const cities = [
@@ -71,118 +77,310 @@ const cities = [
 
     <div class="why__grid">
       {/* A — production models mono grid (12 marquee + folded link) */}
-      <article class="whycard whycard--models" data-reveal style="--reveal-delay:0ms">
+      <article
+        class="whycard whycard--models"
+        data-reveal
+        style="--reveal-delay:0ms"
+      >
         <header class="whycard__head">
           <span class="eyebrow eyebrow--mute">A</span>
           <h3 class="whycard__title">{t.why.cards.modelsTitle(total)}</h3>
           <p class="whycard__body">{t.why.cards.modelsBody}</p>
         </header>
         <ul class="modelgrid mono">
-          {marquee.map((model) => (
-            <li class="modelgrid__cell">
-              <span class="modelgrid__id">{model.model_name}</span>
-              <span class="modelgrid__vendor">{vendorDisplayName(model.vendor, locale)}</span>
-            </li>
-          ))}
+          {
+            marquee.map((model) => (
+              <li class="modelgrid__cell">
+                <span class="modelgrid__id">{model.model_name}</span>
+                <span class="modelgrid__vendor">
+                  {vendorDisplayName(model.vendor, locale)}
+                </span>
+              </li>
+            ))
+          }
         </ul>
         <a href={localePath(locale, '/models')} class="modelgrid__more-link">
-          <span>+{remaining}<span class="modelgrid__more-label"> {t.why.cards.moreModels}</span></span>
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-            <path d="M4 2.5l3.5 3.5L4 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          <span
+            >+{remaining}<span class="modelgrid__more-label">
+              {t.why.cards.moreModels}</span
+            ></span
+          >
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M4 2.5l3.5 3.5L4 9.5"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
           </svg>
         </a>
       </article>
 
       {/* B — Private VPC */}
-      <article class="whycard whycard--vpc" data-reveal style="--reveal-delay:80ms">
+      <article
+        class="whycard whycard--vpc"
+        data-reveal
+        style="--reveal-delay:80ms"
+      >
         <header class="whycard__head">
           <span class="eyebrow eyebrow--mute">B</span>
           <h3 class="whycard__title">{t.why.cards.vpcTitle}</h3>
           <p class="whycard__body">{t.why.cards.vpcBody}</p>
         </header>
         <div class="vpc" aria-hidden="true">
-          <svg viewBox="0 0 360 210" fill="none" xmlns="http://www.w3.org/2000/svg" class="vpc-svg">
+          <svg
+            viewBox="0 0 360 210"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="vpc-svg"
+          >
             <defs>
               <linearGradient id="vpc-private-grad" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="var(--color-primary-deep)" />
-                <stop offset="100%" stop-color="var(--color-primary)" />
+                <stop offset="0%" stop-color="var(--color-primary-deep)"></stop>
+                <stop offset="100%" stop-color="var(--color-primary)"></stop>
               </linearGradient>
             </defs>
 
-            {/* ── PUBLIC row ─────────────────────────────────────────────── */}
+            {
+              /* ── PUBLIC row ─────────────────────────────────────────────── */
+            }
             <g class="vpc-row vpc-row--public">
-              <text x="180" y="20" text-anchor="middle" font-size="9" font-family="var(--font-mono)" fill="var(--color-ink-mute)" letter-spacing="1">PUBLIC INTERNET</text>
+              <text
+                x="180"
+                y="20"
+                text-anchor="middle"
+                font-size="9"
+                font-family="var(--font-mono)"
+                fill="var(--color-ink-mute)"
+                letter-spacing="1">PUBLIC INTERNET</text
+              >
 
               {/* api endpoint */}
-              <rect x="14" y="36" width="98" height="32" rx="4" fill="var(--color-canvas)" stroke="var(--color-hairline-strong)" stroke-width="1.1" />
-              <text x="63" y="56" text-anchor="middle" font-size="10" font-family="var(--font-mono)" fill="var(--color-ink-secondary)">api endpoint</text>
+              <rect
+                x="14"
+                y="36"
+                width="98"
+                height="32"
+                rx="4"
+                fill="var(--color-canvas)"
+                stroke="var(--color-hairline-strong)"
+                stroke-width="1.1"></rect>
+              <text
+                x="63"
+                y="56"
+                text-anchor="middle"
+                font-size="10"
+                font-family="var(--font-mono)"
+                fill="var(--color-ink-secondary)">api endpoint</text
+              >
 
               {/* dashed path through public cloud */}
-              <path class="vpc-path vpc-path--public" d="M112 52 L168 52" stroke="var(--color-hairline-strong)" stroke-width="1.2" stroke-dasharray="3 3" />
-              <path class="vpc-path vpc-path--public" d="M210 52 L262 52" stroke="var(--color-hairline-strong)" stroke-width="1.2" stroke-dasharray="3 3" />
+              <path
+                class="vpc-path vpc-path--public"
+                d="M112 52 L168 52"
+                stroke="var(--color-hairline-strong)"
+                stroke-width="1.2"
+                stroke-dasharray="3 3"></path>
+              <path
+                class="vpc-path vpc-path--public"
+                d="M210 52 L262 52"
+                stroke="var(--color-hairline-strong)"
+                stroke-width="1.2"
+                stroke-dasharray="3 3"></path>
 
               {/* internet cloud */}
               <g class="vpc-cloud">
-                <path d="M174 56c-3-1.5-3-6 1-6 0-3.5 5-4.5 7-1 1.5-3 7-2.5 7 1 4 0 5 4 1.5 6z" fill="var(--color-canvas-soft)" stroke="var(--color-hairline-strong)" stroke-width="1" />
-                <text x="189" y="68" text-anchor="middle" font-size="7" font-family="var(--font-mono)" fill="var(--color-ink-mute)">internet</text>
+                <path
+                  d="M174 56c-3-1.5-3-6 1-6 0-3.5 5-4.5 7-1 1.5-3 7-2.5 7 1 4 0 5 4 1.5 6z"
+                  fill="var(--color-canvas-soft)"
+                  stroke="var(--color-hairline-strong)"
+                  stroke-width="1"></path>
+                <text
+                  x="189"
+                  y="68"
+                  text-anchor="middle"
+                  font-size="7"
+                  font-family="var(--font-mono)"
+                  fill="var(--color-ink-mute)">internet</text
+                >
               </g>
 
               {/* your app (public side ghost) */}
-              <rect x="262" y="36" width="86" height="32" rx="4" fill="var(--color-canvas)" stroke="var(--color-hairline-strong)" stroke-width="1.1" />
-              <text x="305" y="56" text-anchor="middle" font-size="10" font-family="var(--font-mono)" fill="var(--color-ink-secondary)">your app</text>
+              <rect
+                x="262"
+                y="36"
+                width="86"
+                height="32"
+                rx="4"
+                fill="var(--color-canvas)"
+                stroke="var(--color-hairline-strong)"
+                stroke-width="1.1"></rect>
+              <text
+                x="305"
+                y="56"
+                text-anchor="middle"
+                font-size="10"
+                font-family="var(--font-mono)"
+                fill="var(--color-ink-secondary)">your app</text
+              >
 
               {/* slow dimming packets on the public line */}
-              <g class="vpc-packets vpc-packets--public" fill="var(--color-ink-mute)">
-                <circle class="vpc-pkt vpc-pkt--p0" cx="112" cy="52" r="2.4" />
-                <circle class="vpc-pkt vpc-pkt--p1" cx="112" cy="52" r="2.4" />
+              <g
+                class="vpc-packets vpc-packets--public"
+                fill="var(--color-ink-mute)"
+              >
+                <circle class="vpc-pkt vpc-pkt--p0" cx="112" cy="52" r="2.4"
+                ></circle>
+                <circle class="vpc-pkt vpc-pkt--p1" cx="112" cy="52" r="2.4"
+                ></circle>
               </g>
             </g>
 
             {/* ── PRIVATE VPC enclosure ────────────────────────────────── */}
             <g class="vpc-row vpc-row--private">
               {/* enclosure box — the private boundary */}
-              <rect class="vpc-enclosure" x="6" y="100" width="348" height="102" rx="8"
+              <rect
+                class="vpc-enclosure"
+                x="6"
+                y="100"
+                width="348"
+                height="102"
+                rx="8"
                 fill="var(--color-primary-bg-subdued)"
                 fill-opacity="0.5"
                 stroke="var(--color-primary)"
                 stroke-width="1"
-                stroke-dasharray="0"
-              />
+                stroke-dasharray="0"></rect>
 
-              <text x="14" y="118" font-size="9" font-family="var(--font-mono)" fill="var(--color-primary)" letter-spacing="1">PRIVATE · VPC</text>
-              <text x="346" y="118" text-anchor="end" font-size="8.5" font-family="var(--font-mono)" fill="var(--color-primary-deep)" opacity="0.7">10.0.0.0/16</text>
+              <text
+                x="14"
+                y="118"
+                font-size="9"
+                font-family="var(--font-mono)"
+                fill="var(--color-primary)"
+                letter-spacing="1">PRIVATE · VPC</text
+              >
+              <text
+                x="346"
+                y="118"
+                text-anchor="end"
+                font-size="8.5"
+                font-family="var(--font-mono)"
+                fill="var(--color-primary-deep)"
+                opacity="0.7">10.0.0.0/16</text
+              >
 
               {/* vpc endpoint */}
-              <rect x="20" y="138" width="98" height="36" rx="4" fill="var(--color-canvas)" stroke="var(--color-primary)" stroke-width="1.4" />
-              <text x="69" y="155" text-anchor="middle" font-size="10" font-family="var(--font-mono)" fill="var(--color-primary)">vpc endpoint</text>
-              <text x="69" y="167" text-anchor="middle" font-size="7.5" font-family="var(--font-mono)" fill="var(--color-primary)" opacity="0.6">eni-priv-0a32f</text>
+              <rect
+                x="20"
+                y="138"
+                width="98"
+                height="36"
+                rx="4"
+                fill="var(--color-canvas)"
+                stroke="var(--color-primary)"
+                stroke-width="1.4"></rect>
+              <text
+                x="69"
+                y="155"
+                text-anchor="middle"
+                font-size="10"
+                font-family="var(--font-mono)"
+                fill="var(--color-primary)">vpc endpoint</text
+              >
+              <text
+                x="69"
+                y="167"
+                text-anchor="middle"
+                font-size="7.5"
+                font-family="var(--font-mono)"
+                fill="var(--color-primary)"
+                opacity="0.6">eni-priv-0a32f</text
+              >
 
               {/* direct private path */}
-              <path class="vpc-path vpc-path--private" d="M118 156 L240 156" stroke="url(#vpc-private-grad)" stroke-width="1.6" />
-              <path d="M240 156 L233 152 M240 156 L233 160" stroke="var(--color-primary)" stroke-width="1.6" stroke-linecap="round" />
+              <path
+                class="vpc-path vpc-path--private"
+                d="M118 156 L240 156"
+                stroke="url(#vpc-private-grad)"
+                stroke-width="1.6"></path>
+              <path
+                d="M240 156 L233 152 M240 156 L233 160"
+                stroke="var(--color-primary)"
+                stroke-width="1.6"
+                stroke-linecap="round"></path>
 
               {/* your app inside the private enclosure */}
-              <rect x="240" y="138" width="98" height="36" rx="4" fill="var(--color-canvas)" stroke="var(--color-primary)" stroke-width="1.4" />
-              <text x="289" y="155" text-anchor="middle" font-size="10" font-family="var(--font-mono)" fill="var(--color-primary)">your app</text>
-              <text x="289" y="167" text-anchor="middle" font-size="7.5" font-family="var(--font-mono)" fill="var(--color-primary)" opacity="0.6">vpc-app-prod</text>
+              <rect
+                x="240"
+                y="138"
+                width="98"
+                height="36"
+                rx="4"
+                fill="var(--color-canvas)"
+                stroke="var(--color-primary)"
+                stroke-width="1.4"></rect>
+              <text
+                x="289"
+                y="155"
+                text-anchor="middle"
+                font-size="10"
+                font-family="var(--font-mono)"
+                fill="var(--color-primary)">your app</text
+              >
+              <text
+                x="289"
+                y="167"
+                text-anchor="middle"
+                font-size="7.5"
+                font-family="var(--font-mono)"
+                fill="var(--color-primary)"
+                opacity="0.6">vpc-app-prod</text
+              >
 
               {/* fast indigo packets on the private line */}
-              <g class="vpc-packets vpc-packets--private" fill="var(--color-primary)">
-                <circle class="vpc-pkt vpc-pkt--q0" cx="118" cy="156" r="2.6" />
-                <circle class="vpc-pkt vpc-pkt--q1" cx="118" cy="156" r="2.6" />
-                <circle class="vpc-pkt vpc-pkt--q2" cx="118" cy="156" r="2.6" />
+              <g
+                class="vpc-packets vpc-packets--private"
+                fill="var(--color-primary)"
+              >
+                <circle class="vpc-pkt vpc-pkt--q0" cx="118" cy="156" r="2.6"
+                ></circle>
+                <circle class="vpc-pkt vpc-pkt--q1" cx="118" cy="156" r="2.6"
+                ></circle>
+                <circle class="vpc-pkt vpc-pkt--q2" cx="118" cy="156" r="2.6"
+                ></circle>
               </g>
 
               {/* tiny lock glyph on private path */}
               <g class="vpc-lock" transform="translate(176, 144)">
-                <rect x="0" y="3" width="8" height="6" rx="1" fill="var(--color-canvas)" stroke="var(--color-primary)" stroke-width="1" />
-                <path d="M2 3 V1.5 a2 2 0 0 1 4 0 V3" stroke="var(--color-primary)" stroke-width="1" fill="none" />
+                <rect
+                  x="0"
+                  y="3"
+                  width="8"
+                  height="6"
+                  rx="1"
+                  fill="var(--color-canvas)"
+                  stroke="var(--color-primary)"
+                  stroke-width="1"></rect>
+                <path
+                  d="M2 3 V1.5 a2 2 0 0 1 4 0 V3"
+                  stroke="var(--color-primary)"
+                  stroke-width="1"
+                  fill="none"></path>
               </g>
             </g>
           </svg>
         </div>
 
-        {/* spec strip — three micro-facts that fill the lower area with credibility */}
+        {
+          /* spec strip — three micro-facts that fill the lower area with credibility */
+        }
         <dl class="vpc-spec mono">
           <div class="vpc-spec__item">
             <dt>peering</dt>
@@ -194,41 +392,63 @@ const cities = [
           </div>
           <div class="vpc-spec__item">
             <dt>egress</dt>
-            <dd><span class="vpc-spec__dot" /> {t.why.cards.privateEgress}</dd>
+            <dd>
+              <span class="vpc-spec__dot"></span>
+              {t.why.cards.privateEgress}
+            </dd>
           </div>
         </dl>
       </article>
 
       {/* C — unified endpoint diff */}
-      <article class="whycard whycard--diff" data-reveal style="--reveal-delay:160ms">
+      <article
+        class="whycard whycard--diff"
+        data-reveal
+        style="--reveal-delay:160ms"
+      >
         <header class="whycard__head">
           <span class="eyebrow eyebrow--mute">C</span>
           <h3 class="whycard__title">{t.why.cards.endpointTitle}</h3>
           <p class="whycard__body">{t.why.cards.endpointBody}</p>
         </header>
-        <pre class="diff mono"><code><span class="diff__line diff__line--rm"><span class="diff__sign">−</span> base_url=<span class="diff__str">"https://api.openai.com/v1"</span></span>
-<span class="diff__line diff__line--add"><span class="diff__sign">+</span> base_url=<span class="diff__str-on">"https://api.tokenfleet.cn/v1"</span><span class="diff__caret" aria-hidden="true"></span></span></code></pre>
+        <pre
+          class="diff mono"><code><span class="diff__line diff__line--rm"><span class="diff__sign">−</span> base_url=<span class="diff__str">"https://api.openai.com/v1"</span></span>
+<span class="diff__line diff__line--add"><span class="diff__sign">+</span> base_url=<span class="diff__str-on">"https://api.tokenfleet.cn/v1"</span><span class="diff__caret" aria-hidden="true" /></span></code></pre>
 
         {/* live demo: same endpoint, model swaps every 2.4s */}
         <div class="endpoint-demo mono" data-endpoint-demo aria-hidden="true">
           <div class="endpoint-demo__row endpoint-demo__row--req">
             <span class="endpoint-demo__verb">POST</span>
-            <span class="endpoint-demo__url">api.tokenfleet.cn/v1/chat/completions</span>
+            <span class="endpoint-demo__url"
+              >api.tokenfleet.cn/v1/chat/completions</span
+            >
           </div>
           <div class="endpoint-demo__row endpoint-demo__row--model">
             <span class="endpoint-demo__key">model:</span>
             <span class="endpoint-demo__values">
-              <span class="endpoint-demo__value is-active" data-vendor="openai">"gpt-5.4"</span>
-              <span class="endpoint-demo__value" data-vendor="anthropic">"claude-opus-4.7"</span>
-              <span class="endpoint-demo__value" data-vendor="google">"gemini-3-pro-preview"</span>
-              <span class="endpoint-demo__value" data-vendor="deepseek">"DeepSeek-V3.2"</span>
-              <span class="endpoint-demo__value" data-vendor="moonshot">"kimi-k2.6"</span>
+              <span class="endpoint-demo__value is-active" data-vendor="openai"
+                >"gpt-5.4"</span
+              >
+              <span class="endpoint-demo__value" data-vendor="anthropic"
+                >"claude-opus-4.7"</span
+              >
+              <span class="endpoint-demo__value" data-vendor="google"
+                >"gemini-3-pro-preview"</span
+              >
+              <span class="endpoint-demo__value" data-vendor="deepseek"
+                >"DeepSeek-V3.2"</span
+              >
+              <span class="endpoint-demo__value" data-vendor="moonshot"
+                >"kimi-k2.6"</span
+              >
             </span>
           </div>
           <div class="endpoint-demo__row endpoint-demo__row--status">
-            <span class="endpoint-demo__pulse" />
+            <span class="endpoint-demo__pulse"></span>
             <span class="endpoint-demo__status">200 OK</span>
-            <span class="endpoint-demo__vendor" data-current-vendor>via openai</span>
+            <span class="endpoint-demo__vendor" data-current-vendor
+              >via openai</span
+            >
           </div>
         </div>
 
@@ -236,7 +456,11 @@ const cities = [
       </article>
 
       {/* D — Domestic latency */}
-      <article class="whycard whycard--latency" data-reveal style="--reveal-delay:240ms">
+      <article
+        class="whycard whycard--latency"
+        data-reveal
+        style="--reveal-delay:240ms"
+      >
         <header class="whycard__head">
           <span class="eyebrow eyebrow--mute">D</span>
           <h3 class="whycard__title">{t.why.cards.latencyTitle}</h3>
@@ -250,39 +474,55 @@ const cities = [
               <th>
                 <span class="latency__th-bar">
                   <span class="latency__th-tick latency__th-tick--zero">0</span>
-                  <span class="latency__th-tick latency__th-tick--end">800ms</span>
+                  <span class="latency__th-tick latency__th-tick--end"
+                    >800ms</span
+                  >
                 </span>
               </th>
             </tr>
           </thead>
           <tbody>
-            {cities.map((c, i) => (
-              <tr>
-                <td>{c.city}</td>
-                <td class="latency__num tabular">
-                  <span class="latency__num-val" data-p50={c.p50}>{c.p50}</span>
-                  <span class="latency__unit">ms</span>
-                </td>
-                <td class="latency__bar-cell">
-                  <span
-                    class="latency__bar"
-                    style={`--w: ${(parseInt(c.p50) / 800) * 100}%; --delay: ${i * 80}ms;`}
-                    aria-hidden="true"
-                  ></span>
-                </td>
-              </tr>
-            ))}
+            {
+              cities.map((c, i) => (
+                <tr>
+                  <td>{c.city}</td>
+                  <td class="latency__num tabular">
+                    <span class="latency__num-val" data-p50={c.p50}>
+                      {c.p50}
+                    </span>
+                    <span class="latency__unit">ms</span>
+                  </td>
+                  <td class="latency__bar-cell">
+                    <span
+                      class="latency__bar"
+                      style={`--w: ${(parseInt(c.p50) / 800) * 100}%; --delay: ${i * 80}ms;`}
+                      aria-hidden="true"
+                    />
+                  </td>
+                </tr>
+              ))
+            }
             <tr class="latency__row--ghost">
               <td>{t.why.cards.overseas}</td>
-              <td class="latency__num latency__num--ghost tabular">≥ 800<span class="latency__unit">ms</span></td>
+              <td class="latency__num latency__num--ghost tabular"
+                >≥ 800<span class="latency__unit">ms</span></td
+              >
               <td class="latency__bar-cell">
-                <span class="latency__bar latency__bar--ghost" style="--w: 100%; --delay: 480ms;" aria-hidden="true"></span>
+                <span
+                  class="latency__bar latency__bar--ghost"
+                  style="--w: 100%; --delay: 480ms;"
+                  aria-hidden="true"></span>
               </td>
             </tr>
           </tbody>
         </table>
         <p class="whycard__caption mono">
-          {t.why.cards.statusPrefix} <a href="https://status.tokenfleet.cn" rel="noopener noreferrer" target="_blank">{t.why.cards.statusLink}</a>
+          {t.why.cards.statusPrefix}
+          <a
+            href="https://status.tokenfleet.cn"
+            rel="noopener noreferrer"
+            target="_blank">{t.why.cards.statusLink}</a
+          >
         </p>
       </article>
     </div>
@@ -294,7 +534,9 @@ const cities = [
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const demo = document.querySelector<HTMLElement>('[data-endpoint-demo]');
   if (demo && !reduced) {
-    const values = Array.from(demo.querySelectorAll<HTMLElement>('.endpoint-demo__value'));
+    const values = Array.from(
+      demo.querySelectorAll<HTMLElement>('.endpoint-demo__value')
+    );
     const vendorEl = demo.querySelector<HTMLElement>('[data-current-vendor]');
     let i = 0;
     let timer: number | undefined;
@@ -308,22 +550,27 @@ const cities = [
       if (vendorEl) vendorEl.textContent = `via ${next.dataset.vendor ?? ''}`;
       window.setTimeout(() => prev.classList.remove('is-leaving'), 320);
     };
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          if (timer === undefined) timer = window.setInterval(rotate, 2400);
-        } else if (timer !== undefined) {
-          window.clearInterval(timer);
-          timer = undefined;
-        }
-      });
-    }, { threshold: 0.25 });
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (timer === undefined) timer = window.setInterval(rotate, 2400);
+          } else if (timer !== undefined) {
+            window.clearInterval(timer);
+            timer = undefined;
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
     io.observe(demo);
   }
 
   /* Card D P50 fluctuation: each city's value jitters ±2ms on its own cadence.
      Random-walk bounded to ±2 from the base; tnum prevents digit jitter. */
-  const p50Nodes = Array.from(document.querySelectorAll<HTMLElement>('.latency__num-val[data-p50]'));
+  const p50Nodes = Array.from(
+    document.querySelectorAll<HTMLElement>('.latency__num-val[data-p50]')
+  );
   if (p50Nodes.length && !reduced) {
     const states = p50Nodes.map((node) => ({
       node,
@@ -340,23 +587,29 @@ const cities = [
           const next = s.base + s.offset;
           s.node.textContent = String(next);
           s.node.classList.add('is-tick');
-          window.setTimeout(() => s.node.classList.remove('is-tick'), 180 + idx * 20);
+          window.setTimeout(
+            () => s.node.classList.remove('is-tick'),
+            180 + idx * 20
+          );
         }
       });
     };
     // run only while the latency card is visible (IO-gated for perf)
     const card = document.querySelector<HTMLElement>('.whycard--latency');
     if (card) {
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            if (timer === undefined) timer = window.setInterval(tick, 1400);
-          } else if (timer !== undefined) {
-            window.clearInterval(timer);
-            timer = undefined;
-          }
-        });
-      }, { threshold: 0.2 });
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              if (timer === undefined) timer = window.setInterval(tick, 1400);
+            } else if (timer !== undefined) {
+              window.clearInterval(timer);
+              timer = undefined;
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
       io.observe(card);
     }
   }
@@ -416,8 +669,9 @@ const cities = [
     flex-direction: column;
     gap: 22px;
     min-width: 0;
-    transition: border-color var(--motion-base) var(--ease-out-quart),
-                box-shadow var(--motion-base) var(--ease-out-quart);
+    transition:
+      border-color var(--motion-base) var(--ease-out-quart),
+      box-shadow var(--motion-base) var(--ease-out-quart);
   }
 
   .whycard:hover {
@@ -507,8 +761,9 @@ const cities = [
     font-family: var(--font-mono);
     font-size: 12px;
     letter-spacing: -0.005em;
-    transition: gap var(--motion-base) var(--ease-out-quart),
-                color var(--motion-base) var(--ease-out-quart);
+    transition:
+      gap var(--motion-base) var(--ease-out-quart),
+      color var(--motion-base) var(--ease-out-quart);
   }
   .modelgrid__more-link:hover {
     gap: 10px;
@@ -529,7 +784,12 @@ const cities = [
     border-radius: var(--radius-md);
     padding: 14px;
   }
-  .vpc-svg { width: 100%; height: auto; max-height: 240px; display: block; }
+  .vpc-svg {
+    width: 100%;
+    height: auto;
+    max-height: 240px;
+    display: block;
+  }
 
   /* draw-in stroke for the private path */
   .vpc-path--private {
@@ -546,15 +806,24 @@ const cities = [
   }
 
   @keyframes vpc-private-pulse {
-    0%, 100% { stroke-width: 1.6; opacity: 0.85; }
-    45%      { stroke-width: 2.4; opacity: 1; }
+    0%,
+    100% {
+      stroke-width: 1.6;
+      opacity: 0.85;
+    }
+    45% {
+      stroke-width: 2.4;
+      opacity: 1;
+    }
   }
 
   /* enclosure soft pulse */
   .vpc-enclosure {
     transition: fill-opacity 320ms var(--ease-out-quart);
   }
-  .whycard--vpc:hover .vpc-enclosure { fill-opacity: 0.75; }
+  .whycard--vpc:hover .vpc-enclosure {
+    fill-opacity: 0.75;
+  }
 
   /* packets */
   .vpc-pkt {
@@ -564,12 +833,32 @@ const cities = [
     animation-play-state: paused;
   }
   /* public — slow, dim, with mid-line opacity dip suggesting hop loss */
-  .vpc-pkt--p0 { animation-name: vpc-pub; animation-duration: 3.6s; animation-delay: 0s; }
-  .vpc-pkt--p1 { animation-name: vpc-pub; animation-duration: 3.6s; animation-delay: 1.8s; }
+  .vpc-pkt--p0 {
+    animation-name: vpc-pub;
+    animation-duration: 3.6s;
+    animation-delay: 0s;
+  }
+  .vpc-pkt--p1 {
+    animation-name: vpc-pub;
+    animation-duration: 3.6s;
+    animation-delay: 1.8s;
+  }
   /* private — fast, vivid, three of them in tight cadence */
-  .vpc-pkt--q0 { animation-name: vpc-priv; animation-duration: 1.6s; animation-delay: 0s; }
-  .vpc-pkt--q1 { animation-name: vpc-priv; animation-duration: 1.6s; animation-delay: 0.55s; }
-  .vpc-pkt--q2 { animation-name: vpc-priv; animation-duration: 1.6s; animation-delay: 1.1s; }
+  .vpc-pkt--q0 {
+    animation-name: vpc-priv;
+    animation-duration: 1.6s;
+    animation-delay: 0s;
+  }
+  .vpc-pkt--q1 {
+    animation-name: vpc-priv;
+    animation-duration: 1.6s;
+    animation-delay: 0.55s;
+  }
+  .vpc-pkt--q2 {
+    animation-name: vpc-priv;
+    animation-duration: 1.6s;
+    animation-delay: 1.1s;
+  }
 
   .whycard--vpc.is-visible .vpc-pkt,
   html:not(.js-reveal) .whycard--vpc .vpc-pkt {
@@ -577,18 +866,46 @@ const cities = [
   }
 
   @keyframes vpc-pub {
-    0%   { transform: translate(0, 0); opacity: 0; }
-    8%   { opacity: 0.55; }
-    44%  { transform: translate(72px, 0); opacity: 0.25; }
-    56%  { transform: translate(98px, 0); opacity: 0.55; }
-    92%  { transform: translate(193px, 0); opacity: 0.55; }
-    100% { transform: translate(193px, 0); opacity: 0; }
+    0% {
+      transform: translate(0, 0);
+      opacity: 0;
+    }
+    8% {
+      opacity: 0.55;
+    }
+    44% {
+      transform: translate(72px, 0);
+      opacity: 0.25;
+    }
+    56% {
+      transform: translate(98px, 0);
+      opacity: 0.55;
+    }
+    92% {
+      transform: translate(193px, 0);
+      opacity: 0.55;
+    }
+    100% {
+      transform: translate(193px, 0);
+      opacity: 0;
+    }
   }
   @keyframes vpc-priv {
-    0%   { transform: translate(0, 0); opacity: 0; }
-    10%  { opacity: 1; }
-    85%  { transform: translate(118px, 0); opacity: 1; }
-    100% { transform: translate(122px, 0); opacity: 0; }
+    0% {
+      transform: translate(0, 0);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    85% {
+      transform: translate(118px, 0);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(122px, 0);
+      opacity: 0;
+    }
   }
 
   /* lock glyph subtle attention */
@@ -603,8 +920,13 @@ const cities = [
     animation-play-state: running;
   }
   @keyframes vpc-lock-breathe {
-    0%, 100% { opacity: 0.55; }
-    50%      { opacity: 1; }
+    0%,
+    100% {
+      opacity: 0.55;
+    }
+    50% {
+      opacity: 1;
+    }
   }
 
   /* spec strip — fills the lower card with three engineering facts */
@@ -625,7 +947,9 @@ const cities = [
     gap: 3px;
     min-width: 0;
   }
-  .vpc-spec__item:last-child { border-right: 0; }
+  .vpc-spec__item:last-child {
+    border-right: 0;
+  }
   .vpc-spec dt {
     font-size: 9px;
     letter-spacing: 0.1em;
@@ -654,8 +978,13 @@ const cities = [
     flex-shrink: 0;
   }
   @keyframes vpc-dot-pulse {
-    0%, 100% { box-shadow: 0 0 0 3px var(--color-primary-bg-subdued); }
-    50%      { box-shadow: 0 0 0 5px rgba(83, 58, 253, 0.08); }
+    0%,
+    100% {
+      box-shadow: 0 0 0 3px var(--color-primary-bg-subdued);
+    }
+    50% {
+      box-shadow: 0 0 0 5px rgba(83, 58, 253, 0.08);
+    }
   }
 
   /* ── C: diff block ────────────────────────────────────────────────────── */
@@ -687,7 +1016,9 @@ const cities = [
     opacity: 1;
     transition: opacity 320ms var(--ease-out-quart);
   }
-  .js-reveal .whycard--diff:not(.is-visible) .diff__line--rm { opacity: 0; }
+  .js-reveal .whycard--diff:not(.is-visible) .diff__line--rm {
+    opacity: 0;
+  }
 
   .diff__line--add {
     background: var(--color-primary-bg-subdued);
@@ -722,18 +1053,31 @@ const cities = [
     animation-delay: 1040ms; /* after the typing sweep completes */
   }
   @keyframes diff-caret-blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
+    0%,
+    50% {
+      opacity: 1;
+    }
+    51%,
+    100% {
+      opacity: 0;
+    }
   }
 
   .diff__sign {
     color: var(--color-ink-mute);
     margin-right: 8px;
   }
-  .diff__line--add .diff__sign { color: var(--color-primary); }
+  .diff__line--add .diff__sign {
+    color: var(--color-primary);
+  }
 
-  .diff__str { color: var(--color-lemon); }
-  .diff__str-on { color: var(--color-primary); font-weight: var(--weight-medium); }
+  .diff__str {
+    color: var(--color-lemon);
+  }
+  .diff__str-on {
+    color: var(--color-primary);
+    font-weight: var(--weight-medium);
+  }
 
   /* live demo: same endpoint, model swaps every 2.4s */
   .endpoint-demo {
@@ -795,8 +1139,9 @@ const cities = [
     font-weight: var(--weight-medium);
     opacity: 0;
     transform: translateY(4px);
-    transition: opacity 280ms var(--ease-out-quart),
-                transform 280ms var(--ease-out-quart);
+    transition:
+      opacity 280ms var(--ease-out-quart),
+      transform 280ms var(--ease-out-quart);
     white-space: nowrap;
   }
   .endpoint-demo__value.is-active {
@@ -830,9 +1175,15 @@ const cities = [
     animation-play-state: running;
   }
   @keyframes endpoint-pulse {
-    0%   { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.55); }
-    65%  { box-shadow: 0 0 0 8px rgba(22, 163, 74, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+    0% {
+      box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.55);
+    }
+    65% {
+      box-shadow: 0 0 0 8px rgba(22, 163, 74, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+    }
   }
   .endpoint-demo__status {
     color: #16a34a;
@@ -866,9 +1217,15 @@ const cities = [
     padding-bottom: 8px;
     border-bottom: 1px solid var(--color-hairline);
   }
-  .latency th:nth-child(1) { width: 22%; }
-  .latency th:nth-child(2) { width: 26%; }
-  .latency th:nth-child(3) { width: 52%; }
+  .latency th:nth-child(1) {
+    width: 22%;
+  }
+  .latency th:nth-child(2) {
+    width: 26%;
+  }
+  .latency th:nth-child(3) {
+    width: 52%;
+  }
 
   .latency__th-bar {
     display: flex;
@@ -877,25 +1234,46 @@ const cities = [
     font-size: 9px;
     letter-spacing: 0.04em;
   }
-  .latency__th-tick--zero { color: var(--color-primary); }
-  .latency__th-tick--end  { color: var(--color-ink-mute); }
+  .latency__th-tick--zero {
+    color: var(--color-primary);
+  }
+  .latency__th-tick--end {
+    color: var(--color-ink-mute);
+  }
 
   .latency td {
     padding: 9px 0;
     border-bottom: 1px solid var(--color-hairline);
     vertical-align: middle;
   }
-  .latency tbody tr:last-child td { border-bottom: 0; }
-  .latency__num { color: var(--color-ink); font-weight: var(--weight-medium); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .latency tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  .latency__num {
+    color: var(--color-ink);
+    font-weight: var(--weight-medium);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
   .latency__num-val {
     display: inline-block;
     min-width: 3ch;
     text-align: right;
   }
-  .latency__num--ghost { color: var(--color-ink-mute); font-weight: var(--weight-regular); }
-  .latency__unit { color: var(--color-ink-mute); font-weight: var(--weight-regular); margin-left: 2px; font-size: 10px; }
+  .latency__num--ghost {
+    color: var(--color-ink-mute);
+    font-weight: var(--weight-regular);
+  }
+  .latency__unit {
+    color: var(--color-ink-mute);
+    font-weight: var(--weight-regular);
+    margin-left: 2px;
+    font-size: 10px;
+  }
 
-  .latency__bar-cell { padding-right: 4px; }
+  .latency__bar-cell {
+    padding-right: 4px;
+  }
 
   .latency__bar {
     display: block;
@@ -945,11 +1323,15 @@ const cities = [
     .why__grid {
       grid-template-columns: 1fr;
     }
-    .modelgrid { grid-template-columns: repeat(2, 1fr); }
+    .modelgrid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   @media (max-width: 480px) {
-    .whycard { padding: 22px 20px; }
+    .whycard {
+      padding: 22px 20px;
+    }
     .modelgrid {
       grid-template-columns: 1fr;
     }
@@ -964,7 +1346,9 @@ const cities = [
       border-right: 0;
       border-bottom: 1px solid var(--color-hairline);
     }
-    .vpc-spec__item:last-child { border-bottom: 0; }
+    .vpc-spec__item:last-child {
+      border-bottom: 0;
+    }
   }
 
   /* ── reduced motion: pause all looping/draw-in animations ──────────────── */
@@ -979,16 +1363,38 @@ const cities = [
     .vpc-spec__dot {
       animation: none;
     }
-    .vpc-pkt { opacity: 0; }
-    .vpc-lock { opacity: 1; }
+    .vpc-pkt {
+      opacity: 0;
+    }
+    .vpc-lock {
+      opacity: 1;
+    }
 
-    .diff__line--rm { transition: none; opacity: 1; }
-    .diff__line--add { transition: none; clip-path: inset(0 0 0 0); }
-    .diff__caret { animation: none; opacity: 0; }
-    .endpoint-demo__pulse { animation: none; }
-    .endpoint-demo__value { transition: none; }
+    .diff__line--rm {
+      transition: none;
+      opacity: 1;
+    }
+    .diff__line--add {
+      transition: none;
+      clip-path: inset(0 0 0 0);
+    }
+    .diff__caret {
+      animation: none;
+      opacity: 0;
+    }
+    .endpoint-demo__pulse {
+      animation: none;
+    }
+    .endpoint-demo__value {
+      transition: none;
+    }
 
-    .latency__bar { transition: none; width: var(--w); }
-    .latency__num-val { transition: none; }
+    .latency__bar {
+      transition: none;
+      width: var(--w);
+    }
+    .latency__num-val {
+      transition: none;
+    }
   }
 </style>

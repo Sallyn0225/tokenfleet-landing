@@ -23,7 +23,10 @@ export default function FaultyTerminalIsland(props) {
 
   useEffect(() => {
     const c = document.createElement('canvas');
-    const gl = c.getContext('webgl2') || c.getContext('webgl') || c.getContext('experimental-webgl');
+    const gl =
+      c.getContext('webgl2') ||
+      c.getContext('webgl') ||
+      c.getContext('experimental-webgl');
     setWebglOk(Boolean(gl));
   }, []);
 
@@ -46,7 +49,8 @@ export default function FaultyTerminalIsland(props) {
     const node = wrapRef.current;
     if (!node || typeof IntersectionObserver === 'undefined') return;
     const io = new IntersectionObserver(
-      ([entry]) => setOutOfView(!entry.isIntersecting || entry.intersectionRatio < 0.08),
+      ([entry]) =>
+        setOutOfView(!entry.isIntersecting || entry.intersectionRatio < 0.08),
       { threshold: [0, 0.08] }
     );
     io.observe(node);

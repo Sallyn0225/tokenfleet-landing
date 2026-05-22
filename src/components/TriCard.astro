@@ -20,7 +20,8 @@ interface Props {
 const { locale = 'zh' } = Astro.props as Props;
 const t = i18n[locale];
 const [gateway, billing, gpu] = t.product.cards;
-const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute rental inquiry';
+const gpuSubject =
+  locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute rental inquiry';
 ---
 
 <section class="tri" id="products" aria-labelledby="tri-title">
@@ -34,7 +35,11 @@ const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute ren
 
     <ol class="tri__grid">
       {/* Card 1 — Unified API Gateway */}
-      <li class="tri-card tri-card--primary" data-reveal style="--reveal-delay:0ms">
+      <li
+        class="tri-card tri-card--primary"
+        data-reveal
+        style="--reveal-delay:0ms"
+      >
         <div class="tri-card__inner">
           <span class="eyebrow">{gateway.eyebrow}</span>
           <h3 class="tri-card__title">{gateway.title}</h3>
@@ -42,69 +47,155 @@ const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute ren
             {gateway.body}
           </p>
 
-          <div class="tri-card__media tri-card__media--schematic" aria-hidden="true">
-            <svg viewBox="0 0 360 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="schematic">
+          <div
+            class="tri-card__media tri-card__media--schematic"
+            aria-hidden="true"
+          >
+            <svg
+              viewBox="0 0 360 200"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="schematic"
+            >
               <defs>
                 <linearGradient id="gw-gradient" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stop-color="var(--color-primary-deep)" />
-                  <stop offset="100%" stop-color="var(--color-primary)" />
+                  <stop offset="0%" stop-color="var(--color-primary-deep)"
+                  ></stop>
+                  <stop offset="100%" stop-color="var(--color-primary)"></stop>
                 </linearGradient>
               </defs>
 
               {/* connector paths — drawn in on reveal via stroke-dashoffset */}
-              <g class="schematic__paths" stroke="var(--color-hairline-strong)" stroke-width="1" stroke-linecap="round" fill="none">
-                <path class="sch-path" d="M106 30 L152 100" />
-                <path class="sch-path" d="M106 70 L152 100" />
-                <path class="sch-path" d="M106 130 L152 100" />
-                <path class="sch-path" d="M106 170 L152 100" />
-                <path class="sch-path sch-path--out" d="M284 100 L304 100" />
+              <g
+                class="schematic__paths"
+                stroke="var(--color-hairline-strong)"
+                stroke-width="1"
+                stroke-linecap="round"
+                fill="none"
+              >
+                <path class="sch-path" d="M106 30 L152 100"></path>
+                <path class="sch-path" d="M106 70 L152 100"></path>
+                <path class="sch-path" d="M106 130 L152 100"></path>
+                <path class="sch-path" d="M106 170 L152 100"></path>
+                <path class="sch-path sch-path--out" d="M284 100 L304 100"
+                ></path>
               </g>
 
               {/* vendor chips */}
-              <g class="schematic__chips" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-secondary)">
+              <g
+                class="schematic__chips"
+                font-family="var(--font-mono)"
+                font-size="10"
+                fill="var(--color-ink-secondary)"
+              >
                 <g class="chip">
-                  <rect x="10" y="18" width="96" height="24" rx="4" fill="var(--color-canvas)" stroke="var(--color-hairline-strong)" />
-                  <circle cx="22" cy="30" r="2.5" fill="var(--color-ink-secondary)" />
+                  <rect
+                    x="10"
+                    y="18"
+                    width="96"
+                    height="24"
+                    rx="4"
+                    fill="var(--color-canvas)"
+                    stroke="var(--color-hairline-strong)"></rect>
+                  <circle
+                    cx="22"
+                    cy="30"
+                    r="2.5"
+                    fill="var(--color-ink-secondary)"></circle>
                   <text x="32" y="34">OpenAI</text>
                 </g>
                 <g class="chip">
-                  <rect x="10" y="58" width="96" height="24" rx="4" fill="var(--color-canvas)" stroke="var(--color-hairline-strong)" />
-                  <circle cx="22" cy="70" r="2.5" fill="var(--vendor-anthropic)" />
+                  <rect
+                    x="10"
+                    y="58"
+                    width="96"
+                    height="24"
+                    rx="4"
+                    fill="var(--color-canvas)"
+                    stroke="var(--color-hairline-strong)"></rect>
+                  <circle cx="22" cy="70" r="2.5" fill="var(--vendor-anthropic)"
+                  ></circle>
                   <text x="32" y="74">Anthropic</text>
                 </g>
                 <g class="chip">
-                  <rect x="10" y="118" width="96" height="24" rx="4" fill="var(--color-canvas)" stroke="var(--color-hairline-strong)" />
-                  <circle cx="22" cy="130" r="2.5" fill="var(--vendor-google)" />
+                  <rect
+                    x="10"
+                    y="118"
+                    width="96"
+                    height="24"
+                    rx="4"
+                    fill="var(--color-canvas)"
+                    stroke="var(--color-hairline-strong)"></rect>
+                  <circle cx="22" cy="130" r="2.5" fill="var(--vendor-google)"
+                  ></circle>
                   <text x="32" y="134">Google</text>
                 </g>
                 <g class="chip">
-                  <rect x="10" y="158" width="96" height="24" rx="4" fill="var(--color-canvas)" stroke="var(--color-hairline-strong)" />
-                  <circle cx="22" cy="170" r="2.5" fill="var(--color-ruby)" />
+                  <rect
+                    x="10"
+                    y="158"
+                    width="96"
+                    height="24"
+                    rx="4"
+                    fill="var(--color-canvas)"
+                    stroke="var(--color-hairline-strong)"></rect>
+                  <circle cx="22" cy="170" r="2.5" fill="var(--color-ruby)"
+                  ></circle>
                   <text x="32" y="174">BFL</text>
                 </g>
               </g>
 
               {/* gateway pill — the visual anchor */}
               <g class="schematic__gateway">
-                <rect x="152" y="82" width="132" height="36" rx="8" fill="url(#gw-gradient)" />
-                <text x="218" y="105" text-anchor="middle" font-family="var(--font-mono)" font-size="11" font-weight="500" fill="var(--color-on-primary)" letter-spacing="-0.01em">
+                <rect
+                  x="152"
+                  y="82"
+                  width="132"
+                  height="36"
+                  rx="8"
+                  fill="url(#gw-gradient)"></rect>
+                <text
+                  x="218"
+                  y="105"
+                  text-anchor="middle"
+                  font-family="var(--font-mono)"
+                  font-size="11"
+                  font-weight="500"
+                  fill="var(--color-on-primary)"
+                  letter-spacing="-0.01em"
+                >
                   api.tokenfleet.cn/v1
                 </text>
               </g>
 
               {/* client */}
               <g class="schematic__client">
-                <rect x="304" y="86" width="48" height="28" rx="4" fill="var(--color-canvas)" stroke="var(--color-ink)" stroke-width="1.1" />
-                <text x="328" y="104" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink)">your app</text>
+                <rect
+                  x="304"
+                  y="86"
+                  width="48"
+                  height="28"
+                  rx="4"
+                  fill="var(--color-canvas)"
+                  stroke="var(--color-ink)"
+                  stroke-width="1.1"></rect>
+                <text
+                  x="328"
+                  y="104"
+                  text-anchor="middle"
+                  font-family="var(--font-mono)"
+                  font-size="10"
+                  fill="var(--color-ink)">your app</text
+                >
               </g>
 
               {/* packets — vendor → gateway, then gateway → client */}
               <g class="schematic__packets" fill="var(--color-primary)">
-                <circle class="pkt pkt--v0" cx="106" cy="30"  r="2.4" />
-                <circle class="pkt pkt--v1" cx="106" cy="70"  r="2.4" />
-                <circle class="pkt pkt--v2" cx="106" cy="130" r="2.4" />
-                <circle class="pkt pkt--v3" cx="106" cy="170" r="2.4" />
-                <circle class="pkt pkt--out" cx="284" cy="100" r="2.4" />
+                <circle class="pkt pkt--v0" cx="106" cy="30" r="2.4"></circle>
+                <circle class="pkt pkt--v1" cx="106" cy="70" r="2.4"></circle>
+                <circle class="pkt pkt--v2" cx="106" cy="130" r="2.4"></circle>
+                <circle class="pkt pkt--v3" cx="106" cy="170" r="2.4"></circle>
+                <circle class="pkt pkt--out" cx="284" cy="100" r="2.4"></circle>
               </g>
             </svg>
           </div>
@@ -113,17 +204,35 @@ const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute ren
             {gateway.bullets?.map((item) => <li>{item}</li>)}
           </ul>
 
-          <a href={localePath(locale, '/models')} class="btn btn--outline-indigo btn--sm tri-card__cta">
+          <a
+            href={localePath(locale, '/models')}
+            class="btn btn--outline-indigo btn--sm tri-card__cta"
+          >
             {gateway.cta}
-            <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
-              <path d="M3.5 2l3 3.5-3 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+            <svg
+              width="11"
+              height="11"
+              viewBox="0 0 11 11"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M3.5 2l3 3.5-3 3.5"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
             </svg>
           </a>
         </div>
       </li>
 
       {/* Card 2 — Unified Billing & Invoicing */}
-      <li class="tri-card tri-card--billing" data-reveal style="--reveal-delay:80ms">
+      <li
+        class="tri-card tri-card--billing"
+        data-reveal
+        style="--reveal-delay:80ms"
+      >
         <div class="tri-card__inner">
           <span class="eyebrow">{billing.eyebrow}</span>
           <h3 class="tri-card__title">{billing.title}</h3>
@@ -131,12 +240,38 @@ const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute ren
             {billing.body}
           </p>
 
-          <figure class="invoice" data-invoice-anim aria-label={t.product.invoice.aria}>
+          <figure
+            class="invoice"
+            data-invoice-anim
+            aria-label={t.product.invoice.aria}
+          >
             {/* faux 对公专票 chop in bottom-right */}
             <svg class="invoice__chop" viewBox="0 0 72 72" aria-hidden="true">
-              <rect x="3" y="3" width="66" height="66" rx="4" fill="none" stroke="currentColor" stroke-width="2.4" />
-              <rect x="9" y="9" width="54" height="54" rx="2" fill="none" stroke="currentColor" stroke-width="0.8" />
-              <g font-family="var(--font-sans)" font-weight="600" font-size="17" fill="currentColor" text-anchor="middle">
+              <rect
+                x="3"
+                y="3"
+                width="66"
+                height="66"
+                rx="4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"></rect>
+              <rect
+                x="9"
+                y="9"
+                width="54"
+                height="54"
+                rx="2"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="0.8"></rect>
+              <g
+                font-family="var(--font-sans)"
+                font-weight="600"
+                font-size="17"
+                fill="currentColor"
+                text-anchor="middle"
+              >
                 <text x="24" y="32">{t.product.invoice.chop[0]}</text>
                 <text x="48" y="32">{t.product.invoice.chop[1]}</text>
                 <text x="24" y="56">{t.product.invoice.chop[2]}</text>
@@ -150,39 +285,73 @@ const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute ren
             </div>
 
             {/* drawn-in separator under the head */}
-            <svg class="invoice__rule" viewBox="0 0 100 1" preserveAspectRatio="none" aria-hidden="true">
-              <line x1="0" y1="0.5" x2="100" y2="0.5" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" />
+            <svg
+              class="invoice__rule"
+              viewBox="0 0 100 1"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <line
+                x1="0"
+                y1="0.5"
+                x2="100"
+                y2="0.5"
+                stroke="currentColor"
+                stroke-width="1"
+                stroke-dasharray="2 2"></line>
             </svg>
 
             <table class="invoice__table">
               <tbody>
                 <tr>
                   <td>OpenAI · gpt-5</td>
-                  <td class="invoice__num mono tabular"><span data-amt="3842.50">¥&thinsp;3,842.50</span></td>
+                  <td class="invoice__num mono tabular"
+                    ><span data-amt="3842.50">¥&thinsp;3,842.50</span></td
+                  >
                 </tr>
                 <tr>
                   <td>Anthropic · claude-opus-4-7</td>
-                  <td class="invoice__num mono tabular"><span data-amt="5217.30">¥&thinsp;5,217.30</span></td>
+                  <td class="invoice__num mono tabular"
+                    ><span data-amt="5217.30">¥&thinsp;5,217.30</span></td
+                  >
                 </tr>
                 <tr>
                   <td>Google · gemini-3-pro</td>
-                  <td class="invoice__num mono tabular"><span data-amt="1498.00">¥&thinsp;1,498.00</span></td>
+                  <td class="invoice__num mono tabular"
+                    ><span data-amt="1498.00">¥&thinsp;1,498.00</span></td
+                  >
                 </tr>
                 <tr>
                   <td>BFL · flux-1.1-pro</td>
-                  <td class="invoice__num mono tabular"><span data-amt="612.80">¥&thinsp;612.80</span></td>
+                  <td class="invoice__num mono tabular"
+                    ><span data-amt="612.80">¥&thinsp;612.80</span></td
+                  >
                 </tr>
               </tbody>
               <tfoot>
                 <tr>
                   <td>{t.product.invoice.total}</td>
-                  <td class="invoice__total mono tabular"><span data-amt="11170.60">¥&thinsp;11,170.60</span></td>
+                  <td class="invoice__total mono tabular"
+                    ><span data-amt="11170.60">¥&thinsp;11,170.60</span></td
+                  >
                 </tr>
               </tfoot>
             </table>
 
-            <svg class="invoice__rule invoice__rule--foot" viewBox="0 0 100 1" preserveAspectRatio="none" aria-hidden="true">
-              <line x1="0" y1="0.5" x2="100" y2="0.5" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" />
+            <svg
+              class="invoice__rule invoice__rule--foot"
+              viewBox="0 0 100 1"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <line
+                x1="0"
+                y1="0.5"
+                x2="100"
+                y2="0.5"
+                stroke="currentColor"
+                stroke-width="1"
+                stroke-dasharray="2 2"></line>
             </svg>
 
             <div class="invoice__foot mono">
@@ -195,17 +364,35 @@ const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute ren
             {billing.bullets?.map((item) => <li>{item}</li>)}
           </ul>
 
-          <a href={`${localePath(locale, '/')}#business`} class="btn btn--outline-indigo btn--sm tri-card__cta">
+          <a
+            href={`${localePath(locale, '/')}#business`}
+            class="btn btn--outline-indigo btn--sm tri-card__cta"
+          >
             {billing.cta}
-            <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
-              <path d="M3.5 2l3 3.5-3 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+            <svg
+              width="11"
+              height="11"
+              viewBox="0 0 11 11"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M3.5 2l3 3.5-3 3.5"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
             </svg>
           </a>
         </div>
       </li>
 
       {/* Card 3 — GPU Coming-soon */}
-      <li class="tri-card tri-card--soon" data-reveal style="--reveal-delay:160ms">
+      <li
+        class="tri-card tri-card--soon"
+        data-reveal
+        style="--reveal-delay:160ms"
+      >
         <div class="tri-card__inner">
           <span class="eyebrow eyebrow--mute">{gpu.eyebrow}</span>
           <h3 class="tri-card__title">{gpu.title}</h3>
@@ -214,59 +401,141 @@ const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute ren
           </p>
 
           <div class="tri-card__media tri-card__media--rack" aria-hidden="true">
-            <svg viewBox="0 0 240 140" fill="none" xmlns="http://www.w3.org/2000/svg" class="rack">
+            <svg
+              viewBox="0 0 240 140"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="rack"
+            >
               <defs>
-                <pattern id="rack-stripes" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
-                  <line x1="0" y1="0" x2="0" y2="6" stroke="var(--color-ink-mute)" stroke-width="1" opacity="0.08" />
+                <pattern
+                  id="rack-stripes"
+                  patternUnits="userSpaceOnUse"
+                  width="6"
+                  height="6"
+                  patternTransform="rotate(45)"
+                >
+                  <line
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="6"
+                    stroke="var(--color-ink-mute)"
+                    stroke-width="1"
+                    opacity="0.08"></line>
                 </pattern>
               </defs>
 
               {/* faint in-progress hatch background */}
-              <rect x="0" y="0" width="240" height="140" fill="url(#rack-stripes)" />
+              <rect
+                x="0"
+                y="0"
+                width="240"
+                height="140"
+                fill="url(#rack-stripes)"></rect>
 
               {/* three rack units */}
               <g class="rack__units">
-                {[18, 88, 158].map((x, i) => (
-                  <g class={`rack-unit rack-unit--${i}`} transform={`translate(${x}, 14)`}>
-                    {/* outer frame */}
-                    <rect x="0" y="0" width="64" height="112" rx="3"
-                      fill="var(--color-canvas)"
-                      stroke="var(--color-hairline-strong)" stroke-width="1" />
+                {
+                  [18, 88, 158].map((x, i) => (
+                    <g
+                      class={`rack-unit rack-unit--${i}`}
+                      transform={`translate(${x}, 14)`}
+                    >
+                      {/* outer frame */}
+                      <rect
+                        x="0"
+                        y="0"
+                        width="64"
+                        height="112"
+                        rx="3"
+                        fill="var(--color-canvas)"
+                        stroke="var(--color-hairline-strong)"
+                        stroke-width="1"
+                      />
 
-                    {/* top status band */}
-                    <rect x="0" y="0" width="64" height="12" rx="3" fill="var(--color-canvas-soft)" />
-                    <line x1="0" y1="12" x2="64" y2="12" stroke="var(--color-hairline)" stroke-width="0.6" />
+                      {/* top status band */}
+                      <rect
+                        x="0"
+                        y="0"
+                        width="64"
+                        height="12"
+                        rx="3"
+                        fill="var(--color-canvas-soft)"
+                      />
+                      <line
+                        x1="0"
+                        y1="12"
+                        x2="64"
+                        y2="12"
+                        stroke="var(--color-hairline)"
+                        stroke-width="0.6"
+                      />
 
-                    {/* status LED — breathes out of phase */}
-                    <circle class="rack-led" cx="56" cy="6" r="1.8" fill="var(--color-primary)" />
+                      {/* status LED — breathes out of phase */}
+                      <circle
+                        class="rack-led"
+                        cx="56"
+                        cy="6"
+                        r="1.8"
+                        fill="var(--color-primary)"
+                      />
 
-                    {/* tiny mounting screws on top band */}
-                    <circle cx="6" cy="6" r="0.9" fill="var(--color-hairline-strong)" />
+                      {/* tiny mounting screws on top band */}
+                      <circle
+                        cx="6"
+                        cy="6"
+                        r="0.9"
+                        fill="var(--color-hairline-strong)"
+                      />
 
-                    {/* vent slats */}
-                    <g stroke="var(--color-hairline-strong)" stroke-width="0.6" stroke-linecap="round">
-                      <line x1="10" y1="26" x2="54" y2="26" />
-                      <line x1="10" y1="32" x2="54" y2="32" />
-                      <line x1="10" y1="38" x2="54" y2="38" />
-                      <line x1="10" y1="44" x2="54" y2="44" />
-                      <line x1="10" y1="50" x2="54" y2="50" />
-                      <line x1="10" y1="56" x2="54" y2="56" />
+                      {/* vent slats */}
+                      <g
+                        stroke="var(--color-hairline-strong)"
+                        stroke-width="0.6"
+                        stroke-linecap="round"
+                      >
+                        <line x1="10" y1="26" x2="54" y2="26" />
+                        <line x1="10" y1="32" x2="54" y2="32" />
+                        <line x1="10" y1="38" x2="54" y2="38" />
+                        <line x1="10" y1="44" x2="54" y2="44" />
+                        <line x1="10" y1="50" x2="54" y2="50" />
+                        <line x1="10" y1="56" x2="54" y2="56" />
+                      </g>
+
+                      {/* model label band */}
+                      <line
+                        x1="0"
+                        y1="72"
+                        x2="64"
+                        y2="72"
+                        stroke="var(--color-hairline)"
+                        stroke-width="0.6"
+                      />
+                      <text
+                        x="32"
+                        y="86"
+                        text-anchor="middle"
+                        font-family="var(--font-mono)"
+                        font-size="10"
+                        font-weight="500"
+                        fill="var(--color-ink-secondary)"
+                      >
+                        {i === 0 ? 'H100' : 'H200'}
+                      </text>
+                      <text
+                        x="32"
+                        y="100"
+                        text-anchor="middle"
+                        font-family="var(--font-mono)"
+                        font-size="8"
+                        fill="var(--color-ink-mute)"
+                      >
+                        {i === 0 ? '80GB' : '141GB'}
+                      </text>
                     </g>
-
-                    {/* model label band */}
-                    <line x1="0" y1="72" x2="64" y2="72" stroke="var(--color-hairline)" stroke-width="0.6" />
-                    <text x="32" y="86" text-anchor="middle"
-                      font-family="var(--font-mono)" font-size="10" font-weight="500"
-                      fill="var(--color-ink-secondary)">
-                      {i === 0 ? 'H100' : 'H200'}
-                    </text>
-                    <text x="32" y="100" text-anchor="middle"
-                      font-family="var(--font-mono)" font-size="8"
-                      fill="var(--color-ink-mute)">
-                      {i === 0 ? '80GB' : '141GB'}
-                    </text>
-                  </g>
-                ))}
+                  ))
+                }
               </g>
             </svg>
           </div>
@@ -292,7 +561,7 @@ const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute ren
 
   const invoiceLocale = document.documentElement.lang || 'zh-CN';
   const formatRMB = (n: number) =>
-    '¥ ' +
+    '¥\u2009' +
     n.toLocaleString(invoiceLocale, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
@@ -316,7 +585,9 @@ const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute ren
   function init() {
     const invoice = document.querySelector<HTMLElement>('[data-invoice-anim]');
     if (!invoice) return;
-    const cells = Array.from(invoice.querySelectorAll<HTMLElement>('[data-amt]'));
+    const cells = Array.from(
+      invoice.querySelectorAll<HTMLElement>('[data-amt]')
+    );
 
     if (reduced || !('IntersectionObserver' in window)) {
       // leave the static markup as-is — already shows the final value
@@ -396,9 +667,10 @@ const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute ren
     border: 1px solid var(--color-hairline);
     border-radius: var(--radius-lg);
     display: flex;
-    transition: border-color var(--motion-base) var(--ease-out-quart),
-                box-shadow var(--motion-base) var(--ease-out-quart),
-                transform 320ms var(--ease-out-quart);
+    transition:
+      border-color var(--motion-base) var(--ease-out-quart),
+      box-shadow var(--motion-base) var(--ease-out-quart),
+      transform 320ms var(--ease-out-quart);
   }
 
   .tri-card:hover {
@@ -424,7 +696,9 @@ const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute ren
     box-shadow: none;
     transform: translateY(-2px);
   }
-  .tri-card--soon .tri-card__title { color: var(--color-ink-secondary); }
+  .tri-card--soon .tri-card__title {
+    color: var(--color-ink-secondary);
+  }
 
   .tri-card__inner {
     flex: 1;
@@ -522,10 +796,21 @@ const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute ren
     animation-timing-function: var(--ease-out-quart);
     animation-play-state: paused;
   }
-  .pkt--v0 { animation-name: pkt-v0; }
-  .pkt--v1 { animation-name: pkt-v1; animation-delay: 1.25s; }
-  .pkt--v2 { animation-name: pkt-v2; animation-delay: 2.5s; }
-  .pkt--v3 { animation-name: pkt-v3; animation-delay: 3.75s; }
+  .pkt--v0 {
+    animation-name: pkt-v0;
+  }
+  .pkt--v1 {
+    animation-name: pkt-v1;
+    animation-delay: 1.25s;
+  }
+  .pkt--v2 {
+    animation-name: pkt-v2;
+    animation-delay: 2.5s;
+  }
+  .pkt--v3 {
+    animation-name: pkt-v3;
+    animation-delay: 3.75s;
+  }
   .pkt--out {
     animation-name: pkt-out;
     animation-duration: 1.25s;
@@ -540,38 +825,100 @@ const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute ren
   }
 
   /* also start once the SVG paths have finished drawing */
-  .tri-card--primary.is-visible .sch-path { stroke-dashoffset: 0; }
-  html:not(.js-reveal) .tri-card--primary .sch-path { stroke-dashoffset: 0; }
+  .tri-card--primary.is-visible .sch-path {
+    stroke-dashoffset: 0;
+  }
+  html:not(.js-reveal) .tri-card--primary .sch-path {
+    stroke-dashoffset: 0;
+  }
 
   @keyframes pkt-v0 {
-    0%   { transform: translate(0px, 0px);    opacity: 0; }
-    8%   { opacity: 1; }
-    55%  { transform: translate(46px, 70px);  opacity: 0.9; }
-    60%, 100% { transform: translate(46px, 70px); opacity: 0; }
+    0% {
+      transform: translate(0px, 0px);
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    55% {
+      transform: translate(46px, 70px);
+      opacity: 0.9;
+    }
+    60%,
+    100% {
+      transform: translate(46px, 70px);
+      opacity: 0;
+    }
   }
   @keyframes pkt-v1 {
-    0%   { transform: translate(0px, 0px);    opacity: 0; }
-    8%   { opacity: 1; }
-    55%  { transform: translate(46px, 30px);  opacity: 0.9; }
-    60%, 100% { transform: translate(46px, 30px); opacity: 0; }
+    0% {
+      transform: translate(0px, 0px);
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    55% {
+      transform: translate(46px, 30px);
+      opacity: 0.9;
+    }
+    60%,
+    100% {
+      transform: translate(46px, 30px);
+      opacity: 0;
+    }
   }
   @keyframes pkt-v2 {
-    0%   { transform: translate(0px, 0px);    opacity: 0; }
-    8%   { opacity: 1; }
-    55%  { transform: translate(46px, -30px); opacity: 0.9; }
-    60%, 100% { transform: translate(46px, -30px); opacity: 0; }
+    0% {
+      transform: translate(0px, 0px);
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    55% {
+      transform: translate(46px, -30px);
+      opacity: 0.9;
+    }
+    60%,
+    100% {
+      transform: translate(46px, -30px);
+      opacity: 0;
+    }
   }
   @keyframes pkt-v3 {
-    0%   { transform: translate(0px, 0px);    opacity: 0; }
-    8%   { opacity: 1; }
-    55%  { transform: translate(46px, -70px); opacity: 0.9; }
-    60%, 100% { transform: translate(46px, -70px); opacity: 0; }
+    0% {
+      transform: translate(0px, 0px);
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    55% {
+      transform: translate(46px, -70px);
+      opacity: 0.9;
+    }
+    60%,
+    100% {
+      transform: translate(46px, -70px);
+      opacity: 0;
+    }
   }
   @keyframes pkt-out {
-    0%   { transform: translate(0px, 0px); opacity: 0; }
-    20%  { opacity: 1; }
-    80%  { opacity: 1; }
-    100% { transform: translate(20px, 0px); opacity: 0; }
+    0% {
+      transform: translate(0px, 0px);
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      transform: translate(20px, 0px);
+      opacity: 0;
+    }
   }
 
   /* ── Card 2: invoice mockup ──────────────────────────────────────────── */
@@ -634,8 +981,12 @@ const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute ren
     transition: stroke-dasharray 800ms var(--ease-out-expo);
     transition-delay: 100ms;
   }
-  .invoice__rule--foot { margin: 8px 0 8px; }
-  .invoice__rule--foot line { transition-delay: 360ms; }
+  .invoice__rule--foot {
+    margin: 8px 0 8px;
+  }
+  .invoice__rule--foot line {
+    transition-delay: 360ms;
+  }
   .tri-card--billing.is-visible .invoice__rule line,
   html:not(.js-reveal) .tri-card--billing .invoice__rule line {
     stroke-dasharray: 200 0;
@@ -710,9 +1061,15 @@ const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute ren
     animation-play-state: paused;
     opacity: 0.3;
   }
-  .rack-unit--0 .rack-led { animation-delay: 0s; }
-  .rack-unit--1 .rack-led { animation-delay: 1.5s; }
-  .rack-unit--2 .rack-led { animation-delay: 3s; }
+  .rack-unit--0 .rack-led {
+    animation-delay: 0s;
+  }
+  .rack-unit--1 .rack-led {
+    animation-delay: 1.5s;
+  }
+  .rack-unit--2 .rack-led {
+    animation-delay: 3s;
+  }
 
   .tri-card--soon.is-visible .rack-led,
   html:not(.js-reveal) .tri-card--soon .rack-led {
@@ -720,8 +1077,13 @@ const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute ren
   }
 
   @keyframes rack-led-breathe {
-    0%, 100% { opacity: 0.22; }
-    50%      { opacity: 0.72; }
+    0%,
+    100% {
+      opacity: 0.22;
+    }
+    50% {
+      opacity: 0.72;
+    }
   }
 
   /* ── reduced motion: kill all looping animations & draw-ins ──────────── */
@@ -738,7 +1100,9 @@ const gpuSubject = locale === 'zh' ? 'GPU 算力出租咨询' : 'GPU compute ren
       opacity: 0;
     }
     /* keep LED visible at a soft static state */
-    .rack-led { opacity: 0.4; }
+    .rack-led {
+      opacity: 0.4;
+    }
     .tri-card:hover {
       transform: none;
     }

@@ -12,9 +12,15 @@ const t = i18n[locale];
 
 <section class="brandstrip" aria-labelledby="brandstrip-title">
   <div class="container brandstrip__inner">
-    <p class="eyebrow eyebrow--mute" id="brandstrip-title">{t.brandStrip.title}</p>
+    <p class="eyebrow eyebrow--mute" id="brandstrip-title">
+      {t.brandStrip.title}
+    </p>
     <div class="brandstrip__loop">
-      <BrandLogoLoop ariaLabel={t.brandStrip.aria} locale={locale} client:visible />
+      <BrandLogoLoop
+        ariaLabel={t.brandStrip.aria}
+        locale={locale}
+        client:visible
+      />
     </div>
   </div>
 </section>

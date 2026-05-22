@@ -50,8 +50,10 @@ export const i18n = {
       eyebrow: '统一模型 API',
       titlePrefix: '一个平台',
       titleRest: '调用多家主流模型。',
-      bodyBefore: '通过 TokenFleet 聚合 OpenAI、Anthropic、Google、DeepSeek、Qwen 等',
-      bodyAfter: '个生产级 LLM、图像、视频模型。一个 API key，一份发票，国内直连。',
+      bodyBefore:
+        '通过 TokenFleet 聚合 OpenAI、Anthropic、Google、DeepSeek、Qwen 等',
+      bodyAfter:
+        '个生产级 LLM、图像、视频模型。一个 API key，一份发票，国内直连。',
       docs: '查看文档',
       trustAria: '平台特性',
       trustModels: (total: number) => `${total} 个生产级模型`,
@@ -93,14 +95,22 @@ export const i18n = {
           eyebrow: '产品 01',
           title: '统一 API 网关',
           body: '生产级模型聚合在同一个 API 网关下。一个 API key，今天接入多家模型。',
-          bullets: ['统一 endpoint 与 API key', '同账户、同对账、同发票', '国内直连，低延迟'],
+          bullets: [
+            '统一 endpoint 与 API key',
+            '同账户、同对账、同发票',
+            '国内直连，低延迟',
+          ],
           cta: '查看支持的模型',
         },
         {
           eyebrow: '产品 02',
           title: '统一计费与发票',
           body: '一个对公账户，自动汇总跨厂商用量。月底一张人民币增值税专票。',
-          bullets: ['跨厂商用量统一对账', '月度自动开票或按需补开', '团队 / 项目维度的成本归属'],
+          bullets: [
+            '跨厂商用量统一对账',
+            '月度自动开票或按需补开',
+            '团队 / 项目维度的成本归属',
+          ],
           cta: '查看计费机制',
         },
         {
@@ -128,11 +138,31 @@ export const i18n = {
       rolesAria: '账户角色示例',
       rolesTitle: '账户角色',
       capabilities: [
-        ['对公账户', '中国大陆主体 · 合同主体 = 深圳市新云计算科技有限公司。', 'mainland-cn entity'],
-        ['人民币结算 / 增值税专票', '月度自动开票或按需补开 · 支持专票 6% 与普票切换。', 'cny · vat invoice'],
-        ['多人协作权限', '四档角色：Owner · Admin · Developer · Viewer，按团队 / 项目隔离。', 'rbac · scoped keys'],
-        ['用量看板与异常预警', '按 model / 按 team / 按时段的实时用量，超阈值自动告警。', 'usage · anomaly'],
-        ['合同 SLA 与法务条款', '可签 MSA / DPA / 中文合同 · 季度对账支持。', 'msa · dpa · sla'],
+        [
+          '对公账户',
+          '中国大陆主体 · 合同主体 = 深圳市新云计算科技有限公司。',
+          'mainland-cn entity',
+        ],
+        [
+          '人民币结算 / 增值税专票',
+          '月度自动开票或按需补开 · 支持专票 6% 与普票切换。',
+          'cny · vat invoice',
+        ],
+        [
+          '多人协作权限',
+          '四档角色：Owner · Admin · Developer · Viewer，按团队 / 项目隔离。',
+          'rbac · scoped keys',
+        ],
+        [
+          '用量看板与异常预警',
+          '按 model / 按 team / 按时段的实时用量，超阈值自动告警。',
+          'usage · anomaly',
+        ],
+        [
+          '合同 SLA 与法务条款',
+          '可签 MSA / DPA / 中文合同 · 季度对账支持。',
+          'msa · dpa · sla',
+        ],
       ],
     },
     why: {
@@ -141,13 +171,16 @@ export const i18n = {
       body: '四件可被验证的事，不是四条形容词。',
       cards: {
         modelsTitle: (total: number) => `${total} 个生产级模型，一个 endpoint`,
-        modelsBody: '覆盖 LLM、图像、视频、音频，通过统一 API 网关完成调用、计量与对账。',
+        modelsBody:
+          '覆盖 LLM、图像、视频、音频，通过统一 API 网关完成调用、计量与对账。',
         moreModels: '更多生产级模型',
         vpcTitle: '私有部署 / VPC 直连',
-        vpcBody: '用量到达一定规模可申请 VPC 直连 endpoint，请求不离开你的私网边界。',
+        vpcBody:
+          '用量到达一定规模可申请 VPC 直连 endpoint，请求不离开你的私网边界。',
         privateEgress: '不出私网',
         endpointTitle: '统一 endpoint 接入',
-        endpointBody: '同一个 API key 调用多家模型，接入路径与用量记录保持一致。',
+        endpointBody:
+          '同一个 API key 调用多家模型，接入路径与用量记录保持一致。',
         endpointCaption: '每月 token 用量、错误率、模型分布 → 控制台一站可见。',
         latencyTitle: '国内直连，毫秒级延迟',
         latencyBody: '五大城市平均首字延迟（P50），按真实生产请求样本。',
@@ -164,7 +197,11 @@ export const i18n = {
       body: '当 token 用量越过自服务的边界，我们与你的工程团队直接对接：单点接入、容量规划、独立路由、定制条款。',
       labels: [
         ['SLA', '企业级 SLA', '按用量等级与团队规模定制承诺，月度可对账。'],
-        ['VPC', '私有部署 / VPC 直连', '请求不出私网边界。具体形态按规模商谈。'],
+        [
+          'VPC',
+          '私有部署 / VPC 直连',
+          '请求不出私网边界。具体形态按规模商谈。',
+        ],
         ['SUPPORT', '专属技术对接', '7×24 中文工程支持渠道，故障一线响应。'],
       ],
       cta: '联系销售',
@@ -191,7 +228,8 @@ export const i18n = {
       sortInputDesc: '输入价 ↓',
       sortOutputAsc: '输出价 ↑',
       sortOutputDesc: '输出价 ↓',
-      counter: (shown: string | number, total: number) => `${shown} / ${total} 个模型`,
+      counter: (shown: string | number, total: number) =>
+        `${shown} / ${total} 个模型`,
       empty: '未找到匹配的模型。',
       reset: '清除筛选',
       cardAria: (model: string) => `查看 ${model} 详情`,
@@ -222,7 +260,8 @@ export const i18n = {
       console: '去控制台调用',
     },
     footer: {
-      tagline: '一站式 AI 模型 API 网关。一个 API key 接所有模型，一份对公账单结全部账。',
+      tagline:
+        '一站式 AI 模型 API 网关。一个 API key 接所有模型，一份对公账单结全部账。',
       follow: '关注我们',
       cols: {
         product: '产品',
@@ -286,8 +325,10 @@ export const i18n = {
       eyebrow: 'MODEL API · UNIFIED',
       titlePrefix: 'One platform',
       titleRest: 'for leading models.',
-      bodyBefore: 'TokenFleet aggregates production LLM, image, and video models from OpenAI, Anthropic, Google, DeepSeek, Qwen, and more:',
-      bodyAfter: 'models through one API key, one invoice, and direct mainland connectivity.',
+      bodyBefore:
+        'TokenFleet aggregates production LLM, image, and video models from OpenAI, Anthropic, Google, DeepSeek, Qwen, and more:',
+      bodyAfter:
+        'models through one API key, one invoice, and direct mainland connectivity.',
       docs: 'View docs',
       trustAria: 'Platform features',
       trustModels: (total: number) => `${total} production models`,
@@ -308,7 +349,8 @@ export const i18n = {
     },
     featured: {
       eyebrow: 'MODELS GALLERY',
-      title: (total: number) => `${total} production models,\none billing layer.`,
+      title: (total: number) =>
+        `${total} production models,\none billing layer.`,
       body: 'LLMs, image, video, and audio models all share one endpoint and one business account.',
       viewAll: 'View all models',
       fallbackBlurb: 'Production model access',
@@ -329,14 +371,22 @@ export const i18n = {
           eyebrow: 'PRODUCT 01',
           title: 'Unified API gateway',
           body: 'Production models are aggregated behind one API gateway. One API key connects your app to multiple vendors today.',
-          bullets: ['Unified endpoint and API key', 'One account, reconciliation, and invoice', 'Direct mainland routing with lower latency'],
+          bullets: [
+            'Unified endpoint and API key',
+            'One account, reconciliation, and invoice',
+            'Direct mainland routing with lower latency',
+          ],
           cta: 'View supported models',
         },
         {
           eyebrow: 'PRODUCT 02',
           title: 'Unified billing and invoicing',
           body: 'One business account consolidates cross-vendor usage into a monthly CNY VAT invoice.',
-          bullets: ['Cross-vendor usage reconciliation', 'Monthly automatic or on-demand invoices', 'Team and project cost attribution'],
+          bullets: [
+            'Cross-vendor usage reconciliation',
+            'Monthly automatic or on-demand invoices',
+            'Team and project cost attribution',
+          ],
           cta: 'View billing workflow',
         },
         {
@@ -364,11 +414,31 @@ export const i18n = {
       rolesAria: 'Account role example',
       rolesTitle: 'ACCOUNT ROLES',
       capabilities: [
-        ['Business account', 'Mainland China entity · Contracting entity = Shenzhen Xinyun Computing Technology Co., Ltd.', 'mainland-cn entity'],
-        ['CNY settlement / VAT invoice', 'Monthly auto-invoicing or on-demand reissue · special and general VAT invoice support.', 'cny · vat invoice'],
-        ['Multi-user permissions', 'Four roles: Owner · Admin · Developer · Viewer, scoped by team and project.', 'rbac · scoped keys'],
-        ['Usage dashboards and alerts', 'Real-time usage by model, team, and time window, with threshold-based alerts.', 'usage · anomaly'],
-        ['Contract SLA and legal terms', 'MSA / DPA / Chinese contracts available, with quarterly reconciliation support.', 'msa · dpa · sla'],
+        [
+          'Business account',
+          'Mainland China entity · Contracting entity = Shenzhen Xinyun Computing Technology Co., Ltd.',
+          'mainland-cn entity',
+        ],
+        [
+          'CNY settlement / VAT invoice',
+          'Monthly auto-invoicing or on-demand reissue · special and general VAT invoice support.',
+          'cny · vat invoice',
+        ],
+        [
+          'Multi-user permissions',
+          'Four roles: Owner · Admin · Developer · Viewer, scoped by team and project.',
+          'rbac · scoped keys',
+        ],
+        [
+          'Usage dashboards and alerts',
+          'Real-time usage by model, team, and time window, with threshold-based alerts.',
+          'usage · anomaly',
+        ],
+        [
+          'Contract SLA and legal terms',
+          'MSA / DPA / Chinese contracts available, with quarterly reconciliation support.',
+          'msa · dpa · sla',
+        ],
       ],
     },
     why: {
@@ -376,17 +446,23 @@ export const i18n = {
       title: 'Why TokenFleet.',
       body: 'Four verifiable capabilities, not four adjectives.',
       cards: {
-        modelsTitle: (total: number) => `${total} production models, one endpoint`,
-        modelsBody: 'LLM, image, video, and audio calls run through one API gateway for execution, metering, and reconciliation.',
+        modelsTitle: (total: number) =>
+          `${total} production models, one endpoint`,
+        modelsBody:
+          'LLM, image, video, and audio calls run through one API gateway for execution, metering, and reconciliation.',
         moreModels: 'more production models',
         vpcTitle: 'Private deployment / VPC direct connect',
-        vpcBody: 'At scale, teams can request a VPC endpoint so traffic stays inside their private network boundary.',
+        vpcBody:
+          'At scale, teams can request a VPC endpoint so traffic stays inside their private network boundary.',
         privateEgress: 'private egress only',
         endpointTitle: 'Unified endpoint integration',
-        endpointBody: 'One API key can call multiple model providers while keeping integration paths and usage records consistent.',
-        endpointCaption: 'Monthly token usage, error rates, and model mix are visible in one console.',
+        endpointBody:
+          'One API key can call multiple model providers while keeping integration paths and usage records consistent.',
+        endpointCaption:
+          'Monthly token usage, error rates, and model mix are visible in one console.',
         latencyTitle: 'Direct mainland routing, millisecond latency',
-        latencyBody: 'Average time to first token (P50) across five cities from production samples.',
+        latencyBody:
+          'Average time to first token (P50) across five cities from production samples.',
         city: 'City',
         overseas: 'Overseas direct',
         statusPrefix: 'Sample window 2026-04 ·',
@@ -399,9 +475,21 @@ export const i18n = {
       title: 'Built for large-scale production usage.',
       body: 'When token usage outgrows self-serve limits, we work directly with your engineering team on single-entry integration, capacity planning, dedicated routing, and custom terms.',
       labels: [
-        ['SLA', 'Enterprise SLA', 'Commitments are tailored by usage tier and team size, with monthly reconciliation.'],
-        ['VPC', 'Private deployment / VPC direct connect', 'Requests can stay inside your private network boundary. Final shape depends on scale.'],
-        ['SUPPORT', 'Dedicated technical contact', '7x24 Chinese engineering support channel with front-line incident response.'],
+        [
+          'SLA',
+          'Enterprise SLA',
+          'Commitments are tailored by usage tier and team size, with monthly reconciliation.',
+        ],
+        [
+          'VPC',
+          'Private deployment / VPC direct connect',
+          'Requests can stay inside your private network boundary. Final shape depends on scale.',
+        ],
+        [
+          'SUPPORT',
+          'Dedicated technical contact',
+          '7x24 Chinese engineering support channel with front-line incident response.',
+        ],
       ],
       cta: 'Contact sales',
       note: 'Usually replies within 24 hours · sales@tokenfleet.cn',
@@ -418,7 +506,12 @@ export const i18n = {
       vendorAria: 'Filter by vendor',
       modalityAria: 'Filter by modality',
       all: 'All',
-      modalities: { chat: 'LLM', image: 'Image', video: 'Video', audio: 'Audio' },
+      modalities: {
+        chat: 'LLM',
+        image: 'Image',
+        video: 'Video',
+        audio: 'Audio',
+      },
       searchLabel: 'Search model name',
       searchPlaceholder: 'Search model name',
       sortLabel: 'Sort',
@@ -427,7 +520,8 @@ export const i18n = {
       sortInputDesc: 'Input price ↓',
       sortOutputAsc: 'Output price ↑',
       sortOutputDesc: 'Output price ↓',
-      counter: (shown: string | number, total: number) => `${shown} / ${total} models`,
+      counter: (shown: string | number, total: number) =>
+        `${shown} / ${total} models`,
       empty: 'No matching models.',
       reset: 'Clear filters',
       cardAria: (model: string) => `View ${model} details`,
@@ -458,7 +552,8 @@ export const i18n = {
       console: 'Open console',
     },
     footer: {
-      tagline: 'A one-stop AI model API gateway. One API key connects every model, and one business invoice settles usage.',
+      tagline:
+        'A one-stop AI model API gateway. One API key connects every model, and one business invoice settles usage.',
       follow: 'Follow',
       cols: {
         product: 'Product',
@@ -483,7 +578,10 @@ export const i18n = {
       },
       followItems: [
         ['WeChat group', 'TokenFleet WeChat group QR code'],
-        ['WeChat official account', 'TokenFleet WeChat official account QR code'],
+        [
+          'WeChat official account',
+          'TokenFleet WeChat official account QR code',
+        ],
         ['Douyin', 'TokenFleet Douyin QR code'],
       ],
       qrAria: (label: string) => `${label} QR code`,

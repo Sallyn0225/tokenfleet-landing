@@ -43,6 +43,7 @@ fal.ai 落地页 8 段结构（自上而下）：announcement bar / top nav / he
 本项目可借鉴：Replicate hero code tab + 模型输出 carousel；OpenRouter hero 巨数字 (考虑用于 Featured Models 段标题)；RunPod tokens-per-dollar 对比柱状图（如果未来有真实定价优势）。
 
 **新增** Stripe-specific 借鉴（v2 加入，对应 anchor reference 变化）：
+
 - stripe.com 主页 mesh hero + Sohne thin display + indigo pill CTA + 1200px container
 - stripe.com/payments composited dashboard mockup (面板叠合)
 - stripe.com/billing cream interlude band（v2 落地为 Built for Business 段背景）
@@ -157,27 +158,28 @@ fal.ai 落地页 8 段结构（自上而下）：announcement bar / top nav / he
 
 下表替换 v1 Asset Manifest（v1 全部 sienna + flat + 无图卡 + mono 网格的资产策略已废）。
 
-| # | 用途位置 | 形态 | 推荐比例 / 尺寸 | 内容描述 | 推荐来源 / 备选路线 |
-|---|---|---|---|---|---|
-| 1 | **Nav 品牌 wordmark** | 矢量 SVG | viewBox 高度 32–48px，宽自适应 120–160px | `Token` ink + `Fleet` indigo voltage（候选 craft probe）；备选 全 ink + 句点 indigo / 全 indigo | 自绘 SVG（craft 阶段 wordmark probe） |
-| 2 | **Hero gradient mesh backdrop** | SVG（多 radial gradient + blur）或 PNG @2x 大图 | desktop 1920×720；mobile 750×500（aspect ~2.7:1） | DESIGN.md cream → sherbet orange → lavender → indigo → ruby pink 横向 wash，装满 hero 上 ~55%。**禁** CSS linear-gradient（无 blob 感） | 自绘 SVG (`<filter>` + `<radialGradient>` 叠加) → 失败则导出 PNG |
-| 3 | **Hero 多 tab 代码块** | 纯 HTML/CSS 实现 | — | curl / Python / Node 3 tab，indigo voltage 高亮 base_url + model id 行，1 行 `复制` mono | — |
-| 4 | **5-up Featured Models 卡** | 厂商 brand color 背景 + mono 大字 + 厂商 logo SVG | desktop 4:3 单卡 ~280×210；mobile 2 列 | 每卡 = 厂商 desaturate 8-12% 背景 + mono display-md 模型 id + 顶部 sans 厂商名 + 底部 mono token cost。5 个模型候选：claude-opus-4-7 / gpt-5 / gemini-3-pro / flux-1.1-pro / kling-2.0 | simpleicons.org (MIT) 厂商 logo SVG + 自配 brand color desaturate |
-| 5 | **Tri-card 主卡 1 — 统一 API 网关** | mono code preview + 极简 schematic SVG | 200×200 schematic | endpoint / 网络节点图示，1.5px stroke 单色 ink + indigo voltage | 自绘 SVG |
-| 6 | **Tri-card 主卡 2 — Unified Billing & Invoicing mini 发票 mockup** | HTML/CSS（不出图） | 卡内 ~320×220 | mini 增值税专票 mockup：mono tabular figures 金额、税号、公司全称 sample data + indigo voltage 高亮 "TokenFleet 增值税专票" 抬头 | 纯 HTML/CSS 实现，sample data craft 阶段确认 |
-| 7 | **Tri-card Coming-soon GPU 卡** | 灰度 + mono label | 卡内 200×200 | 灰度芯片 / 方块 + `COMING SOON` mono label + 邮件 placeholder | 自绘 SVG (gray-50% saturation) |
-| 8 | **Built for Business 段右侧 5 项能力栅格** | mono micro-cap + body-md 文字栅格 | 2×3 minus 1 或 1×5 | 5 项：对公账户 / 人民币结算 + 专票 / 多人协作权限 / 用量看板 / 合同 SLA | 纯 HTML/CSS 实现 |
-| 9 | **Built for Business — dashboard composite mockup (可选)** | HTML/CSS（不出图） | desktop 480×360 | mini TokenFleet 控制台 mockup：invoice 列表 + billing dashboard mini 图表 + team panel 三块叠合（DESIGN.md `card-dashboard-mockup` 组件） | 纯 HTML/CSS 实现，craft 阶段择优是否做（design-brief §10 Open Q4） |
-| 10 | **Why-us A — 34 模型 mono 网格** | 纯 HTML/CSS | — | 4×9 或 6×6 mono 网格，34 格，每格 `claude-opus-4-7  /  Anthropic` | — |
-| 11 | **Why-us B — 私有部署 schematic** | SVG schematic | 240×160，1.5px stroke | `Public endpoint → Private VPC` box+arrow 单色（ink + indigo voltage） | 自绘 SVG |
-| 12 | **Why-us C — OpenAI SDK code diff** | 纯 HTML/CSS mono code | — | 两行 diff：`api.openai.com/v1` → `api.tokenfleet.cn/v1`（indigo 高亮 diff 行） | — |
-| 13 | **Why-us D — 国内直连 latency schematic** | SVG schematic | 240×160 | 海外 endpoint → 国内 CDN 节点 → 客户端，配 mono caption `北京 / 上海 / 广州 / 深圳 / 杭州 平均 P50 latency [待填]` | 自绘 SVG |
-| 14 | **Enterprise dark band 装饰** | 可选，默认无装饰 | — | 纯排版，display-xl 白色 sans + 3 条 mono label；若必须装饰，用 1 条极淡 hairline grid 背景 | — |
-| 15 | **Footer 微信公众号 / 视频号 / 抖音号二维码** | PNG @2x 或 SVG | 200×200 显示（@2x = 400×400 实际） | 实际二维码 | **用户提供**（公众号已知；视频号 / 抖音号 `[待填]`） |
-| 16 | **Favicon** | ICO + SVG | 16×16 / 32×32 / 48×48 ICO 多尺寸 + SVG 矢量 | 单字母 `T`（ink + indigo voltage）或品牌简化 mark | 自绘 SVG → realfavicongenerator.net 转 ICO |
-| 17 | **OG share image** | PNG | 1200×630（1.91:1） | wordmark + Sohne thin 副标 + 简化 mesh 背景，用于微信 / Twitter / LinkedIn 分享卡 | 自绘（Figma 模板） |
+| #   | 用途位置                                                           | 形态                                              | 推荐比例 / 尺寸                                   | 内容描述                                                                                                                                                                               | 推荐来源 / 备选路线                                                |
+| --- | ------------------------------------------------------------------ | ------------------------------------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| 1   | **Nav 品牌 wordmark**                                              | 矢量 SVG                                          | viewBox 高度 32–48px，宽自适应 120–160px          | `Token` ink + `Fleet` indigo voltage（候选 craft probe）；备选 全 ink + 句点 indigo / 全 indigo                                                                                        | 自绘 SVG（craft 阶段 wordmark probe）                              |
+| 2   | **Hero gradient mesh backdrop**                                    | SVG（多 radial gradient + blur）或 PNG @2x 大图   | desktop 1920×720；mobile 750×500（aspect ~2.7:1） | DESIGN.md cream → sherbet orange → lavender → indigo → ruby pink 横向 wash，装满 hero 上 ~55%。**禁** CSS linear-gradient（无 blob 感）                                                | 自绘 SVG (`<filter>` + `<radialGradient>` 叠加) → 失败则导出 PNG   |
+| 3   | **Hero 多 tab 代码块**                                             | 纯 HTML/CSS 实现                                  | —                                                 | curl / Python / Node 3 tab，indigo voltage 高亮 base_url + model id 行，1 行 `复制` mono                                                                                               | —                                                                  |
+| 4   | **5-up Featured Models 卡**                                        | 厂商 brand color 背景 + mono 大字 + 厂商 logo SVG | desktop 4:3 单卡 ~280×210；mobile 2 列            | 每卡 = 厂商 desaturate 8-12% 背景 + mono display-md 模型 id + 顶部 sans 厂商名 + 底部 mono token cost。5 个模型候选：claude-opus-4-7 / gpt-5 / gemini-3-pro / flux-1.1-pro / kling-2.0 | simpleicons.org (MIT) 厂商 logo SVG + 自配 brand color desaturate  |
+| 5   | **Tri-card 主卡 1 — 统一 API 网关**                                | mono code preview + 极简 schematic SVG            | 200×200 schematic                                 | endpoint / 网络节点图示，1.5px stroke 单色 ink + indigo voltage                                                                                                                        | 自绘 SVG                                                           |
+| 6   | **Tri-card 主卡 2 — Unified Billing & Invoicing mini 发票 mockup** | HTML/CSS（不出图）                                | 卡内 ~320×220                                     | mini 增值税专票 mockup：mono tabular figures 金额、税号、公司全称 sample data + indigo voltage 高亮 "TokenFleet 增值税专票" 抬头                                                       | 纯 HTML/CSS 实现，sample data craft 阶段确认                       |
+| 7   | **Tri-card Coming-soon GPU 卡**                                    | 灰度 + mono label                                 | 卡内 200×200                                      | 灰度芯片 / 方块 + `COMING SOON` mono label + 邮件 placeholder                                                                                                                          | 自绘 SVG (gray-50% saturation)                                     |
+| 8   | **Built for Business 段右侧 5 项能力栅格**                         | mono micro-cap + body-md 文字栅格                 | 2×3 minus 1 或 1×5                                | 5 项：对公账户 / 人民币结算 + 专票 / 多人协作权限 / 用量看板 / 合同 SLA                                                                                                                | 纯 HTML/CSS 实现                                                   |
+| 9   | **Built for Business — dashboard composite mockup (可选)**         | HTML/CSS（不出图）                                | desktop 480×360                                   | mini TokenFleet 控制台 mockup：invoice 列表 + billing dashboard mini 图表 + team panel 三块叠合（DESIGN.md `card-dashboard-mockup` 组件）                                              | 纯 HTML/CSS 实现，craft 阶段择优是否做（design-brief §10 Open Q4） |
+| 10  | **Why-us A — 34 模型 mono 网格**                                   | 纯 HTML/CSS                                       | —                                                 | 4×9 或 6×6 mono 网格，34 格，每格 `claude-opus-4-7  /  Anthropic`                                                                                                                      | —                                                                  |
+| 11  | **Why-us B — 私有部署 schematic**                                  | SVG schematic                                     | 240×160，1.5px stroke                             | `Public endpoint → Private VPC` box+arrow 单色（ink + indigo voltage）                                                                                                                 | 自绘 SVG                                                           |
+| 12  | **Why-us C — OpenAI SDK code diff**                                | 纯 HTML/CSS mono code                             | —                                                 | 两行 diff：`api.openai.com/v1` → `api.tokenfleet.cn/v1`（indigo 高亮 diff 行）                                                                                                         | —                                                                  |
+| 13  | **Why-us D — 国内直连 latency schematic**                          | SVG schematic                                     | 240×160                                           | 海外 endpoint → 国内 CDN 节点 → 客户端，配 mono caption `北京 / 上海 / 广州 / 深圳 / 杭州 平均 P50 latency [待填]`                                                                     | 自绘 SVG                                                           |
+| 14  | **Enterprise dark band 装饰**                                      | 可选，默认无装饰                                  | —                                                 | 纯排版，display-xl 白色 sans + 3 条 mono label；若必须装饰，用 1 条极淡 hairline grid 背景                                                                                             | —                                                                  |
+| 15  | **Footer 微信公众号 / 视频号 / 抖音号二维码**                      | PNG @2x 或 SVG                                    | 200×200 显示（@2x = 400×400 实际）                | 实际二维码                                                                                                                                                                             | **用户提供**（公众号已知；视频号 / 抖音号 `[待填]`）               |
+| 16  | **Favicon**                                                        | ICO + SVG                                         | 16×16 / 32×32 / 48×48 ICO 多尺寸 + SVG 矢量       | 单字母 `T`（ink + indigo voltage）或品牌简化 mark                                                                                                                                      | 自绘 SVG → realfavicongenerator.net 转 ICO                         |
+| 17  | **OG share image**                                                 | PNG                                               | 1200×630（1.91:1）                                | wordmark + Sohne thin 副标 + 简化 mesh 背景，用于微信 / Twitter / LinkedIn 分享卡                                                                                                      | 自绘（Figma 模板）                                                 |
 
 **Asset Manifest v2 使用约定**（保留 v1 约定）：
+
 - `/impeccable craft` 阶段产出真实素材或对应占位 placeholder
 - Phase 2 实现时，所有真实图片放 `public/assets/landing/`，所有占位先用 placeholder rect（CSS `background: var(--canvas-soft)` + 中间一行 mono `[资产:#]`），便于 grep 排查未替换项
 - 上线前 CI 校验 `public/assets/landing/` 目录下是否还有 placeholder 文件名残留
@@ -224,12 +226,12 @@ fal.ai 落地页 8 段结构（自上而下）：announcement bar / top nav / he
 
 v1 数据快照表完整保留（截至 2026-05-14，A-N 项）。**v2 新增数据点**：
 
-| 数据点 | 用途 | 实现时使用值 |
-|---|---|---|
-| **O. 5 个 Featured Models 候选** | Featured Gallery 5-up 卡 | 候选：`claude-opus-4-7` / `gpt-5` / `gemini-3-pro` / `flux-1.1-pro` / `kling-2.0`（craft 启动前用户确认是否上架且 token cost 真实） |
-| **P. 5 项 finance 能力具体措辞** | Built for Business 段 | 候选见 Decision 5 上文，craft 阶段择优 |
-| **Q. mini 发票 mockup sample data** | Tri-card 主卡 2 | 公司全称 / 税号 / 金额 sample data，craft 启动前用户提供或确认用 placeholder |
-| **R. Featured Models 厂商 brand color list** | 5-up 卡背景 | OpenAI 近黑 / Anthropic 黄褐 / Google 浅蓝 / DeepSeek 深紫 / Qwen 橙，desaturate 8-12% 实测 |
+| 数据点                                       | 用途                     | 实现时使用值                                                                                                                        |
+| -------------------------------------------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
+| **O. 5 个 Featured Models 候选**             | Featured Gallery 5-up 卡 | 候选：`claude-opus-4-7` / `gpt-5` / `gemini-3-pro` / `flux-1.1-pro` / `kling-2.0`（craft 启动前用户确认是否上架且 token cost 真实） |
+| **P. 5 项 finance 能力具体措辞**             | Built for Business 段    | 候选见 Decision 5 上文，craft 阶段择优                                                                                              |
+| **Q. mini 发票 mockup sample data**          | Tri-card 主卡 2          | 公司全称 / 税号 / 金额 sample data，craft 启动前用户提供或确认用 placeholder                                                        |
+| **R. Featured Models 厂商 brand color list** | 5-up 卡背景              | OpenAI 近黑 / Anthropic 黄褐 / Google 浅蓝 / DeepSeek 深紫 / Qwen 橙，desaturate 8-12% 实测                                         |
 
 ### Decision 7 — 国内化定位 / Why-us D 卡 / 备案（v2 部分修订）
 

@@ -19,8 +19,13 @@ interface Props {
 
 const { locale = 'zh' } = Astro.props as Props;
 const t = i18n[locale];
-const labels = t.enterprise.labels.map(([eyebrow, title, body]) => ({ eyebrow, title, body }));
-const salesSubject = locale === 'zh' ? '企业用量咨询' : 'Enterprise usage inquiry';
+const labels = t.enterprise.labels.map(([eyebrow, title, body]) => ({
+  eyebrow,
+  title,
+  body,
+}));
+const salesSubject =
+  locale === 'zh' ? '企业用量咨询' : 'Enterprise usage inquiry';
 ---
 
 <section class="enterprise" id="enterprise" aria-labelledby="enterprise-title">
@@ -38,20 +43,36 @@ const salesSubject = locale === 'zh' ? '企业用量咨询' : 'Enterprise usage 
     </div>
 
     <ol class="enterprise__labels" data-reveal>
-      {labels.map((l) => (
-        <li>
-          <span class="eyebrow eyebrow--on-dark">{l.eyebrow}</span>
-          <h3 class="enterprise__label-title">{l.title}</h3>
-          <p class="enterprise__label-body">{l.body}</p>
-        </li>
-      ))}
+      {
+        labels.map((l) => (
+          <li>
+            <span class="eyebrow eyebrow--on-dark">{l.eyebrow}</span>
+            <h3 class="enterprise__label-title">{l.title}</h3>
+            <p class="enterprise__label-body">{l.body}</p>
+          </li>
+        ))
+      }
     </ol>
 
     <div class="enterprise__cta" data-reveal>
-      <a href={`mailto:sales@tokenfleet.cn?subject=${encodeURIComponent(salesSubject)}`} class="btn btn--primary btn--lg">
+      <a
+        href={`mailto:sales@tokenfleet.cn?subject=${encodeURIComponent(salesSubject)}`}
+        class="btn btn--primary btn--lg"
+      >
         {t.enterprise.cta}
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M5 3l4 4-4 4"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
         </svg>
       </a>
       <p class="enterprise__cta-note mono">
@@ -78,11 +99,18 @@ const salesSubject = locale === 'zh' ? '企业用量咨询' : 'Enterprise usage 
     z-index: 0;
     opacity: 1;
     background:
-      linear-gradient(90deg, rgba(7, 12, 30, 0.96) 0%, rgba(10, 16, 42, 0.9) 36%, rgba(13, 18, 46, 0.58) 100%),
+      linear-gradient(
+        90deg,
+        rgba(7, 12, 30, 0.96) 0%,
+        rgba(10, 16, 42, 0.9) 36%,
+        rgba(13, 18, 46, 0.58) 100%
+      ),
       linear-gradient(180deg, rgba(28, 30, 84, 0.2), rgba(11, 14, 36, 0.88)),
       image-set(
-        url('/images/enterprise-production-scale-bg-1600.avif') type('image/avif'),
-        url('/images/enterprise-production-scale-bg-1600.webp') type('image/webp')
+        url('/images/enterprise-production-scale-bg-1600.avif')
+          type('image/avif'),
+        url('/images/enterprise-production-scale-bg-1600.webp')
+          type('image/webp')
       );
     background-size: cover;
     background-position: center right;
@@ -165,11 +193,18 @@ const salesSubject = locale === 'zh' ? '企业用量咨询' : 'Enterprise usage 
   @media (max-width: 768px) {
     .enterprise__bg {
       background:
-        linear-gradient(90deg, rgba(7, 12, 30, 0.98) 0%, rgba(10, 16, 42, 0.92) 48%, rgba(13, 18, 46, 0.74) 100%),
+        linear-gradient(
+          90deg,
+          rgba(7, 12, 30, 0.98) 0%,
+          rgba(10, 16, 42, 0.92) 48%,
+          rgba(13, 18, 46, 0.74) 100%
+        ),
         linear-gradient(180deg, rgba(28, 30, 84, 0.24), rgba(11, 14, 36, 0.9)),
         image-set(
-          url('/images/enterprise-production-scale-bg-960.avif') type('image/avif'),
-          url('/images/enterprise-production-scale-bg-960.webp') type('image/webp')
+          url('/images/enterprise-production-scale-bg-960.avif')
+            type('image/avif'),
+          url('/images/enterprise-production-scale-bg-960.webp')
+            type('image/webp')
         );
       background-size: cover;
       background-position: 58% center;

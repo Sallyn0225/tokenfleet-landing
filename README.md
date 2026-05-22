@@ -23,14 +23,14 @@
 
 TokenFleet Landing presents a Chinese-first product narrative for **TokenFleet**: one API key, OpenAI-compatible integration, unified billing, invoices, and a searchable model catalog across LLM, image, and video models.
 
-| Area | Details |
-| --- | --- |
-| Framework | Astro 6 static site |
+| Area                | Details                                      |
+| ------------------- | -------------------------------------------- |
+| Framework           | Astro 6 static site                          |
 | Interactive islands | React 19, OGL WebGL hero, animated logo loop |
-| Main routes | `/`, `/models` |
-| Catalog source | Root `pricing-api.json` snapshot |
-| Current catalog | 37 models, 7 active vendors |
-| Build output | Static files in `dist/` |
+| Main routes         | `/`, `/models`                               |
+| Catalog source      | Root `pricing-api.json` snapshot             |
+| Current catalog     | 37 models, 7 active vendors                  |
+| Build output        | Static files in `dist/`                      |
 
 ## Contents
 
@@ -57,15 +57,15 @@ TokenFleet Landing presents a Chinese-first product narrative for **TokenFleet**
 
 ## Tech Stack
 
-| Layer | Technology |
-| --- | --- |
-| Site framework | [Astro](https://astro.build/) 6 |
-| Islands | React 19 through `@astrojs/react` |
-| Motion / WebGL | [OGL](https://github.com/oframe/ogl) |
-| Styling | Plain CSS, design tokens, button primitives, Tailwind CSS 4 Vite plugin |
-| Language | TypeScript-enabled Astro components |
+| Layer            | Technology                                                                                       |
+| ---------------- | ------------------------------------------------------------------------------------------------ |
+| Site framework   | [Astro](https://astro.build/) 6                                                                  |
+| Islands          | React 19 through `@astrojs/react`                                                                |
+| Motion / WebGL   | [OGL](https://github.com/oframe/ogl)                                                             |
+| Styling          | Plain CSS, design tokens, button primitives, Tailwind CSS 4 Vite plugin                          |
+| Language         | TypeScript-enabled Astro components                                                              |
 | Browser behavior | Vanilla JavaScript for navigation, reveal animations, code tabs, and model explorer interactions |
-| Assets | Static assets under `public/` |
+| Assets           | Static assets under `public/`                                                                    |
 
 ## Getting Started
 
@@ -102,19 +102,19 @@ npm run preview
 
 ## Available Scripts
 
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start the Astro development server. |
-| `npm run build` | Build the static site into `dist/`. |
+| Command           | Description                                             |
+| ----------------- | ------------------------------------------------------- |
+| `npm run dev`     | Start the Astro development server.                     |
+| `npm run build`   | Build the static site into `dist/`.                     |
 | `npm run preview` | Preview the production build locally with host binding. |
-| `npm run astro` | Run Astro CLI commands directly. |
+| `npm run astro`   | Run Astro CLI commands directly.                        |
 
 ## Routes
 
-| Route | Purpose |
-| --- | --- |
-| `/` | Product landing page with hero, featured models, billing, business, and enterprise sections. |
-| `/models` | Searchable static catalog for all models in the pricing snapshot. |
+| Route     | Purpose                                                                                      |
+| --------- | -------------------------------------------------------------------------------------------- |
+| `/`       | Product landing page with hero, featured models, billing, business, and enterprise sections. |
+| `/models` | Searchable static catalog for all models in the pricing snapshot.                            |
 
 ## Project Structure
 
@@ -131,18 +131,18 @@ src/styles/            Global styles, design tokens, and button styles
 
 ## Key Files
 
-| File | Purpose |
-| --- | --- |
-| `src/pages/index.astro` | Composes the main landing page. |
-| `src/pages/models.astro` | Renders the model catalog page. |
-| `src/components/HeroBackdrop.astro` | Hosts the static fallback and hydrated WebGL terminal backdrop. |
-| `src/components/react/FaultyTerminalIsland.jsx` | Wraps the OGL terminal effect with WebGL, reduced-motion, and visibility guards. |
-| `src/components/BrandStrip.astro` | Renders the animated AI vendor logo strip with `BrandLogoLoop.jsx`. |
-| `src/data/pricing.ts` | Imports `pricing-api.json`, maps vendors, formats prices, detects modality, and exposes the static catalog. |
-| `src/components/ModelsExplorer.astro` | Implements filtering, sorting, search, URL state, and model dialog wiring. |
-| `src/components/ModelDialog.astro` | Pre-renders model detail HTML for the shared `<dialog>`. |
-| `src/layouts/Base.astro` | Defines metadata, favicons, canonical links, global CSS imports, skip link, and reveal behavior. |
-| `PRODUCT.md`, `DESIGN.md`, `docs/design-brief.md` | Document product and design decisions behind the page. |
+| File                                              | Purpose                                                                                                     |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `src/pages/index.astro`                           | Composes the main landing page.                                                                             |
+| `src/pages/models.astro`                          | Renders the model catalog page.                                                                             |
+| `src/components/HeroBackdrop.astro`               | Hosts the static fallback and hydrated WebGL terminal backdrop.                                             |
+| `src/components/react/FaultyTerminalIsland.jsx`   | Wraps the OGL terminal effect with WebGL, reduced-motion, and visibility guards.                            |
+| `src/components/BrandStrip.astro`                 | Renders the animated AI vendor logo strip with `BrandLogoLoop.jsx`.                                         |
+| `src/data/pricing.ts`                             | Imports `pricing-api.json`, maps vendors, formats prices, detects modality, and exposes the static catalog. |
+| `src/components/ModelsExplorer.astro`             | Implements filtering, sorting, search, URL state, and model dialog wiring.                                  |
+| `src/components/ModelDialog.astro`                | Pre-renders model detail HTML for the shared `<dialog>`.                                                    |
+| `src/layouts/Base.astro`                          | Defines metadata, favicons, canonical links, global CSS imports, skip link, and reveal behavior.            |
+| `PRODUCT.md`, `DESIGN.md`, `docs/design-brief.md` | Document product and design decisions behind the page.                                                      |
 
 ## Updating Model Pricing
 

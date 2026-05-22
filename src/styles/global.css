@@ -41,17 +41,32 @@ body {
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6,
-p, figure, blockquote, dl, dd, ul, ol {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd,
+ul,
+ol {
   margin: 0;
 }
 
-ul, ol {
+ul,
+ol {
   padding: 0;
   list-style: none;
 }
 
-img, picture, svg, video {
+img,
+picture,
+svg,
+video {
   display: block;
   max-width: 100%;
   height: auto;
@@ -77,7 +92,10 @@ textarea {
   color: inherit;
 }
 
-code, pre, kbd, samp {
+code,
+pre,
+kbd,
+samp {
   font-family: var(--font-mono);
   font-feature-settings: 'tnum', 'zero', 'ss02';
   font-weight: var(--weight-regular);
@@ -188,8 +206,9 @@ section.tight {
   color: var(--color-primary);
   font-weight: var(--weight-medium);
   border-bottom: 1px solid transparent;
-  transition: border-color var(--motion-base) var(--ease-out-quart),
-              color var(--motion-base) var(--ease-out-quart);
+  transition:
+    border-color var(--motion-base) var(--ease-out-quart),
+    color var(--motion-base) var(--ease-out-quart);
 }
 
 .link:hover {
@@ -209,8 +228,9 @@ section.tight {
 .js-reveal [data-reveal]:not(.is-visible) {
   opacity: 0;
   transform: translateY(14px);
-  transition: opacity 560ms var(--ease-out-quart),
-              transform 560ms var(--ease-out-quart);
+  transition:
+    opacity 560ms var(--ease-out-quart),
+    transform 560ms var(--ease-out-quart);
 }
 
 .js-reveal [data-reveal].is-visible {
