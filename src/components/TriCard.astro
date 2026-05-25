@@ -26,10 +26,7 @@ const [gateway] = t.product.cards;
       </h2>
     </div>
 
-    <div
-      class="tri-card tri-card--primary"
-      data-reveal
-    >
+    <div class="tri-card tri-card--primary" data-reveal>
       <div class="tri-card__inner">
         <div class="tri-card__text">
           <span class="eyebrow">{gateway.eyebrow}</span>
@@ -76,8 +73,7 @@ const [gateway] = t.product.cards;
           >
             <defs>
               <linearGradient id="gw-gradient" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="var(--color-primary-deep)"
-                ></stop>
+                <stop offset="0%" stop-color="var(--color-primary-deep)"></stop>
                 <stop offset="100%" stop-color="var(--color-primary)"></stop>
               </linearGradient>
             </defs>
@@ -94,8 +90,7 @@ const [gateway] = t.product.cards;
               <path class="sch-path" d="M106 70 L152 100"></path>
               <path class="sch-path" d="M106 130 L152 100"></path>
               <path class="sch-path" d="M106 170 L152 100"></path>
-              <path class="sch-path sch-path--out" d="M284 100 L304 100"
-              ></path>
+              <path class="sch-path sch-path--out" d="M284 100 L304 100"></path>
             </g>
 
             {/* vendor chips */}
@@ -368,10 +363,21 @@ const [gateway] = t.product.cards;
     animation-timing-function: var(--ease-out-quart);
     animation-play-state: paused;
   }
-  .pkt--v0 { animation-name: pkt-v0; }
-  .pkt--v1 { animation-name: pkt-v1; animation-delay: 1.25s; }
-  .pkt--v2 { animation-name: pkt-v2; animation-delay: 2.5s; }
-  .pkt--v3 { animation-name: pkt-v3; animation-delay: 3.75s; }
+  .pkt--v0 {
+    animation-name: pkt-v0;
+  }
+  .pkt--v1 {
+    animation-name: pkt-v1;
+    animation-delay: 1.25s;
+  }
+  .pkt--v2 {
+    animation-name: pkt-v2;
+    animation-delay: 2.5s;
+  }
+  .pkt--v3 {
+    animation-name: pkt-v3;
+    animation-delay: 3.75s;
+  }
   .pkt--out {
     animation-name: pkt-out;
     animation-duration: 1.25s;
@@ -391,34 +397,92 @@ const [gateway] = t.product.cards;
   }
 
   @keyframes pkt-v0 {
-    0%   { transform: translate(0px, 0px);   opacity: 0; }
-    8%   { opacity: 1; }
-    55%  { transform: translate(46px, 70px);  opacity: 0.9; }
-    60%,100% { transform: translate(46px, 70px);  opacity: 0; }
+    0% {
+      transform: translate(0px, 0px);
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    55% {
+      transform: translate(46px, 70px);
+      opacity: 0.9;
+    }
+    60%,
+    100% {
+      transform: translate(46px, 70px);
+      opacity: 0;
+    }
   }
   @keyframes pkt-v1 {
-    0%   { transform: translate(0px, 0px);   opacity: 0; }
-    8%   { opacity: 1; }
-    55%  { transform: translate(46px, 30px);  opacity: 0.9; }
-    60%,100% { transform: translate(46px, 30px);  opacity: 0; }
+    0% {
+      transform: translate(0px, 0px);
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    55% {
+      transform: translate(46px, 30px);
+      opacity: 0.9;
+    }
+    60%,
+    100% {
+      transform: translate(46px, 30px);
+      opacity: 0;
+    }
   }
   @keyframes pkt-v2 {
-    0%   { transform: translate(0px, 0px);   opacity: 0; }
-    8%   { opacity: 1; }
-    55%  { transform: translate(46px, -30px); opacity: 0.9; }
-    60%,100% { transform: translate(46px, -30px); opacity: 0; }
+    0% {
+      transform: translate(0px, 0px);
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    55% {
+      transform: translate(46px, -30px);
+      opacity: 0.9;
+    }
+    60%,
+    100% {
+      transform: translate(46px, -30px);
+      opacity: 0;
+    }
   }
   @keyframes pkt-v3 {
-    0%   { transform: translate(0px, 0px);   opacity: 0; }
-    8%   { opacity: 1; }
-    55%  { transform: translate(46px, -70px); opacity: 0.9; }
-    60%,100% { transform: translate(46px, -70px); opacity: 0; }
+    0% {
+      transform: translate(0px, 0px);
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    55% {
+      transform: translate(46px, -70px);
+      opacity: 0.9;
+    }
+    60%,
+    100% {
+      transform: translate(46px, -70px);
+      opacity: 0;
+    }
   }
   @keyframes pkt-out {
-    0%   { transform: translate(0px, 0px);  opacity: 0; }
-    20%  { opacity: 1; }
-    80%  { opacity: 1; }
-    100% { transform: translate(20px, 0px); opacity: 0; }
+    0% {
+      transform: translate(0px, 0px);
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      transform: translate(20px, 0px);
+      opacity: 0;
+    }
   }
 
   /* ── reduced motion ─────────────────────────────────────────────────────── */
