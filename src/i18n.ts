@@ -87,7 +87,7 @@ export const i18n = {
     },
     product: {
       eyebrow: 'TokenFleet 产品线',
-      title: '三条产品线，一条 endpoint，一份对公账单。',
+      title: '一条 endpoint，接入所有模型。',
       cards: [
         {
           eyebrow: '产品 01',
@@ -100,32 +100,7 @@ export const i18n = {
           ],
           cta: '查看支持的模型',
         },
-        {
-          eyebrow: '产品 02',
-          title: '统一计费与发票',
-          body: '一个对公账户，自动汇总跨厂商用量。月底一张人民币增值税专票。',
-          bullets: [
-            '跨厂商用量统一对账',
-            '月度自动开票或按需补开',
-            '团队 / 项目维度的成本归属',
-          ],
-          cta: '查看计费机制',
-        },
-        {
-          eyebrow: '产品 03 · 即将推出',
-          title: 'GPU 算力出租',
-          body: '按小时计费的 H100 / H200 集群，跑你自己的训练与微调任务。准备中。',
-          cta: '联系销售咨询',
-        },
       ],
-      invoice: {
-        aria: '增值税专用发票示意',
-        chop: ['对', '公', '专', '票'],
-        title: 'TokenFleet · 增值税专用发票',
-        total: '合计（含税 6%）',
-        buyer: '购方：示例企业有限公司',
-        date: '开票日期 2026-04-30',
-      },
     },
     business: {
       eyebrow: '为企业流程而建',
@@ -363,7 +338,7 @@ export const i18n = {
     },
     product: {
       eyebrow: 'WHAT TOKENFLEET SHIPS',
-      title: 'Three product lines, one endpoint, one business invoice.',
+      title: 'One endpoint. Every model.',
       cards: [
         {
           eyebrow: 'PRODUCT 01',
@@ -376,32 +351,7 @@ export const i18n = {
           ],
           cta: 'View supported models',
         },
-        {
-          eyebrow: 'PRODUCT 02',
-          title: 'Unified billing and invoicing',
-          body: 'One business account consolidates cross-vendor usage into a monthly CNY VAT invoice.',
-          bullets: [
-            'Cross-vendor usage reconciliation',
-            'Monthly automatic or on-demand invoices',
-            'Team and project cost attribution',
-          ],
-          cta: 'View billing workflow',
-        },
-        {
-          eyebrow: 'PRODUCT 03 · COMING SOON',
-          title: 'GPU compute rental',
-          body: 'Hourly H100 / H200 clusters for your own training and fine-tuning jobs. In preparation.',
-          cta: 'Contact sales',
-        },
       ],
-      invoice: {
-        aria: 'VAT invoice example',
-        chop: ['V', 'A', 'T', ''],
-        title: 'TokenFleet · VAT Invoice',
-        total: 'Total (incl. 6% tax)',
-        buyer: 'Buyer: Example Co., Ltd.',
-        date: 'Issue date 2026-04-30',
-      },
     },
     business: {
       eyebrow: 'BUILT FOR BUSINESS',
