@@ -3,7 +3,7 @@
  * TopNav.astro — minimal nav floating over the mesh hero.
  *
  * Left: wordmark.
- * Center (desktop): 模型 · 费用 · 文档 · 企业服务 4 sans nav links.
+ * Center (desktop): 模型 · 文档 · 企业服务 3 sans nav links.
  * Right: 登录 (text), 开始接入 (indigo pill).
  *
  * Mobile (<768px): wordmark + indigo pill + hamburger trigger that toggles
@@ -23,7 +23,6 @@ const t = i18n[locale];
 const altLocale = otherLocale(locale);
 const navLinks = [
   { href: localePath(locale, '/models'), label: t.nav.links.models },
-  { href: `${localePath(locale, '/')}#business`, label: t.nav.links.billing },
   {
     href: 'https://docs.tokenfleet.cn',
     label: t.nav.links.docs,
