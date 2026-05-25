@@ -1,13 +1,12 @@
 ---
 /**
- * Footer.astro — 5-column footer + Chinese compliance strip.
+ * Footer.astro — 4-column footer + Chinese compliance strip.
  *
  * Columns:
  *  1 · Brand wordmark + tagline + sales mailto + Follow (WeChat / Douyin)
- *  2 · Product (homepage anchors + external status)
- *  3 · Developers (Docs / SDK / API Reference / Cookbook)
- *  4 · Company (About / Blog / Careers / Contact)
- *  5 · Legal & Compliance (Terms / Privacy / DPA / Security)
+ *  2 · Product (homepage anchors + external status + docs)
+ *  3 · Company (About / Blog / Careers / Contact)
+ *  4 · Legal & Compliance (Terms / Privacy / DPA / Security)
  *
  * Follow (in brand column):
  *  Three monochrome icon triggers — 微信社群 / 公众号 / 抖音.
@@ -39,10 +38,6 @@ const cols = [
     items: [
       { label: t.footer.links.models, href: localePath(locale, '/models') },
       {
-        label: t.footer.links.billing,
-        href: `${localePath(locale, '/')}#business`,
-      },
-      {
         label: t.footer.links.enterprise,
         href: `${localePath(locale, '/')}#enterprise`,
       },
@@ -51,29 +46,9 @@ const cols = [
         href: 'https://status.tokenfleet.cn',
         external: true,
       },
-    ],
-  },
-  {
-    title: t.footer.cols.developers,
-    items: [
       {
         label: t.footer.links.docs,
         href: 'https://docs.tokenfleet.cn',
-        external: true,
-      },
-      {
-        label: t.footer.links.apiReference,
-        href: 'https://docs.tokenfleet.cn/api',
-        external: true,
-      },
-      {
-        label: t.footer.links.apiExamples,
-        href: 'https://docs.tokenfleet.cn/sdk',
-        external: true,
-      },
-      {
-        label: t.footer.links.status,
-        href: 'https://status.tokenfleet.cn',
         external: true,
       },
     ],
@@ -100,10 +75,6 @@ const cols = [
   {
     title: t.footer.cols.compliance,
     items: [
-      {
-        label: t.footer.links.entityInvoice,
-        href: `${localePath(locale, '/')}#business`,
-      },
       {
         label: t.footer.links.sla,
         href: `${localePath(locale, '/')}#enterprise`,
@@ -306,7 +277,7 @@ const follow = [
 
   .footer__inner {
     display: grid;
-    grid-template-columns: 2fr repeat(4, 1fr);
+    grid-template-columns: 2fr repeat(3, 1fr);
     gap: 48px;
     padding-bottom: 56px;
   }
