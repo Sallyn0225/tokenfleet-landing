@@ -16,6 +16,9 @@ pnpm-debug.log*
 # local agent/browser tooling output
 .agents/
 .claude/
+.codex/
+.trellis/
+.trellis/
 .impeccable/
 .impeccable-*
 .playwright-mcp/
