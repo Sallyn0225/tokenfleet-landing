@@ -18,7 +18,6 @@ pnpm-debug.log*
 .claude/
 .codex/
 .trellis/
-.trellis/
 .impeccable/
 .impeccable-*
 .playwright-mcp/
