@@ -102,42 +102,6 @@ export const i18n = {
         },
       ],
     },
-    business: {
-      eyebrow: '为企业流程而建',
-      title: '让财务也安心地把 AI 调用\n放进对公账单。',
-      body: 'TokenFleet 不只服务工程师。从合同主体到月底发票，从权限分级到对账数据，按中国大陆企业财务流程交付。',
-      sales: '预约销售对话',
-      dpa: '索取 DPA 模板',
-      rolesAria: '账户角色示例',
-      rolesTitle: '账户角色',
-      capabilities: [
-        [
-          '对公账户',
-          '中国大陆主体 · 合同主体 = 深圳市新云计算科技有限公司。',
-          'mainland-cn entity',
-        ],
-        [
-          '人民币结算 / 增值税专票',
-          '月度自动开票或按需补开 · 支持专票 6% 与普票切换。',
-          'cny · vat invoice',
-        ],
-        [
-          '多人协作权限',
-          '四档角色：Owner · Admin · Developer · Viewer，按团队 / 项目隔离。',
-          'rbac · scoped keys',
-        ],
-        [
-          '用量看板与异常预警',
-          '按 model / 按 team / 按时段的实时用量，超阈值自动告警。',
-          'usage · anomaly',
-        ],
-        [
-          '合同 SLA 与法务条款',
-          '可签 MSA / DPA / 中文合同 · 季度对账支持。',
-          'msa · dpa · sla',
-        ],
-      ],
-    },
     why: {
       eyebrow: '为什么选择 TokenFleet',
       title: '为什么选 TokenFleet。',
@@ -351,42 +315,6 @@ export const i18n = {
           ],
           cta: 'View supported models',
         },
-      ],
-    },
-    business: {
-      eyebrow: 'BUILT FOR BUSINESS',
-      title: 'Put AI usage into finance-approved billing.',
-      body: 'TokenFleet serves more than engineers: mainland China contracting, monthly invoices, permission controls, and reconciliation data for enterprise finance workflows.',
-      sales: 'Book a sales call',
-      dpa: 'Request DPA template',
-      rolesAria: 'Account role example',
-      rolesTitle: 'ACCOUNT ROLES',
-      capabilities: [
-        [
-          'Business account',
-          'Mainland China entity · Contracting entity = Shenzhen Xinyun Computing Technology Co., Ltd.',
-          'mainland-cn entity',
-        ],
-        [
-          'CNY settlement / VAT invoice',
-          'Monthly auto-invoicing or on-demand reissue · special and general VAT invoice support.',
-          'cny · vat invoice',
-        ],
-        [
-          'Multi-user permissions',
-          'Four roles: Owner · Admin · Developer · Viewer, scoped by team and project.',
-          'rbac · scoped keys',
-        ],
-        [
-          'Usage dashboards and alerts',
-          'Real-time usage by model, team, and time window, with threshold-based alerts.',
-          'usage · anomaly',
-        ],
-        [
-          'Contract SLA and legal terms',
-          'MSA / DPA / Chinese contracts available, with quarterly reconciliation support.',
-          'msa · dpa · sla',
-        ],
       ],
     },
     why: {
