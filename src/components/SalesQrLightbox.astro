@@ -1,0 +1,222 @@
+---
+/**
+ * SalesQrLightbox.astro — shared WeChat group QR modal for sales CTAs.
+ */
+import { Image } from 'astro:assets';
+import wechatGroupQR from '../assets/QRCode/wechat-group.jpg';
+
+interface Props {
+  id: string;
+  title: string;
+  caption: string;
+  alt: string;
+  closeLabel: string;
+  triggerClass?: string;
+}
+
+const {
+  id,
+  title,
+  caption,
+  alt,
+  closeLabel,
+  triggerClass = '',
+} = Astro.props as Props;
+---
+
+<div class="salesqr" data-sales-qr-root>
+  <button
+    type="button"
+    class={triggerClass}
+    aria-haspopup="dialog"
+    aria-controls={id}
+    data-sales-qr-trigger
+  >
+    <slot name="trigger" />
+  </button>
+
+  <dialog class="salesqr__dialog" id={id} aria-labelledby={`${id}-title`}>
+    <div class="salesqr__panel">
+      <header class="salesqr__head">
+        <h2 class="salesqr__title" id={`${id}-title`}>{title}</h2>
+        <button
+          type="button"
+          class="salesqr__close"
+          aria-label={closeLabel}
+          data-sales-qr-close
+        >
+          ×
+        </button>
+      </header>
+
+      <div class="salesqr__body">
+        <Image
+          src={wechatGroupQR}
+          width={360}
+          height={360}
+          format="webp"
+          quality={88}
+          loading="lazy"
+          alt={alt}
+          class="salesqr__image"
+        />
+        <p class="salesqr__caption">{caption}</p>
+      </div>
+    </div>
+  </dialog>
+</div>
+
+<style>
+  .salesqr {
+    display: contents;
+  }
+
+  .salesqr__dialog {
+    position: fixed;
+    inset: 0;
+    width: min(420px, calc(100vw - 32px));
+    max-height: calc(100vh - 48px);
+    max-height: calc(100dvh - 48px);
+    margin: auto;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-lg);
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    box-shadow: 0 24px 60px rgba(0, 55, 112, 0.22);
+    overflow: hidden;
+  }
+
+  .salesqr__dialog::backdrop {
+    background: rgba(13, 37, 61, 0.46);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .salesqr__panel {
+    display: flex;
+    flex-direction: column;
+    max-height: inherit;
+  }
+
+  .salesqr__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 18px 14px;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .salesqr__title {
+    font-size: 15px;
+    line-height: 1.35;
+    font-weight: var(--weight-medium);
+    color: var(--color-ink);
+  }
+
+  .salesqr__close {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    color: var(--color-ink-mute);
+    font-size: 22px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition:
+      background-color var(--motion-base) var(--ease-out-quart),
+      color var(--motion-base) var(--ease-out-quart);
+  }
+
+  .salesqr__close:hover {
+    background: var(--color-canvas-soft);
+    color: var(--color-ink);
+  }
+
+  .salesqr__close:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .salesqr__body {
+    padding: 18px;
+  }
+
+  .salesqr__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+    background: var(--color-canvas-soft);
+  }
+
+  .salesqr__caption {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--color-ink-mute);
+  }
+
+  @media (max-width: 520px) {
+    .salesqr__dialog {
+      width: calc(100vw - 24px);
+      max-height: calc(100dvh - 24px);
+      border-radius: var(--radius-md);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .salesqr__close {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  const roots = document.querySelectorAll<HTMLElement>('[data-sales-qr-root]');
+
+  roots.forEach((root) => {
+    if (root.dataset.salesQrReady === 'true') return;
+    root.dataset.salesQrReady = 'true';
+
+    const trigger = root.querySelector<HTMLButtonElement>(
+      '[data-sales-qr-trigger]'
+    );
+    const dialogId = trigger?.getAttribute('aria-controls');
+    const dialog = dialogId ? document.getElementById(dialogId) : null;
+
+    if (!(dialog instanceof HTMLDialogElement) || !trigger) return;
+
+    const close = () => {
+      dialog.close();
+      trigger.focus();
+    };
+
+    trigger.addEventListener('click', () => {
+      if (!dialog.open) dialog.showModal();
+      dialog.querySelector<HTMLElement>('[data-sales-qr-close]')?.focus();
+    });
+
+    dialog.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('[data-sales-qr-close]')) {
+        close();
+        return;
+      }
+
+      if (target === dialog) {
+        const rect = dialog.getBoundingClientRect();
+        const inside =
+          e.clientX >= rect.left &&
+          e.clientX <= rect.right &&
+          e.clientY >= rect.top &&
+          e.clientY <= rect.bottom;
+        if (!inside) close();
+      }
+    });
+  });
+</script>

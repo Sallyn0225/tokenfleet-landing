@@ -141,7 +141,13 @@ export const i18n = {
         ['SUPPORT', '专属技术对接', '7×24 中文工程支持渠道，故障一线响应。'],
       ],
       cta: '联系销售',
-      note: '通常 24 小时内回复 · sales@tokenfleet.cn',
+      note: '通常 24 小时内回复 · zhangyue@nyuncloud.com',
+    },
+    salesQr: {
+      title: '联系 TokenFleet 销售',
+      caption: '扫码加入微信社群，获取企业用量与接入支持。',
+      alt: 'TokenFleet 微信社群 QR 码',
+      close: '关闭销售二维码',
     },
     models: {
       eyebrow: '模型目录',
@@ -221,7 +227,7 @@ export const i18n = {
         ['抖音', 'TokenFleet 抖音 QR 码'],
       ],
       qrAria: (label: string) => `${label} QR 码`,
-      company: '深圳市新云计算科技有限公司 © 2026',
+      companyName: '深圳市新云计算科技有限公司',
       icp: '粤ICP备2022003994号-6',
     },
   },
@@ -361,7 +367,14 @@ export const i18n = {
         ],
       ],
       cta: 'Contact sales',
-      note: 'Usually replies within 24 hours · sales@tokenfleet.cn',
+      note: 'Usually replies within 24 hours · zhangyue@nyuncloud.com',
+    },
+    salesQr: {
+      title: 'Contact TokenFleet sales',
+      caption:
+        'Scan to join the WeChat group for enterprise usage and integration support.',
+      alt: 'TokenFleet WeChat group QR code',
+      close: 'Close sales QR code',
     },
     models: {
       eyebrow: 'MODELS CATALOG',
@@ -449,7 +462,7 @@ export const i18n = {
         ['Douyin', 'TokenFleet Douyin QR code'],
       ],
       qrAria: (label: string) => `${label} QR code`,
-      company: 'Shenzhen Xinyun Computing Technology Co., Ltd. © 2026',
+      companyName: 'Shenzhen Xinyun Computing Technology Co., Ltd.',
       icp: '粤ICP备2022003994号-6',
     },
   },
