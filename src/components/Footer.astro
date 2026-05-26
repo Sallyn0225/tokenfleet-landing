@@ -21,6 +21,7 @@
 
 import { Image } from 'astro:assets';
 import Wordmark from './Wordmark.astro';
+import SalesQrLightbox from './SalesQrLightbox.astro';
 import wechatGroupQR from '../assets/QRCode/wechat-group.jpg';
 import wechatSubQR from '../assets/QRCode/wechat-sub.jpg';
 import douyinQR from '../assets/QRCode/douyin.webp';
@@ -63,12 +64,7 @@ const cols = [
       },
       {
         label: t.footer.links.contactSales,
-        href: 'mailto:sales@tokenfleet.cn',
-      },
-      {
-        label: t.footer.links.console,
-        href: 'https://tokenfleet.cn/console',
-        external: true,
+        action: 'salesQr',
       },
     ],
   },
@@ -124,8 +120,8 @@ const follow = [
       <p class="footer__tagline">
         {t.footer.tagline}
       </p>
-      <a href="mailto:sales@tokenfleet.cn" class="footer__sales mono">
-        sales@tokenfleet.cn
+      <a href="mailto:zhangyue@nyuncloud.com" class="footer__sales mono">
+        zhangyue@nyuncloud.com
       </a>
 
       <div class="footer__follow" data-qr-root>
@@ -235,15 +231,28 @@ const follow = [
           <ul>
             {col.items.map((item) => (
               <li>
-                <a
-                  href={item.href}
-                  class="footer__link"
-                  {...('external' in item && item.external
-                    ? { target: '_blank', rel: 'noopener noreferrer' }
-                    : {})}
-                >
-                  {item.label}
-                </a>
+                {'action' in item && item.action === 'salesQr' ? (
+                  <SalesQrLightbox
+                    id={`footer-sales-qr-${locale}`}
+                    title={t.salesQr.title}
+                    caption={t.salesQr.caption}
+                    alt={t.salesQr.alt}
+                    closeLabel={t.salesQr.close}
+                    triggerClass="footer__link footer__link-button"
+                  >
+                    <Fragment slot="trigger">{item.label}</Fragment>
+                  </SalesQrLightbox>
+                ) : (
+                  <a
+                    href={item.href}
+                    class="footer__link"
+                    {...('external' in item && item.external
+                      ? { target: '_blank', rel: 'noopener noreferrer' }
+                      : {})}
+                  >
+                    {item.label}
+                  </a>
+                )}
               </li>
             ))}
           </ul>
@@ -254,7 +263,17 @@ const follow = [
 
   <div class="footer__strip">
     <div class="container footer__strip-inner mono">
-      <p class="footer__copy">{t.footer.company}</p>
+      <p class="footer__copy">
+        <a
+          href="https://nyuncloud.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="footer__company-link"
+        >
+          {t.footer.companyName}
+        </a>
+        {' © 2026'}
+      </p>
       <a
         href="https://beian.miit.gov.cn/"
         class="footer__icp"
@@ -335,6 +354,18 @@ const follow = [
 
   .footer__link:hover {
     color: var(--color-primary);
+  }
+
+  .footer__link-button {
+    padding: 0;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .footer__link-button:focus-visible,
+  .footer__company-link:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 
   /* ── Follow / QR section ──────────────────────────────────────────────── */
@@ -489,7 +520,8 @@ const follow = [
     color: var(--color-ink-mute);
   }
 
-  .footer__icp {
+  .footer__icp,
+  .footer__company-link {
     color: var(--color-ink-mute);
     border-bottom: 1px solid transparent;
     transition:
@@ -497,7 +529,8 @@ const follow = [
       border-color var(--motion-base) var(--ease-out-quart);
   }
 
-  .footer__icp:hover {
+  .footer__icp:hover,
+  .footer__company-link:hover {
     color: var(--color-primary);
     border-bottom-color: currentColor;
   }

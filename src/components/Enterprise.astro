@@ -12,6 +12,7 @@
  * / 可定制" wording until the legal team confirms each badge.
  */
 import { i18n, type Locale } from '../i18n.ts';
+import SalesQrLightbox from './SalesQrLightbox.astro';
 
 interface Props {
   locale?: Locale;
@@ -24,8 +25,6 @@ const labels = t.enterprise.labels.map(([eyebrow, title, body]) => ({
   title,
   body,
 }));
-const salesSubject =
-  locale === 'zh' ? '企业用量咨询' : 'Enterprise usage inquiry';
 ---
 
 <section class="enterprise" id="enterprise" aria-labelledby="enterprise-title">
@@ -55,26 +54,32 @@ const salesSubject =
     </ol>
 
     <div class="enterprise__cta" data-reveal>
-      <a
-        href={`mailto:sales@tokenfleet.cn?subject=${encodeURIComponent(salesSubject)}`}
-        class="btn btn--primary btn--lg"
+      <SalesQrLightbox
+        id={`enterprise-sales-qr-${locale}`}
+        title={t.salesQr.title}
+        caption={t.salesQr.caption}
+        alt={t.salesQr.alt}
+        closeLabel={t.salesQr.close}
+        triggerClass="btn btn--primary btn--lg"
       >
-        {t.enterprise.cta}
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 14 14"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M5 3l4 4-4 4"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"></path>
-        </svg>
-      </a>
+        <Fragment slot="trigger">
+          {t.enterprise.cta}
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M5 3l4 4-4 4"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </Fragment>
+      </SalesQrLightbox>
       <p class="enterprise__cta-note mono">
         {t.enterprise.note}
       </p>
