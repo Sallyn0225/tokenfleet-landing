@@ -7,8 +7,11 @@
  * diluted by the mesh / cream / dark rhythm of the Committed color strategy).
  *
  * Font substitution: Sohne is proprietary; Inter at weight 300 with ss01 +
- * negative letter-spacing approximates Sohne. Geist Mono carries the mono /
- * tabular figure role (engineer numbers / code / endpoints / invoice amounts).
+ * negative letter-spacing approximates Sohne for latin glyphs. Inter has no
+ * CJK coverage, so CJK glyphs cascade to Noto Sans SC at weight 400 — thin
+ * (300) is a latin-only signature; CJK never renders at 300. Geist Mono carries
+ * the mono / tabular figure role (engineer numbers / code / endpoints / invoice
+ * amounts).
  * ========================================================================== */
 
 :root {
@@ -98,8 +101,8 @@
 
   /* ── typography: families ─────────────────────────────────────────────── */
   --font-sans:
-    'Inter', 'SF Pro Display', system-ui, -apple-system, 'Segoe UI',
-    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    'Inter', 'Noto Sans SC', 'SF Pro Display', system-ui, -apple-system,
+    'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   --font-mono:
     'Geist Mono', 'JetBrains Mono', 'SF Mono', ui-monospace, 'Cascadia Code',
     Consolas, 'Liberation Mono', monospace;
@@ -170,6 +173,9 @@
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
+  /* Note: --weight-thin is a latin-only signature. Apply it to elements that
+   * carry display-tier latin headlines. Body text and CJK content render at
+   * --weight-regular (400) to keep PingFang / Noto Sans SC strokes legible. */
 
   /* ── layout ───────────────────────────────────────────────────────────── */
   --container-max: 1200px;
