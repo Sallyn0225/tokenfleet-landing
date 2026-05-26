@@ -30,7 +30,7 @@ TokenFleet Landing 是 **TokenFleet** 的公开站点。它以中文为主，面
 | 多语言       | 中文（默认 `/`）与英文（`/en`）                 |
 | 主要路由     | `/`、`/models`、`/en`、`/en/models`             |
 | 目录数据源   | 根目录 `pricing-api.json` 快照                  |
-| 当前目录     | 37 个模型、7 家已使用厂商                       |
+| 当前目录     | 12 个模型、10 家已收录厂商（其中 4 家已挂模型） |
 | 质量门禁     | ESLint、Prettier、`astro check`、GitHub Actions |
 | 构建产物     | 输出到 `dist/` 的静态文件                       |
 
@@ -53,23 +53,24 @@ TokenFleet Landing 是 **TokenFleet** 的公开站点。它以中文为主，面
 - **WebGL 动效首屏背景** 基于 OGL 实现，并包含 reduced-motion、离屏暂停与无 WebGL fallback 处理。
 - **本地 AI 品牌 logo 横向循环展示**，用于呈现已接入的主流模型厂商。
 - **OpenAI SDK 兼容性展示**，首屏提供可复制的 `curl`、Python、Node 示例。
-- **静态模型目录** 位于 `/models`，当前由 `pricing-api.json` 构建，覆盖 **37 个模型**、**7 家厂商**，并包含 OpenAI / Anthropic / Gemini endpoint 元数据。
+- **静态模型目录** 位于 `/models`，当前由 `pricing-api.json` 构建，覆盖 **12 个模型**、**10 家厂商**（其中 4 家已挂模型），并包含 OpenAI / Anthropic / Gemini endpoint 元数据。
 - **目录交互完整**，支持厂商筛选、形态筛选、搜索、按价格排序、URL 状态同步、模型详情弹窗与 model id 复制。
 - **企业能力表达**，覆盖统一计费、增值税发票、VPC/私有部署、SLA 沟通与 GPU 算力出租 Coming Soon。
 - **关注可访问性**，包含 skip link、键盘可用的代码 tab、可见焦点态、响应式布局与 reduced-motion 处理。
 
 ## 技术栈
 
-| 层级         | 技术                                                                                       |
-| ------------ | ------------------------------------------------------------------------------------------ |
-| 站点框架     | [Astro](https://astro.build/) 6                                                            |
-| Islands      | 通过 `@astrojs/react` 使用 React 19                                                        |
-| 动效 / WebGL | [OGL](https://github.com/oframe/ogl)                                                       |
-| 样式         | Plain CSS、设计 token、按钮原语、Tailwind CSS 4 Vite plugin                                |
-| 语言         | TypeScript 6 的 Astro 组件，配合共享的 `src/i18n.ts` 字典                                  |
-| 质量         | ESLint（astro、react、react-hooks）、Prettier（`prettier-plugin-astro`）、`@astrojs/check` |
-| 浏览器行为   | Vanilla JavaScript，用于导航、reveal 动画、代码 tab 与模型目录交互                         |
-| 静态资源     | 放在 `public/`                                                                             |
+| 层级         | 技术                                                                                                 |
+| ------------ | ---------------------------------------------------------------------------------------------------- |
+| 站点框架     | [Astro](https://astro.build/) 6                                                                      |
+| Islands      | 通过 `@astrojs/react` 使用 React 19                                                                  |
+| 动效 / WebGL | [OGL](https://github.com/oframe/ogl)                                                                 |
+| 样式         | Plain CSS、设计 token、按钮原语、Tailwind CSS 4 Vite plugin                                          |
+| 字体         | Inter（latin） + Noto Sans SC（CJK） + Geist Mono，在 `src/styles/global.css` 通过 Google Fonts 加载 |
+| 语言         | TypeScript 6 的 Astro 组件，配合共享的 `src/i18n.ts` 字典                                            |
+| 质量         | ESLint（astro、react、react-hooks）、Prettier（`prettier-plugin-astro`）、`@astrojs/check`           |
+| 浏览器行为   | Vanilla JavaScript，用于导航、reveal 动画、代码 tab 与模型目录交互                                   |
+| 静态资源     | 放在 `public/`                                                                                       |
 
 ## 快速开始
 
@@ -157,6 +158,7 @@ src/styles/            全局样式、设计 token、按钮样式
 | `src/data/model-meta.ts`                              | 手工维护的模型上下文窗口、最大输出、文档链接（来自厂商官方文档）。              |
 | `src/components/ModelsExplorer.astro`                 | 实现筛选、排序、搜索、URL 状态和模型弹窗联动。                                  |
 | `src/components/ModelDialog.astro`                    | 为共享 `<dialog>` 预渲染模型详情 HTML。                                         |
+| `src/components/SalesQrLightbox.astro`                | 共享的微信销售二维码弹层，被 Footer 与 Enterprise 区块的 CTA 复用。             |
 | `src/layouts/Base.astro`                              | 定义 metadata、favicon、canonical、全局样式、skip link 与 reveal 行为。         |
 | `PRODUCT.md`、`DESIGN.md`、`docs/design-brief.md`     | 记录页面背后的产品与设计决策（完整 PRD 见 `docs/prd.md`）。                     |
 

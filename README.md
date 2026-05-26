@@ -23,16 +23,16 @@
 
 TokenFleet Landing presents a Chinese-first product narrative for **TokenFleet**: one API key, OpenAI-compatible integration, unified billing, invoices, and a searchable model catalog across LLM, image, and video models.
 
-| Area                | Details                                            |
-| ------------------- | -------------------------------------------------- |
-| Framework           | Astro 6 static site                                |
-| Interactive islands | React 19, OGL WebGL hero, animated logo loop       |
-| Languages           | Chinese (default at `/`) and English (at `/en`)    |
-| Main routes         | `/`, `/models`, `/en`, `/en/models`                |
-| Catalog source      | Root `pricing-api.json` snapshot                   |
-| Current catalog     | 37 models, 7 active vendors                        |
-| Quality gates       | ESLint, Prettier, `astro check`, GitHub Actions CI |
-| Build output        | Static files in `dist/`                            |
+| Area                | Details                                                 |
+| ------------------- | ------------------------------------------------------- |
+| Framework           | Astro 6 static site                                     |
+| Interactive islands | React 19, OGL WebGL hero, animated logo loop            |
+| Languages           | Chinese (default at `/`) and English (at `/en`)         |
+| Main routes         | `/`, `/models`, `/en`, `/en/models`                     |
+| Catalog source      | Root `pricing-api.json` snapshot                        |
+| Current catalog     | 12 models, 10 vendors registered (4 with active models) |
+| Quality gates       | ESLint, Prettier, `astro check`, GitHub Actions CI      |
+| Build output        | Static files in `dist/`                                 |
 
 ## Contents
 
@@ -53,23 +53,24 @@ TokenFleet Landing presents a Chinese-first product narrative for **TokenFleet**
 - **Animated WebGL hero backdrop** built with OGL, with reduced-motion, visibility pause, and no-WebGL fallback handling.
 - **Local AI brand logo strip** with a horizontally looping vendor showcase.
 - **OpenAI SDK compatibility narrative** with copyable `curl`, Python, and Node examples.
-- **Static model catalog** at `/models`, currently built from `pricing-api.json` with **37 models**, **7 vendors**, and OpenAI / Anthropic / Gemini endpoint metadata.
+- **Static model catalog** at `/models`, currently built from `pricing-api.json` with **12 models** and **10 vendors** (4 with active models), and OpenAI / Anthropic / Gemini endpoint metadata.
 - **Catalog interactions** for vendor filters, modality filters, search, price sorting, URL-synced state, deep-linked model dialogs, and copyable model IDs.
 - **Enterprise positioning** around unified billing, VAT invoices, VPC/private deployment, SLA conversations, and GPU rental coming soon.
 - **Accessibility-minded UI** with a skip link, keyboard-friendly code tabs, visible focus states, responsive layouts, and reduced-motion handling.
 
 ## Tech Stack
 
-| Layer            | Technology                                                                                       |
-| ---------------- | ------------------------------------------------------------------------------------------------ |
-| Site framework   | [Astro](https://astro.build/) 6                                                                  |
-| Islands          | React 19 through `@astrojs/react`                                                                |
-| Motion / WebGL   | [OGL](https://github.com/oframe/ogl)                                                             |
-| Styling          | Plain CSS, design tokens, button primitives, Tailwind CSS 4 Vite plugin                          |
-| Language         | TypeScript 6 with Astro components and a shared `src/i18n.ts` dictionary                         |
-| Quality          | ESLint (astro, react, react-hooks), Prettier (`prettier-plugin-astro`), `@astrojs/check`         |
-| Browser behavior | Vanilla JavaScript for navigation, reveal animations, code tabs, and model explorer interactions |
-| Assets           | Static assets under `public/`                                                                    |
+| Layer            | Technology                                                                                           |
+| ---------------- | ---------------------------------------------------------------------------------------------------- |
+| Site framework   | [Astro](https://astro.build/) 6                                                                      |
+| Islands          | React 19 through `@astrojs/react`                                                                    |
+| Motion / WebGL   | [OGL](https://github.com/oframe/ogl)                                                                 |
+| Styling          | Plain CSS, design tokens, button primitives, Tailwind CSS 4 Vite plugin                              |
+| Typography       | Inter (latin) + Noto Sans SC (CJK) + Geist Mono — loaded via Google Fonts in `src/styles/global.css` |
+| Language         | TypeScript 6 with Astro components and a shared `src/i18n.ts` dictionary                             |
+| Quality          | ESLint (astro, react, react-hooks), Prettier (`prettier-plugin-astro`), `@astrojs/check`             |
+| Browser behavior | Vanilla JavaScript for navigation, reveal animations, code tabs, and model explorer interactions     |
+| Assets           | Static assets under `public/`                                                                        |
 
 ## Getting Started
 
@@ -159,6 +160,7 @@ src/styles/            Global styles, design tokens, and button styles
 | `src/data/model-meta.ts`                          | Curated context window / max output / docs link per model id (sourced from vendor docs).                    |
 | `src/components/ModelsExplorer.astro`             | Implements filtering, sorting, search, URL state, and model dialog wiring.                                  |
 | `src/components/ModelDialog.astro`                | Pre-renders model detail HTML for the shared `<dialog>`.                                                    |
+| `src/components/SalesQrLightbox.astro`            | Shared WeChat sales QR modal reused by footer and enterprise CTAs.                                          |
 | `src/layouts/Base.astro`                          | Defines metadata, favicons, canonical links, global CSS imports, skip link, and reveal behavior.            |
 | `PRODUCT.md`, `DESIGN.md`, `docs/design-brief.md` | Document product and design decisions behind the page (see `docs/prd.md` for the full PRD).                 |
 
