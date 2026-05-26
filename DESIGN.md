@@ -305,6 +305,24 @@ The display and UI tier is **Sohne** (proprietary, licensed from Klim Type Found
 
 When Sohne is unavailable, fall back to **SF Pro Display** at thin weights, then system-ui. For maximum brand fidelity, **Inter** (open-source) at weight 300 with `font-feature-settings: "ss01"` and `letter-spacing: -1.4px` on display sizes approximates the rhythm closely.
 
+#### CJK / Simplified Chinese strategy
+
+The brand is bilingual: marketing copy is primarily Simplified Chinese with English reserved for product names, model ids, API surface, and code. Inter (and Sohne) carry **no CJK glyphs**, so Chinese characters cascade through the font stack to **Noto Sans SC** (open-source, served via Google Fonts).
+
+Two rules govern weight on CJK:
+
+- **CJK never renders at weight 300.** Noto Sans SC, PingFang SC, and Microsoft YaHei at 300 produce hairline strokes that read as "blurred" on standard displays. Body and small CJK text render at `--weight-regular` (400); CJK display headlines may use 400 even when latin siblings stay at 300.
+- **`weight 300` is a latin-only signature.** Apply the thin weight to display-tier elements where latin is the primary content (hero headlines, section openers, pricing tier amounts). Mixed-script display still works because CJK glyphs in the same element auto-cascade to Noto Sans SC at the requested weight — and Noto Sans SC at 300 in `display-xl/xxl` sizes (≥34px) remains legible.
+
+Practical mapping:
+
+| Tier          | Latin (Inter / Sohne) | CJK (Noto Sans SC / PingFang) |
+| ------------- | --------------------- | ----------------------------- |
+| Display ≥34px | 300 (thin signature)  | 300 acceptable, 400 safer     |
+| Heading       | 300                   | 400                           |
+| Body / small  | 400 (regular)         | 400 (regular)                 |
+| Tabular       | 300–400               | 400                           |
+
 ### Hierarchy
 
 | Token                       | Size | Weight | Line Height | Letter Spacing | Use                                  |
@@ -327,14 +345,17 @@ When Sohne is unavailable, fall back to **SF Pro Display** at thin weights, then
 
 ### Principles
 
-- **Thin weight is the brand.** Display tiers always render at weight 300. Bumping to 400+ removes the brand's editorial air.
+- **Thin weight is a latin-only signature.** Display tiers render at weight 300 _for latin glyphs_. CJK in the same element auto-cascades to Noto Sans SC and renders at 300 only when the size is large enough (≥34px) to stay legible — below that, use 400.
 - **Negative tracking on display.** -1.4px at 56px, scaling proportionally down to -0.2px at 20px. The negative tracking is the brand's typographic signature.
+- **Body and small CJK render at weight 400.** Body (`body-md` / `body-lg`), captions, table labels, and any CJK below display size must use `--weight-regular` (400) or heavier. Pushing CJK to 300 collapses strokes and breaks the engineer-credibility promise.
 - **Tabular figures for money.** Any cell rendering currency, transaction amounts, or numeric counts uses `font-feature-settings: "tnum"` plus a tightening tracking. The brand quietly signals its financial DNA through this micro-detail.
 - **`ss01` globally.** Apply `font-feature-settings: "ss01"` to the body element so the stylistic-set substitution is on for every text role.
 
 ### Note on Font Substitutes
 
-Sohne is proprietary. Use **Inter** (open-source via Google Fonts) at weight 300 with `letter-spacing: -1.4px` and `font-feature-settings: "ss01"` for display tiers — Inter is the closest open-source analogue. For body sizes, Inter at 300 weight with `font-feature-settings: "tnum"` (where applicable) is the canonical substitute. Avoid Helvetica or system-ui defaults — they're heavier than the brand needs.
+Sohne is proprietary. Use **Inter** (open-source via Google Fonts) at weight 300 with `letter-spacing: -1.4px` and `font-feature-settings: "ss01"` for display tiers — Inter is the closest open-source analogue. For body sizes, Inter at 400 weight with `font-feature-settings: "tnum"` (where applicable) is the canonical substitute. Avoid Helvetica or system-ui defaults — they're heavier than the brand needs.
+
+For Simplified Chinese, use **Noto Sans SC** (open-source via Google Fonts) at weights 400 / 500 / 600. Load it in the same `@import url(...)` request as Inter — keeping both families on Google Fonts gives the cleanest font-face cascade. PingFang SC (macOS) and Microsoft YaHei (Windows) remain as OS-level fallbacks so the page still renders during font load.
 
 ## Layout
 
@@ -472,7 +493,8 @@ The brand uses **product UI mockups** more than photography. Dashboard composite
 
 ### Don't
 
-- Don't bump display weight above 300 — at 400 the brand's editorial air collapses.
+- Don't bump latin display weight above 300 — at 400 the brand's editorial air collapses on latin headlines.
+- Don't render CJK body text at weight 300 — strokes hairline out on PingFang / Noto Sans SC and break engineer-credibility. CJK body and small text must be 400+.
 - Don't add new accent colors outside the documented gradient stops (cream / orange / lavender / indigo / ruby / magenta).
 - Don't use the indigo `{colors.primary}` as a body-text color — it's a CTA and link color, not a type color at body size.
 - Don't shrink button padding below `8px 16px` — the tight pill is part of the brand's transactional feel.
@@ -512,6 +534,6 @@ Product UI composites use `srcset` with art-direction crops at major breakpoints
 2. Reference component names and tokens directly (`{colors.primary}`, `{button-primary-pill}-pressed`, `{rounded.pill}`).
 3. Run `npx @google/design.md lint DESIGN.md` after edits.
 4. Add new variants as separate entries.
-5. Default body to `{typography.body-md}` (15px); use `{typography.body-tabular}` for any money / numeric cell.
+5. Default body to `{typography.body-md}` (15px) at **weight 400** (regular); the thin (300) signature is reserved for latin display tiers. CJK never goes below 400.
 6. Apply `ss01` globally on the body; apply `tnum` per-element on numeric content.
 7. The gradient mesh is non-negotiable on marketing heroes — bare-canvas heroes break the brand.

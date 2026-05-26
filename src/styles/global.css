@@ -4,7 +4,7 @@
 
 @import url('./tokens.css');
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap');
 
 *,
 *::before,
@@ -35,7 +35,7 @@ body {
   font-family: var(--font-sans);
   font-size: var(--type-body-md-size);
   line-height: var(--type-body-md-line);
-  font-weight: var(--weight-thin);
+  font-weight: var(--weight-regular);
   letter-spacing: var(--type-body-md-track);
   min-height: 100vh;
   overflow-x: hidden;
