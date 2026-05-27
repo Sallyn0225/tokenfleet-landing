@@ -16,11 +16,7 @@ const t = i18n[locale];
       {t.brandStrip.title}
     </p>
     <div class="brandstrip__loop">
-      <BrandLogoLoop
-        ariaLabel={t.brandStrip.aria}
-        locale={locale}
-        client:visible
-      />
+      <BrandLogoLoop ariaLabel={t.brandStrip.aria} client:visible />
     </div>
   </div>
 </section>

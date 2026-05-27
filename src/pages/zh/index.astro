@@ -10,7 +10,7 @@ import Enterprise from '../../components/Enterprise.astro';
 import Footer from '../../components/Footer.astro';
 import { i18n, localePath } from '../../i18n.ts';
 
-const locale = 'en';
+const locale = 'zh';
 const t = i18n[locale];
 ---
 
@@ -19,8 +19,8 @@ const t = i18n[locale];
   title={t.seo.homeTitle}
   description={t.seo.homeDescription}
   canonical={new URL(localePath(locale, '/'), Astro.site).toString()}
-  alternateZh={new URL('/', Astro.site).toString()}
-  alternateEn={new URL('/en', Astro.site).toString()}
+  alternateEn={new URL(localePath('en', '/'), Astro.site).toString()}
+  alternateZh={new URL(localePath('zh', '/'), Astro.site).toString()}
 >
   <TopNav locale={locale} currentPath="/" />
   <main id="main">

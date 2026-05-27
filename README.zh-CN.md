@@ -164,7 +164,7 @@ src/styles/            全局样式、设计 token、按钮样式
 
 ## 更新模型价格
 
-模型目录在构建时读取仓库根目录的 `pricing-api.json` 快照；该文件预期与 `https://tokenfleet.cn/api/pricing` 保持一致。
+模型目录在构建时读取仓库根目录的 `pricing-api.json` 快照；该文件预期与 `https://tokenfleet.ai/api/pricing` 保持一致。
 
 1. 从 API 刷新 `pricing-api.json`。
 2. 检查 `src/data/pricing.ts` 是否仍正确处理新增厂商、模型形态、endpoint 类型与 icon slug。
@@ -177,7 +177,7 @@ src/styles/            全局样式、设计 token、按钮样式
 
 站点在 `astro.config.mjs` 中配置了：
 
-- `site: 'https://tokenfleet.cn'`
+- `site: 'https://tokenfleet.ai'`
 - `trailingSlash: 'never'`
 - 压缩 HTML 输出
 - 构建资源输出到 `_assets`

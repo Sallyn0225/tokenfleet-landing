@@ -6,7 +6,7 @@ import ModelsExplorer from '../components/ModelsExplorer.astro';
 import { totalModelCount, usedVendors } from '../data/pricing.ts';
 import { i18n, localePath } from '../i18n.ts';
 
-const locale = 'zh';
+const locale = 'en';
 const t = i18n[locale];
 const total = totalModelCount();
 const vendorCount = usedVendors().length;
@@ -18,8 +18,8 @@ const heroTitle = t.models.title(total).split('\n');
   title={t.seo.modelsTitle(total)}
   description={t.seo.modelsDescription(total, vendorCount)}
   canonical={new URL(localePath(locale, '/models'), Astro.site).toString()}
-  alternateZh={new URL('/models', Astro.site).toString()}
-  alternateEn={new URL('/en/models', Astro.site).toString()}
+  alternateEn={new URL(localePath('en', '/models'), Astro.site).toString()}
+  alternateZh={new URL(localePath('zh', '/models'), Astro.site).toString()}
 >
   <TopNav locale={locale} currentPath="/models" />
   <main id="main">

@@ -1,13 +1,13 @@
 export type Locale = 'zh' | 'en';
 
-export const locales: Locale[] = ['zh', 'en'];
-export const defaultLocale: Locale = 'zh';
+export const locales: Locale[] = ['en', 'zh'];
+export const defaultLocale: Locale = 'en';
 
 export function localePath(locale: Locale, path: string): string {
   const normalized = path.startsWith('/') ? path : `/${path}`;
-  if (locale === 'zh') return normalized;
-  if (normalized === '/') return '/en';
-  return `/en${normalized}`;
+  if (locale === 'en') return normalized;
+  if (normalized === '/') return '/zh';
+  return `/zh${normalized}`;
 }
 
 export function otherLocale(locale: Locale): Locale {
@@ -28,7 +28,7 @@ export const i18n = {
     seo: {
       homeTitle: 'TokenFleet · 一个 API key，接入全部主流大模型',
       homeDescription:
-        '通过统一 API 网关聚合 DeepSeek、Moonshot、MiniMax、智谱 等生产级 LLM 模型。一个 API key，一份发票，国内直连。',
+        '通过统一 API 网关聚合 Anthropic、OpenAI、Google、DeepSeek 等生产级 LLM 模型。一个 API key，一份发票，国内直连。',
       modelsTitle: (total: number) => `全部 ${total} 个模型 · TokenFleet`,
       modelsDescription: (total: number, vendorCount: number) =>
         `覆盖 ${vendorCount} 家厂商的 ${total} 个生产级 AI 模型。一个 endpoint 调用所有，按厂商筛选、按价格排序、查看官方简介与完整价格分解。`,
@@ -49,7 +49,7 @@ export const i18n = {
       eyebrow: '统一模型 API',
       titlePrefix: '一个平台',
       titleRest: '调用多家主流模型。',
-      bodyBefore: '通过 TokenFleet 聚合 DeepSeek、Moonshot、MiniMax、智谱 等',
+      bodyBefore: '通过 TokenFleet 聚合 Anthropic、OpenAI、Google、DeepSeek 等',
       bodyAfter: '个生产级 LLM 模型。一个 API key，一份发票，国内直连。',
       docs: '查看文档',
       trustAria: '平台特性',
@@ -76,12 +76,12 @@ export const i18n = {
       viewAll: '查看全部模型',
       fallbackBlurb: '生产级模型接入',
       blurbs: {
-        'deepseek-v4-pro': 'DeepSeek 新一代旗舰推理模型',
+        'claude-opus-4-7': 'Anthropic 旗舰推理模型',
+        'gpt-5.5': 'OpenAI 新一代旗舰模型',
+        'gemini-3-pro-preview': 'Google 前沿多模态模型',
         'DeepSeek-V3.2': '高性价比推理与工具调用',
-        'kimi-k2.5': '原生视觉智能体引擎',
-        'kimi-k2.6': '国产长文本与办公场景',
-        'MiniMax-M2.7': '高效编程与自我迭代',
-        'glm-5.1': '智谱新一代语言模型',
+        'kimi-k2.6': '长上下文文档与智能体',
+        'MiniMax-M2.5': '高效编程与智能体工作流',
       },
     },
     product: {
@@ -240,7 +240,7 @@ export const i18n = {
     seo: {
       homeTitle: 'TokenFleet · One API key for leading AI models',
       homeDescription:
-        'TokenFleet unifies production LLM models from DeepSeek, Moonshot, MiniMax, Zhipu, and more behind one API gateway, one key, and one invoice.',
+        'TokenFleet unifies production LLM models from Anthropic, OpenAI, Google, DeepSeek, and more behind one API gateway, one key, and one invoice.',
       modelsTitle: (total: number) => `All ${total} models · TokenFleet`,
       modelsDescription: (total: number, vendorCount: number) =>
         `Browse ${total} production AI models across ${vendorCount} vendors. Filter by vendor, sort by price, and inspect official descriptions and pricing details.`,
@@ -262,7 +262,7 @@ export const i18n = {
       titlePrefix: 'One platform',
       titleRest: 'for leading models.',
       bodyBefore:
-        'TokenFleet aggregates production LLM models from DeepSeek, Moonshot, MiniMax, Zhipu, and more:',
+        'TokenFleet aggregates production LLM models from Anthropic, OpenAI, Google, DeepSeek, and more:',
       bodyAfter:
         ' models through one API key, one invoice, and direct mainland connectivity.',
       docs: 'View docs',
@@ -291,12 +291,12 @@ export const i18n = {
       viewAll: 'View all models',
       fallbackBlurb: 'Production model access',
       blurbs: {
-        'deepseek-v4-pro': 'Next-gen DeepSeek flagship reasoning model',
+        'claude-opus-4-7': "Anthropic's flagship reasoning model",
+        'gpt-5.5': "OpenAI's next-gen flagship model",
+        'gemini-3-pro-preview': "Google's frontier multimodal model",
         'DeepSeek-V3.2': 'Efficient reasoning and tool use',
-        'kimi-k2.5': 'Native visual agent engine',
-        'kimi-k2.6': 'Long-form Chinese documents and office tasks',
-        'MiniMax-M2.7': 'Efficient coding with self-iteration',
-        'glm-5.1': 'Next-gen Zhipu language model',
+        'kimi-k2.6': 'Long-context documents and agents',
+        'MiniMax-M2.5': 'Efficient coding and agent workflows',
       },
     },
     product: {

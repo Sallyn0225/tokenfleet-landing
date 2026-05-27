@@ -1,99 +1,596 @@
 {
   "_": "a42d372ccf0b5dd13ecf71203521f9d2",
-  "auto_groups": ["default"],
+  "auto_groups": [],
   "data": [
     {
-      "model_name": "deepseek-v3",
-      "description": "DeepSeek-V3 是深度求索（DeepSeek）团队推出的第三代大语言模型，聚焦代码生成、数学推理、专业知识问答三大核心领域，推理能力显著提升，数学、代码评测超越 GPT-4.5；HTML 前端任务的代码可用性更高，视觉效果更美观。",
-      "icon": "DeepSeek.Color",
-      "vendor_id": 5,
+      "model_name": "claude-opus-4-5-20251101",
+      "vendor_id": 1,
       "quota_type": 0,
-      "model_ratio": 0.1428571,
+      "model_ratio": 2.5,
       "model_price": 0,
       "owner_by": "",
-      "completion_ratio": 4,
-      "cache_ratio": 1,
-      "enable_groups": ["default", "svip", "vip"],
-      "supported_endpoint_types": ["openai"],
+      "completion_ratio": 5,
+      "cache_ratio": 0.1,
+      "create_cache_ratio": 1.25,
+      "enable_groups": ["default", "svip", "vip", "claude-svip"],
+      "supported_endpoint_types": ["anthropic", "openai"],
       "has_graduated_pricing": false,
       "pricing_version": "5a90f2b86c08bd983a9a2e6d66c255f4eaef9c4bc934386d2b6ae84ef0ff1f1f"
     },
     {
-      "model_name": "deepseek-v3.1",
-      "description": "DeepSeek-V3.1 是深度求索全新推出的混合推理模型，支持思考与非思考2种推理模式，较 DeepSeek-R1-0528 思考效率更高",
-      "icon": "DeepSeek.Color",
-      "vendor_id": 5,
+      "model_name": "claude-sonnet-4.5",
+      "description": "Anthropic has announced the launch of its latest AI model, Claude Sonnet 4.5.",
+      "icon": "Claude.Color",
+      "vendor_id": 1,
       "quota_type": 0,
-      "model_ratio": 0.1428571,
+      "model_ratio": 1.5,
       "model_price": 0,
       "owner_by": "",
-      "completion_ratio": 4,
+      "completion_ratio": 5,
+      "cache_ratio": 0.1,
+      "enable_groups": ["default", "svip", "vip"],
+      "supported_endpoint_types": ["anthropic", "openai"],
+      "has_graduated_pricing": true,
+      "pricing_tiers": [
+        {
+          "tier_order": 0,
+          "threshold_tokens": 0,
+          "input_ratio_multiplier": 1,
+          "output_ratio_multiplier": 1,
+          "description": "<200K Tokens"
+        },
+        {
+          "tier_order": 1,
+          "threshold_tokens": 200000,
+          "input_ratio_multiplier": 2,
+          "output_ratio_multiplier": 1.5,
+          "description": "≥ 200K Tokens"
+        }
+      ]
+    },
+    {
+      "model_name": "gpt-5.4-nano",
+      "vendor_id": 4,
+      "quota_type": 0,
+      "model_ratio": 0.1,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 6.25,
+      "cache_ratio": 0.1,
+      "enable_groups": ["default", "svip", "vip"],
+      "supported_endpoint_types": ["openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "gpt-image-2",
+      "vendor_id": 4,
+      "quota_type": 0,
+      "model_ratio": 2.5,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 6,
+      "cache_ratio": 0.4,
+      "image_ratio": 1.6,
+      "enable_groups": ["vip", "default", "svip"],
+      "supported_endpoint_types": ["openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "nano-banana-2-on-demand",
+      "description": "Nano Banana 2 offers pay-per-use resources, making billing more convenient.\nNano Banana 2 incorporates the high-speed intelligence of Gemini Flash into the field of visual generation, enabling rapid editing and iteration. It makes previously exclusive Pro-level functions accessible to a wider range of users, including: \nAdvanced world knowledge: This model is extracted from Gemini's real-world knowledge base and is supported by real-time information and images from the internet, enabling a more accurate presentation of specific topics. This profound understanding ability can also help you create infographics, convert notes into charts, and generate data visualizations. \nPrecise text rendering and translation: Nano Banana 2 enables you to generate accurate and clear text for marketing prototypes or greeting cards. You can even translate and localize the text in images, allowing you to share your creativity globally.",
+      "vendor_id": 3,
+      "quota_type": 1,
+      "model_ratio": 0,
+      "model_price": 0.072,
+      "owner_by": "",
+      "completion_ratio": 0,
+      "enable_groups": ["default", "svip", "vip"],
+      "supported_endpoint_types": ["gemini", "openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "sora-2",
+      "description": "Sora 2 is a new generation video generation model released by OpenAI. It is the first to support AI audio generation that matches the visuals, and it has also been launched as an iOS application called Sora (Sora 2 serves as the technical foundation of the Sora APP).",
+      "vendor_id": 4,
+      "quota_type": 1,
+      "model_ratio": 0,
+      "model_price": 0.1,
+      "owner_by": "",
+      "completion_ratio": 0,
+      "enable_groups": ["default", "svip", "vip"],
+      "supported_endpoint_types": ["openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "claude-haiku-4.5",
+      "description": "Claude Haiku 4.5 demonstrates near-cutting-edge performance across a wide range of usage scenarios, and stands out as one of the best programming and agent models - its speed and cost are perfectly balanced, capable of supporting free products and high-traffic user experiences.",
+      "icon": "Claude.Color",
+      "vendor_id": 1,
+      "quota_type": 0,
+      "model_ratio": 0.5,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 5,
+      "cache_ratio": 0.1,
+      "enable_groups": ["default", "svip", "vip"],
+      "supported_endpoint_types": ["anthropic", "openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "gpt-5.2",
+      "description": "The latest generation of general-purpose large models designed for complex tasks and production environments has been comprehensively enhanced in terms of inference depth, instruction compliance, multimodal understanding, and stability. It is suitable for complex analysis, Agent workflows, and high-demand enterprise-level applications.",
+      "icon": "OpenAI.Color",
+      "vendor_id": 4,
+      "quota_type": 0,
+      "model_ratio": 0.875,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 8,
       "cache_ratio": 1,
+      "enable_groups": ["vip", "default", "svip"],
+      "supported_endpoint_types": ["openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "gpt-5.3-codex",
+      "vendor_id": 4,
+      "quota_type": 0,
+      "model_ratio": 0.875,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 8,
+      "cache_ratio": 0.1,
+      "enable_groups": ["default", "svip", "vip"],
+      "supported_endpoint_types": ["openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "kimi-k2.5",
+      "description": "Kimi K2.5 is the flagship open-source multi-modal language model product launched by Moonshot AI. It is the most intelligent model of Kimi to date, achieving the open-source state-of-the-art performance in Agent, code, visual understanding, and a series of general intelligent tasks. At the same time, Kimi K2.5 is also the most all-round model of Kimi to date. With its native multi-modal architecture design, it supports visual and text input, thinking and non-thinking modes, dialogue and Agent tasks. Its core positioning is \"native visual intelligent agent engine\", specifically designed for coding, office work, and complex task autonomous collaboration. \nPerformance breakthrough: Exhibits outstanding performance in the HLE, BrowseComp, and SWE-Verified three major intelligent agent benchmarks, with costs significantly lower than those of competitors.\nArchitectural innovation: The world's first open-source model that supports self-organizing \"agent swarm\" (Agent Swarm), capable of dynamically scheduling up to 100 sub-intelligent agents and executing up to 1,500 tool calls in parallel.\nCoding revolution: The strongest open-source multimodal encoding model, capable of directly generating front-end interfaces with interactive animations from conversations or videos, achieving \"what you see is what you get\" visual programming.\nOffice efficiency improvement: End-to-end processing of 10,000-word documents, hundreds of pages of reports, financial models, and LaTeX formulas. Complex office tasks are reduced from hourly to minute-level processing time.\nEfficiency leap: Compared to a single intelligent agent, the swarm mode reduces execution time by up to 80%, compresses key path steps by 3-4.5 times, and truly achieves \"instant response\".",
+      "icon": "Moonshot.Color",
+      "vendor_id": 5,
+      "quota_type": 0,
+      "model_ratio": 0.2857145,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 5.25,
       "enable_groups": ["default", "svip", "vip"],
       "supported_endpoint_types": ["openai"],
       "has_graduated_pricing": false
     },
     {
       "model_name": "DeepSeek-V3.2",
-      "description": "DeepSeek-V3.2是引入DeepSeek Sparse Attention（一种稀疏注意力机制）的正式版模型，也是DeepSeek推出的首个将思考融入工具使用的模型，同时支持思考模式与非思考模式的工具调用。\n\n\n\n模型限流与上下文\n\n最大输入长度96K、上下文长度128K、最大输出长度64K\n\nRPM15000、TPM1200000",
+      "description": "DeepSeek-V3.2 is the official version of the model that incorporates DeepSeek Sparse Attention (a type of sparse attention mechanism). It is also the first model launched by DeepSeek that integrates thinking into the use of tools, and it supports both thinking mode and non-thinking mode tool invocation. \n\n\nModel Limitation and Context \nMaximum input length: 96K, context length: 128K, maximum output length: 64K \nRPM15000, TPM120000",
       "icon": "DeepSeek.Color",
-      "vendor_id": 5,
+      "vendor_id": 2,
       "quota_type": 0,
-      "model_ratio": 0.142857,
+      "model_ratio": 0.2857142,
       "model_price": 0,
       "owner_by": "",
-      "completion_ratio": 1.5,
-      "cache_ratio": 1,
-      "enable_groups": ["default", "svip", "vip"],
-      "supported_endpoint_types": ["openai"],
-      "has_graduated_pricing": false
-    },
-    {
-      "model_name": "DeepSeek-V3.2-A",
-      "description": "DeepSeek-V3.2是引入DeepSeek Sparse Attention（一种稀疏注意力机制）的正式版模型，也是DeepSeek推出的首个将思考融入工具使用的模型，同时支持思考模式与非思考模式的工具调用。\n\n\n模型限流与上下文\n\n最大输入长度96K、上下文长度128K、最大输出长度64K\n\nRPM15000、TPM1200000",
-      "icon": "DeepSeek.Color",
-      "vendor_id": 5,
-      "quota_type": 0,
-      "model_ratio": 0.142857,
-      "model_price": 0,
-      "owner_by": "",
-      "completion_ratio": 1.5,
-      "cache_ratio": 1,
-      "enable_groups": ["default", "svip", "vip"],
-      "supported_endpoint_types": ["openai"],
-      "has_graduated_pricing": false
-    },
-    {
-      "model_name": "deepseek-v3.2-exp",
-      "description": "引入了DeepSeek Sparse Attention（一种稀疏注意力机制）的实验性质版本，针对长文本的训练和推理效率进行了探索性的优化和验证",
-      "icon": "DeepSeek.Color",
-      "vendor_id": 5,
-      "quota_type": 0,
-      "model_ratio": 0.142857,
-      "model_price": 0,
-      "owner_by": "",
-      "completion_ratio": 1.5,
+      "completion_ratio": 4,
       "cache_ratio": 1,
       "enable_groups": ["svip", "vip", "default"],
       "supported_endpoint_types": ["openai"],
       "has_graduated_pricing": false
     },
     {
-      "model_name": "deepseek-v4-flash",
-      "vendor_id": 5,
+      "model_name": "gemini-3.1-pro-preview",
+      "vendor_id": 3,
       "quota_type": 0,
-      "model_ratio": 0.0714285714,
+      "model_ratio": 1,
       "model_price": 0,
       "owner_by": "",
-      "completion_ratio": 2.0000000007,
+      "completion_ratio": 6,
+      "cache_ratio": 0.1,
+      "audio_ratio": 1,
+      "enable_groups": ["default", "svip", "vip"],
+      "supported_endpoint_types": ["gemini", "openai"],
+      "has_graduated_pricing": true,
+      "pricing_tiers": [
+        {
+          "tier_order": 0,
+          "threshold_tokens": 0,
+          "input_ratio_multiplier": 1,
+          "output_ratio_multiplier": 1,
+          "description": "<200K Tokens"
+        },
+        {
+          "tier_order": 1,
+          "threshold_tokens": 200000,
+          "input_ratio_multiplier": 2,
+          "output_ratio_multiplier": 1.5,
+          "description": "≥ 200K Tokens"
+        }
+      ]
+    },
+    {
+      "model_name": "gemini-3.5-flash",
+      "vendor_id": 3,
+      "quota_type": 0,
+      "model_ratio": 0.75,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 6,
+      "cache_ratio": 0.1,
+      "audio_ratio": 2,
+      "enable_groups": ["default", "svip", "vip"],
+      "supported_endpoint_types": ["gemini", "openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "claude-sonnet4.5-reverse",
+      "description": "Claude-Sonnet 4.5 - Reverse Resources. Recommend using the Messages interface. More is better. Contact the business department for further details.",
+      "icon": "Claude.Color",
+      "vendor_id": 1,
+      "quota_type": 0,
+      "model_ratio": 0.75,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 5,
+      "cache_ratio": 0.1,
+      "enable_groups": ["svip", "vip"],
+      "supported_endpoint_types": ["anthropic", "openai"],
+      "has_graduated_pricing": true,
+      "pricing_tiers": [
+        {
+          "tier_order": 0,
+          "threshold_tokens": 0,
+          "input_ratio_multiplier": 1,
+          "output_ratio_multiplier": 1,
+          "description": "< 200K Tokens"
+        },
+        {
+          "tier_order": 1,
+          "threshold_tokens": 200000,
+          "input_ratio_multiplier": 2,
+          "output_ratio_multiplier": 1.5,
+          "description": "≥ 200K Tokens"
+        }
+      ]
+    },
+    {
+      "model_name": "claude-opus-4-6",
+      "vendor_id": 1,
+      "quota_type": 0,
+      "model_ratio": 2.5,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 5,
+      "cache_ratio": 0.1,
+      "create_cache_ratio": 0.25,
+      "enable_groups": ["vip", "claude-svip", "default", "svip"],
+      "supported_endpoint_types": ["anthropic", "openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "claude-opus-4.6",
+      "description": "The brand-new Claude Opus 4.6 has further enhanced its coding capabilities compared to its predecessors. It has a more meticulous planning, can execute autonomous tasks for a longer duration, operates more reliably in larger code bases, and possesses stronger code review and debugging capabilities, enabling it to promptly identify and correct its own errors. Additionally, as the first attempt in our Opus series models, Opus 4.6 is equipped with a 1 million-tagged context window in the beta version.",
+      "icon": "Claude.Color",
+      "vendor_id": 1,
+      "quota_type": 0,
+      "model_ratio": 2.5,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 5,
+      "cache_ratio": 0.1,
+      "enable_groups": ["default", "svip", "vip"],
+      "supported_endpoint_types": ["anthropic", "openai"],
+      "has_graduated_pricing": true,
+      "pricing_tiers": [
+        {
+          "tier_order": 0,
+          "threshold_tokens": 0,
+          "input_ratio_multiplier": 1,
+          "output_ratio_multiplier": 1,
+          "description": "<200K Tokens"
+        },
+        {
+          "tier_order": 1,
+          "threshold_tokens": 200000,
+          "input_ratio_multiplier": 2,
+          "output_ratio_multiplier": 1.5,
+          "description": "≥ 200K Tokens"
+        }
+      ]
+    },
+    {
+      "model_name": "claude-opus-4.7",
+      "description": "Running production tasks with Opus 4.7 resulted in a 3-fold increase in solution rate and a \"more than 10-fold improvement\" in code quality. In multi-task workflows, Opus 4.7 was 14% better than 4.6, with a reduction of approximately one-third in tool invocation error rate and a decrease in token consumption.",
+      "icon": "Claude.Color",
+      "vendor_id": 1,
+      "quota_type": 0,
+      "model_ratio": 2.5,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 5,
+      "cache_ratio": 0.1,
+      "enable_groups": ["default", "svip", "vip"],
+      "supported_endpoint_types": ["anthropic", "openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "gpt-5.4-mini",
+      "vendor_id": 4,
+      "quota_type": 0,
+      "model_ratio": 0.375,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 6,
+      "cache_ratio": 0.1,
       "enable_groups": ["default", "svip", "vip"],
       "supported_endpoint_types": ["openai"],
-      "has_graduated_pricing": false,
-      "icon": "DeepSeek.Color"
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "gpt-5.5",
+      "vendor_id": 4,
+      "quota_type": 0,
+      "model_ratio": 2.5,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 6,
+      "cache_ratio": 0.1,
+      "enable_groups": ["default", "svip", "vip"],
+      "supported_endpoint_types": ["openai"],
+      "has_graduated_pricing": true,
+      "pricing_tiers": [
+        {
+          "tier_order": 0,
+          "threshold_tokens": 0,
+          "input_ratio_multiplier": 1,
+          "output_ratio_multiplier": 1,
+          "description": "<272K tokens"
+        },
+        {
+          "tier_order": 1,
+          "threshold_tokens": 272000,
+          "input_ratio_multiplier": 2,
+          "output_ratio_multiplier": 1.5,
+          "description": "≥272K tokens"
+        }
+      ]
+    },
+    {
+      "model_name": "claude-opus4.5-reverse",
+      "description": "Claude-Opus4.5-Reverse, reverse resource. Recommend using the Messages interface. More is better. Contact the business department for details.",
+      "icon": "Claude.Color",
+      "vendor_id": 1,
+      "quota_type": 0,
+      "model_ratio": 1.25,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 5,
+      "cache_ratio": 0.1,
+      "enable_groups": ["svip", "vip"],
+      "supported_endpoint_types": ["anthropic", "openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "gemini-3-flash-preview",
+      "description": "The Gemini 3 Flash demonstrates that speed and scale do not necessarily come at the expense of intelligence. It achieves cutting-edge levels in doctoral-level reasoning and knowledge benchmark tests, such as GPQA Diamond (90.4%) and the \"Ultimate Human Test\" (33.7% without the use of tools), and its performance can rival that of larger leading models, and significantly outperforms even the best 2.5 version model - Gemini 2.5 Pro - in multiple benchmark tests. Moreover, on the MMMU Pro, it also reaches the industry's top level, achieving an outstanding 81.2% result, comparable to Gemini 3 Pro.",
+      "icon": "Gemini.Color",
+      "vendor_id": 3,
+      "quota_type": 0,
+      "model_ratio": 0.5,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 6,
+      "cache_ratio": 0.1,
+      "enable_groups": ["default", "svip", "vip"],
+      "supported_endpoint_types": ["gemini", "openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "gemini-3.1-flash-lite-preview",
+      "vendor_id": 3,
+      "quota_type": 0,
+      "model_ratio": 0.125,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 6,
+      "cache_ratio": 0.1,
+      "audio_ratio": 2,
+      "enable_groups": ["vip", "default", "svip"],
+      "supported_endpoint_types": ["gemini", "openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "gpt-5.4",
+      "vendor_id": 4,
+      "quota_type": 0,
+      "model_ratio": 1.25,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 6,
+      "cache_ratio": 0.1,
+      "enable_groups": ["default", "svip", "vip"],
+      "supported_endpoint_types": ["openai"],
+      "has_graduated_pricing": true,
+      "pricing_tiers": [
+        {
+          "tier_order": 0,
+          "threshold_tokens": 0,
+          "input_ratio_multiplier": 1,
+          "output_ratio_multiplier": 1,
+          "description": "<272K tokens"
+        },
+        {
+          "tier_order": 1,
+          "threshold_tokens": 272000,
+          "input_ratio_multiplier": 2,
+          "output_ratio_multiplier": 1.5,
+          "description": "≥272K tokens"
+        }
+      ]
+    },
+    {
+      "model_name": "MiniMax-M2.5",
+      "description": "MiniMax offers a variety of text models to meet the needs of different scenarios. MiniMax-M2.5 has achieved or surpassed the state-of-the-art (SOTA) in productivity scenarios such as programming, tool invocation and search, and office work. MiniMax-M2 is specifically designed for efficient coding and Agent workflows.",
+      "icon": "Minimax.Color",
+      "vendor_id": 6,
+      "quota_type": 0,
+      "model_ratio": 0.15,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 4,
+      "cache_ratio": 0.1,
+      "enable_groups": ["svip", "vip", "default"],
+      "supported_endpoint_types": ["anthropic", "openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "claude-haiku4.5-reverse",
+      "description": "Claude-Haiku4.5 - Reverse Resources. Large quantities are preferred. Contact for business inquiries.",
+      "icon": "Claude.Color",
+      "vendor_id": 1,
+      "quota_type": 0,
+      "model_ratio": 0.25,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 5,
+      "cache_ratio": 0.1,
+      "enable_groups": ["svip", "vip"],
+      "supported_endpoint_types": ["anthropic", "openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "claude-haiku-4-5-20251001",
+      "vendor_id": 1,
+      "quota_type": 0,
+      "model_ratio": 0.5,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 5,
+      "cache_ratio": 0.1,
+      "create_cache_ratio": 1.25,
+      "enable_groups": ["claude-svip", "default", "svip", "vip"],
+      "supported_endpoint_types": ["anthropic", "openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "claude-opus-4-7",
+      "icon": "Claude.Color",
+      "vendor_id": 1,
+      "quota_type": 0,
+      "model_ratio": 2.5,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 5,
+      "cache_ratio": 0.1,
+      "create_cache_ratio": 1.25,
+      "enable_groups": ["claude-svip", "default", "svip", "vip"],
+      "supported_endpoint_types": ["anthropic", "openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "claude-sonnet-4-6",
+      "vendor_id": 1,
+      "quota_type": 0,
+      "model_ratio": 2.5,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 5,
+      "cache_ratio": 0.1,
+      "create_cache_ratio": 1.25,
+      "enable_groups": ["svip", "vip", "claude-svip", "default"],
+      "supported_endpoint_types": ["anthropic", "openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "claude-sonnet-4.6",
+      "description": "\n104/5000\nAnthropic has announced the launch of the artificial intelligence model Claude Sonnet 4.6, stating that this model has achieved comprehensive upgrades in coding capabilities, computer operations, long-context reasoning, agent planning, knowledge work, and design domains. The beta version also includes a context window of 1 million tokens.",
+      "icon": "Claude.Color",
+      "vendor_id": 1,
+      "quota_type": 0,
+      "model_ratio": 1.5,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 5,
+      "cache_ratio": 0.1,
+      "enable_groups": ["default", "svip", "vip"],
+      "supported_endpoint_types": ["anthropic", "openai"],
+      "has_graduated_pricing": true,
+      "pricing_tiers": [
+        {
+          "tier_order": 0,
+          "threshold_tokens": 0,
+          "input_ratio_multiplier": 1,
+          "output_ratio_multiplier": 1,
+          "description": "<200K tokens"
+        },
+        {
+          "tier_order": 1,
+          "threshold_tokens": 200000,
+          "input_ratio_multiplier": 2,
+          "output_ratio_multiplier": 1.5,
+          "description": "≥200K tokens"
+        }
+      ]
+    },
+    {
+      "model_name": "gemini-3-pro-preview",
+      "description": "Gemini 3 Pro Preview (version identifier: gemini-3-pro-preview-11-2025) is the latest generation flagship artificial intelligence model launched by Google. As the third-generation product of the Gemini series, it is regarded as a top-level model competing with GPT-5 and Claude 4.5, aiming to redefine the \"thinking\" and \"collaboration\" methods of AI through stronger reasoning capabilities, an extremely long context window, and deep multimodal interaction.",
+      "icon": "Gemini.Color",
+      "vendor_id": 3,
+      "quota_type": 0,
+      "model_ratio": 1,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 8,
+      "cache_ratio": 0.1,
+      "enable_groups": ["default", "svip", "vip"],
+      "supported_endpoint_types": ["gemini", "openai"],
+      "has_graduated_pricing": true,
+      "pricing_tiers": [
+        {
+          "tier_order": 0,
+          "threshold_tokens": 0,
+          "input_ratio_multiplier": 1,
+          "output_ratio_multiplier": 1,
+          "description": "<200K Tokens"
+        },
+        {
+          "tier_order": 1,
+          "threshold_tokens": 200000,
+          "input_ratio_multiplier": 2,
+          "output_ratio_multiplier": 1.5,
+          "description": "≥ 200K Tokens"
+        }
+      ]
+    },
+    {
+      "model_name": "gpt-5.2-chat",
+      "description": "GPT-5.2-Chat is a lightweight and efficient version of the language model series products launched by OpenAI. Its core positioning is to be an ultra-fast intelligent assistant for daily work and study, emphasizing rapid response and clear, practical output. It is suitable for common question answering, writing and task guidance scenarios. Ultra-fast response experience: Optimized for regular conversations and retrieval question-and-answer scenarios, suitable for quick feedback on questions. Enhancement of daily task capabilities: More proficient in information retrieval, how-to guidance, writing assistance and clear semantic expression compared to the previous generation. Stable general performance: Suitable for general work and study scenarios, such as knowledge queries, text polishing, translation, etc. Natural conversation style: Continues to maintain a more friendly tone and more readable output. Rich practical scenarios: Suitable for content creation, task organization, proposal of brief plans, etc., for frequent light work processes.",
+      "icon": "OpenAI.Color",
+      "vendor_id": 4,
+      "quota_type": 0,
+      "model_ratio": 0.875,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 8,
+      "cache_ratio": 1,
+      "enable_groups": ["default", "svip", "vip"],
+      "supported_endpoint_types": ["openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "gpt-5.2-codex",
+      "description": "GPT-5.2-Codex is an intelligent agent programming model released by OpenAI. Its foreign name is... This model was officially launched on December 18, 2025, and is mainly applied in software engineering and cybersecurity defense in complex real-world scenarios.",
+      "icon": "OpenAI.Color",
+      "vendor_id": 4,
+      "quota_type": 0,
+      "model_ratio": 0.875,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 8,
+      "cache_ratio": 1,
+      "enable_groups": ["default", "svip", "vip"],
+      "supported_endpoint_types": ["openai"],
+      "has_graduated_pricing": false
     },
     {
       "model_name": "kimi-k2.6",
-      "vendor_id": 7,
+      "vendor_id": 5,
       "quota_type": 0,
       "model_ratio": 0.4642857,
       "model_price": 0,
@@ -106,49 +603,9 @@
       "has_graduated_pricing": false
     },
     {
-      "model_name": "deepseek-v4-pro",
-      "vendor_id": 5,
-      "quota_type": 0,
-      "model_ratio": 0.85714285715,
-      "model_price": 0,
-      "owner_by": "",
-      "completion_ratio": 2,
-      "enable_groups": ["default", "svip", "vip"],
-      "supported_endpoint_types": ["openai"],
-      "has_graduated_pricing": false,
-      "icon": "DeepSeek.Color"
-    },
-    {
-      "model_name": "glm-5.1",
-      "vendor_id": 8,
-      "quota_type": 0,
-      "model_ratio": 0.42857142855,
-      "model_price": 0,
-      "owner_by": "",
-      "completion_ratio": 4.000000000233,
-      "enable_groups": ["vip", "default", "svip"],
-      "supported_endpoint_types": ["openai"],
-      "has_graduated_pricing": false
-    },
-    {
-      "model_name": "kimi-k2.5",
-      "description": "Kimi K2.5 是 Moonshot AI 推出的旗舰级开源多模态语言模型产品，是 Kimi 迄今最智能的模型，在 Agent、代码、视觉理解及一系列通用智能任务上取得开源 SoTA 表现。同时 Kimi K2.5 也是 Kimi 迄今最全能的模型，原生的多模态架构设计，同时支持视觉与文本输入、思考与非思考模式、对话与 Agent 任务，核心定位为“原生视觉智能体引擎”，专为编码、办公与复杂任务自主协同而设计。\n\n    性能突破：在 HLE、BrowseComp、SWE-Verified 三大智能体基准中表现强劲，成本远低于竞品。\n    架构创新：全球首个支持自组织“智能体蜂群”（Agent Swarm）的开源模型，可动态调度最多100个子智能体，并行执行高达1,500次工具调用。\n    编码革命：最强开源多模态编码模型，支持从对话或视频直接生成带交互动画的前端界面，实现“所见即所得”的视觉编程。\n    办公提效：端到端处理万字文档、百页报告、财务模型与LaTeX公式，复杂办公任务从小时级缩短至分钟级。\n    效率跃升：相比单智能体，蜂群模式最高减少80%执行时间，关键路径步骤压缩3–4.5倍，真正实现“秒级响应”。",
-      "icon": "Moonshot.Color",
-      "vendor_id": 7,
-      "quota_type": 0,
-      "model_ratio": 0.2857145,
-      "model_price": 0,
-      "owner_by": "",
-      "completion_ratio": 5.25,
-      "enable_groups": ["vip", "default", "svip"],
-      "supported_endpoint_types": ["openai"],
-      "has_graduated_pricing": false
-    },
-    {
-      "model_name": "MiniMax-M2.5",
-      "description": "MiniMax 提供多款文本模型，满足不同场景需求。MiniMax-M2.5 在编程、工具调用和搜索、办公等生产力场景都达到或刷新了行业的 SOTA，MiniMax-M2 专为高效编码与 Agent 工作流而生",
+      "model_name": "MiniMax-M2.1",
+      "description": "MiniMax-M2.1 has a total of 204,800 input and output tokens, offering strong multilingual programming capabilities and a comprehensive upgrade to the programming experience (with an output speed of approximately 60 tps)",
       "icon": "Minimax.Color",
-      "tags": "多语言编程",
       "vendor_id": 6,
       "quota_type": 0,
       "model_ratio": 0.15,
@@ -157,41 +614,87 @@
       "completion_ratio": 4,
       "cache_ratio": 0.1,
       "enable_groups": ["default", "svip", "vip"],
-      "supported_endpoint_types": ["openai"],
+      "supported_endpoint_types": ["anthropic", "openai"],
       "has_graduated_pricing": false
     },
     {
-      "model_name": "MiniMax-M2.7",
-      "description": "开启模型的自我迭代 (输出速度约60tps)",
-      "icon": "Minimax.Color",
-      "vendor_id": 6,
+      "model_name": "claude-sonnet-4-5-20250929",
+      "vendor_id": 1,
       "quota_type": 0,
-      "model_ratio": 0.15,
+      "model_ratio": 1.5,
       "model_price": 0,
       "owner_by": "",
-      "completion_ratio": 4,
-      "cache_ratio": 0.2,
+      "completion_ratio": 5,
+      "cache_ratio": 0.1,
+      "create_cache_ratio": 1.25,
+      "enable_groups": ["claude-svip", "default", "svip", "vip"],
+      "supported_endpoint_types": ["anthropic", "openai"],
+      "has_graduated_pricing": false
+    },
+    {
+      "model_name": "claude-opus-4.5",
+      "description": "Intelligent and efficient, currently the model with the best performance globally in terms of encoding, intelligent agents, and computer applications. Maximum output: 64K tokens.",
+      "icon": "Claude.Color",
+      "vendor_id": 1,
+      "quota_type": 0,
+      "model_ratio": 2.5,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 5,
+      "cache_ratio": 0.1,
       "enable_groups": ["default", "svip", "vip"],
-      "supported_endpoint_types": ["openai"],
+      "supported_endpoint_types": ["anthropic", "openai"],
       "has_graduated_pricing": false
     }
   ],
-  "group_ratio": { "default": 1 },
+  "group_ratio": {},
   "success": true,
   "supported_endpoint": {
-    "openai": { "path": "/v1/chat/completions", "method": "POST" }
+    "anthropic": {
+      "path": "/v1/messages",
+      "method": "POST"
+    },
+    "gemini": {
+      "path": "/v1beta/models/{model}:generateContent",
+      "method": "POST"
+    },
+    "openai": {
+      "path": "/v1/chat/completions",
+      "method": "POST"
+    }
   },
-  "usable_group": { "default": "默认分组" },
+  "usable_group": {},
   "vendors": [
-    { "id": 3, "name": "Google", "icon": "Google" },
-    { "id": 4, "name": "Anthropic", "icon": "Anthropic" },
-    { "id": 5, "name": "DeepSeek", "icon": "DeepSeek" },
-    { "id": 6, "name": "MiniMax", "icon": "MiniMax" },
-    { "id": 10, "name": "Vidu", "icon": "Vidu" },
-    { "id": 1, "name": "aiionly" },
-    { "id": 7, "name": "Moonshot", "icon": "Moonshot" },
-    { "id": 8, "name": "智谱", "icon": "Zhipu.Color" },
-    { "id": 9, "name": "快手", "icon": "Kling.Color" },
-    { "id": 2, "name": "OpenAI", "icon": "OpenAI" }
+    {
+      "id": 1,
+      "name": "Anthropic",
+      "icon": "Claude.Color"
+    },
+    {
+      "id": 2,
+      "name": "DeepSeek",
+      "icon": "DeepSeek.Color"
+    },
+    {
+      "id": 3,
+      "name": "Google",
+      "icon": "Gemini.Color"
+    },
+    {
+      "id": 4,
+      "name": "OpenAI",
+      "icon": "OpenAI"
+    },
+    {
+      "id": 5,
+      "name": "Moonshot",
+      "icon": "Moonshot"
+    },
+    {
+      "id": 6,
+      "name": "MiniMax",
+      "description": "宇溪科技旗下的一款大模型",
+      "icon": "Minimax.Color"
+    }
   ]
 }

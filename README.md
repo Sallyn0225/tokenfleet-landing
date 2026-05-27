@@ -166,7 +166,7 @@ src/styles/            Global styles, design tokens, and button styles
 
 ## Updating Model Pricing
 
-The model catalog is generated at build time from the root `pricing-api.json` snapshot, which is expected to mirror `https://tokenfleet.cn/api/pricing`.
+The model catalog is generated at build time from the root `pricing-api.json` snapshot, which is expected to mirror `https://tokenfleet.ai/api/pricing`.
 
 1. Refresh `pricing-api.json` from the API.
 2. Check that `src/data/pricing.ts` still maps any new vendors, modalities, endpoint types, and icon slugs correctly.
@@ -179,7 +179,7 @@ The model catalog is generated at build time from the root `pricing-api.json` sn
 
 The site is configured in `astro.config.mjs` with:
 
-- `site: 'https://tokenfleet.cn'`
+- `site: 'https://tokenfleet.ai'`
 - `trailingSlash: 'never'`
 - compressed HTML output
 - build assets emitted under `_assets`

@@ -25,12 +25,12 @@ const { locale = 'zh' } = Astro.props as Props;
 const t = i18n[locale];
 const total = totalModelCount();
 const featuredModelIds = [
-  'deepseek-v4-pro',
+  'claude-opus-4-7',
+  'gpt-5.5',
+  'gemini-3-pro-preview',
   'DeepSeek-V3.2',
-  'kimi-k2.5',
   'kimi-k2.6',
-  'MiniMax-M2.7',
-  'glm-5.1',
+  'MiniMax-M2.5',
 ];
 const featuredBlurbs: Record<string, string> = t.featured.blurbs;
 const modelById = new Map(

@@ -2,7 +2,7 @@
  * pricing.ts — model catalog + price formatting utilities.
  *
  * Source of truth is the upstream `pricing-api.json` snapshot at repo root,
- * generated from https://tokenfleet.cn/api/pricing. Re-run that fetch and
+ * generated from https://tokenfleet.ai/api/pricing. Re-run that fetch and
  * commit the JSON to refresh the catalog. We import at build time so the
  * /models page ships fully static (no runtime fetch, no CORS, SEO friendly).
  *
@@ -133,6 +133,7 @@ const VIDEO_HINTS = [
 ];
 const IMAGE_HINTS = [
   'nano-banana',
+  'gpt-image',
   'flux',
   'midjourney',
   'recraft',

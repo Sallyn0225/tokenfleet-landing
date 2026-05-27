@@ -4,8 +4,12 @@ import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://tokenfleet.cn',
+  site: 'https://tokenfleet.ai',
   trailingSlash: 'never',
+  redirects: {
+    '/en': '/',
+    '/en/models': '/models',
+  },
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()],
