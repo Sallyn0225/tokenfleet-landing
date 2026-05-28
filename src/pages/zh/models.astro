@@ -18,8 +18,7 @@ const heroTitle = t.models.title(total).split('\n');
   title={t.seo.modelsTitle(total)}
   description={t.seo.modelsDescription(total, vendorCount)}
   canonical={new URL(localePath(locale, '/models'), Astro.site).toString()}
-  alternateEn={new URL(localePath('en', '/models'), Astro.site).toString()}
-  alternateZh={new URL(localePath('zh', '/models'), Astro.site).toString()}
+  currentPath="/models"
 >
   <TopNav locale={locale} currentPath="/models" />
   <main id="main">

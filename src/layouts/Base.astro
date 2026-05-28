@@ -4,12 +4,11 @@ interface Props {
   description?: string;
   ogImage?: string;
   canonical?: string;
-  locale?: 'zh' | 'en';
-  alternateZh?: string;
-  alternateEn?: string;
+  locale?: Locale;
+  currentPath?: string;
 }
 
-import { i18n, ogLocale } from '../i18n.ts';
+import { alternateLinks, i18n, ogLocale, type Locale } from '../i18n.ts';
 
 const {
   locale = 'zh',
@@ -17,14 +16,15 @@ const {
   description = i18n[locale].seo.homeDescription,
   ogImage,
   canonical = Astro.url.href,
-  alternateZh,
-  alternateEn,
+  currentPath,
 } = Astro.props as Props;
 
 const t = i18n[locale];
 const ogImageUrl = ogImage
   ? new URL(ogImage, Astro.site).toString()
   : undefined;
+const alternates =
+  currentPath && Astro.site ? alternateLinks(currentPath, Astro.site) : [];
 
 import '../styles/global.css';
 import '../styles/buttons.css';
@@ -46,11 +46,14 @@ import '../styles/tailwind.css';
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="canonical" href={canonical} />
     {
-      alternateZh && (
-        <link rel="alternate" hreflang="zh-CN" href={alternateZh} />
-      )
+      alternates.map((alternate) => (
+        <link
+          rel="alternate"
+          hreflang={alternate.hreflang}
+          href={alternate.href}
+        />
+      ))
     }
-    {alternateEn && <link rel="alternate" hreflang="en" href={alternateEn} />}
 
     <title>{title}</title>
     <meta name="description" content={description} />

@@ -19,8 +19,7 @@ const t = i18n[locale];
   title={t.seo.homeTitle}
   description={t.seo.homeDescription}
   canonical={new URL(localePath(locale, '/'), Astro.site).toString()}
-  alternateEn={new URL(localePath('en', '/'), Astro.site).toString()}
-  alternateZh={new URL(localePath('zh', '/'), Astro.site).toString()}
+  currentPath="/"
 >
   <TopNav locale={locale} currentPath="/" />
   <main id="main">

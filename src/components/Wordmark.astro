@@ -9,10 +9,10 @@ interface Props {
   size?: 'sm' | 'md' | 'lg';
   variant?: 'on-light' | 'on-dark';
   class?: string;
-  locale?: 'zh' | 'en';
+  locale?: Locale;
 }
 
-import { i18n, localePath } from '../i18n.ts';
+import { i18n, localePath, type Locale } from '../i18n.ts';
 
 const {
   size = 'md',

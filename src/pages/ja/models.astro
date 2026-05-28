@@ -1,12 +1,12 @@
 ---
-import Base from '../layouts/Base.astro';
-import TopNav from '../components/TopNav.astro';
-import Footer from '../components/Footer.astro';
-import ModelsExplorer from '../components/ModelsExplorer.astro';
-import { totalModelCount, usedVendors } from '../data/pricing.ts';
-import { i18n, localePath } from '../i18n.ts';
+import Base from '../../layouts/Base.astro';
+import TopNav from '../../components/TopNav.astro';
+import Footer from '../../components/Footer.astro';
+import ModelsExplorer from '../../components/ModelsExplorer.astro';
+import { totalModelCount, usedVendors } from '../../data/pricing.ts';
+import { i18n, localePath } from '../../i18n.ts';
 
-const locale = 'en';
+const locale = 'ja';
 const t = i18n[locale];
 const total = totalModelCount();
 const vendorCount = usedVendors().length;

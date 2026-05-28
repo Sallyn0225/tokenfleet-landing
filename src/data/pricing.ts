@@ -19,6 +19,7 @@
  */
 
 import raw from '../../pricing-api.json';
+import type { Locale } from '../i18n.ts';
 
 /** USD per 1M tokens when ratio = 1. */
 export const BASE_USD_PER_MTOK = 2;
@@ -101,11 +102,8 @@ export function vendorSlug(v: Vendor): string {
   return v.name.toLowerCase().replace(/\s+/g, '-');
 }
 
-export function vendorDisplayName(
-  v: Vendor,
-  locale: 'zh' | 'en' = 'zh'
-): string {
-  if (locale === 'en') {
+export function vendorDisplayName(v: Vendor, locale: Locale = 'zh'): string {
+  if (locale !== 'zh') {
     if (v.id === 8) return 'Zhipu';
     if (v.id === 9) return 'Kuaishou';
   }
@@ -154,18 +152,21 @@ export function modalityOf(m: RawModel): Modality {
   return 'chat';
 }
 
-export function modalityLabel(
-  mod: Modality,
-  locale: 'zh' | 'en' = 'zh'
-): string {
+export function modalityLabel(mod: Modality, locale: Locale = 'zh'): string {
   switch (mod) {
     case 'chat':
       return 'LLM';
     case 'image':
+      if (locale === 'ja') return '画像';
+      if (locale === 'ko') return '이미지';
       return locale === 'en' ? 'Image' : '图像';
     case 'video':
+      if (locale === 'ja') return '動画';
+      if (locale === 'ko') return '비디오';
       return locale === 'en' ? 'Video' : '视频';
     case 'audio':
+      if (locale === 'ja') return '音声';
+      if (locale === 'ko') return '오디오';
       return locale === 'en' ? 'Audio' : '音频';
   }
 }
@@ -264,10 +265,18 @@ export function priceBreakdown(m: RawModel): PriceBreakdown {
 }
 
 /** Compact mono label for cards: e.g. '$5 / $25 per 1M' or '$0.5 / image'. */
-export function priceLabel(m: RawModel, locale: 'zh' | 'en' = 'zh'): string {
+export function priceLabel(m: RawModel, locale: Locale = 'zh'): string {
   const p = priceBreakdown(m);
   if (p.kind === 'call') {
-    return `${fmtUsd(p.inputUsd)} / ${locale === 'en' ? 'call' : '次'}`;
+    const unit =
+      locale === 'en'
+        ? 'call'
+        : locale === 'ja'
+          ? '回'
+          : locale === 'ko'
+            ? '회'
+            : '次';
+    return `${fmtUsd(p.inputUsd)} / ${unit}`;
   }
   return `${fmtUsd(p.inputUsd)} / ${fmtUsd(p.outputUsd!)} per 1M`;
 }
