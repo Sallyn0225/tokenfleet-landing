@@ -11,6 +11,7 @@
  */
 
 import Wordmark from './Wordmark.astro';
+import { CONSOLE_URL, LOGIN_URL } from '../data/site-links.ts';
 import { i18n, localePath, locales, type Locale } from '../i18n.ts';
 
 interface Props {
@@ -100,14 +101,8 @@ const languageOptions = locales.map((item) => ({
           }
         </ul>
       </details>
-      <a href="https://tokenfleet.ai/login" class="nav__signin" rel="noopener"
-        >{t.nav.signIn}</a
-      >
-      <a
-        href="https://tokenfleet.ai/console"
-        class="btn btn--primary btn--sm"
-        rel="noopener"
-      >
+      <a href={LOGIN_URL} class="nav__signin" rel="noopener">{t.nav.signIn}</a>
+      <a href={CONSOLE_URL} class="btn btn--primary btn--sm" rel="noopener">
         {t.nav.start}
       </a>
     </div>
@@ -160,13 +155,11 @@ const languageOptions = locales.map((item) => ({
             }
           </div>
         </div>
-        <a
-          href="https://tokenfleet.ai/login"
-          class="btn btn--outline nav__drawer-button">{t.nav.signIn}</a
+        <a href={LOGIN_URL} class="btn btn--outline nav__drawer-button"
+          >{t.nav.signIn}</a
         >
-        <a
-          href="https://tokenfleet.ai/console"
-          class="btn btn--primary nav__drawer-button">{t.nav.start}</a
+        <a href={CONSOLE_URL} class="btn btn--primary nav__drawer-button"
+          >{t.nav.start}</a
         >
       </li>
     </ul>
