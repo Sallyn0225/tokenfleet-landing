@@ -12,6 +12,7 @@
 
 import Wordmark from './Wordmark.astro';
 import { i18n, localePath, otherLocale, type Locale } from '../i18n.ts';
+import { DASHBOARD_URL, SIGN_IN_URL } from '../site-links.ts';
 
 interface Props {
   locale?: Locale;
@@ -62,14 +63,9 @@ const languageHref = localePath(altLocale, currentPath);
 
     <div class="nav__cta">
       <a href={languageHref} class="nav__signin">{t.switchLabel}</a>
-      <a href="https://tokenfleet.cn/sign-in" class="nav__signin" rel="noopener"
-        >{t.nav.signIn}</a
+      <a href={SIGN_IN_URL} class="nav__signin" rel="noopener">{t.nav.signIn}</a
       >
-      <a
-        href="https://tokenfleet.cn/dashboard/"
-        class="btn btn--primary btn--sm"
-        rel="noopener"
-      >
+      <a href={DASHBOARD_URL} class="btn btn--primary btn--sm" rel="noopener">
         {t.nav.start}
       </a>
     </div>
@@ -109,13 +105,11 @@ const languageHref = localePath(altLocale, currentPath);
         <a href={languageHref} class="btn btn--outline nav__drawer-button"
           >{t.switchLabel}</a
         >
-        <a
-          href="https://tokenfleet.cn/sign-in"
-          class="btn btn--outline nav__drawer-button">{t.nav.signIn}</a
+        <a href={SIGN_IN_URL} class="btn btn--outline nav__drawer-button"
+          >{t.nav.signIn}</a
         >
-        <a
-          href="https://tokenfleet.cn/dashboard/"
-          class="btn btn--primary nav__drawer-button">{t.nav.start}</a
+        <a href={DASHBOARD_URL} class="btn btn--primary nav__drawer-button"
+          >{t.nav.start}</a
         >
       </li>
     </ul>

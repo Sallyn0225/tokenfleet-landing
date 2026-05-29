@@ -20,6 +20,7 @@ import HeroBackdrop from './HeroBackdrop.astro';
 import CodeBlock from './CodeBlock.astro';
 import { totalModelCount } from '../data/pricing.ts';
 import { i18n, localePath, type Locale } from '../i18n.ts';
+import { DASHBOARD_URL } from '../site-links.ts';
 
 interface Props {
   locale?: Locale;
@@ -51,10 +52,7 @@ const total = totalModelCount();
       </p>
 
       <div class="hero__cta">
-        <a
-          href="https://tokenfleet.cn/dashboard/"
-          class="btn btn--primary btn--lg"
-        >
+        <a href={DASHBOARD_URL} class="btn btn--primary btn--lg">
           {t.nav.start}
           <svg
             width="14"
