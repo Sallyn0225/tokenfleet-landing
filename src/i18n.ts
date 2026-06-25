@@ -99,7 +99,7 @@ export const i18n = {
       title: '一条 endpoint，接入所有模型。',
       cards: [
         {
-          eyebrow: '产品 01',
+          eyebrow: '产品',
           title: '统一 API 网关',
           body: '生产级模型聚合在同一个 API 网关下。一个 API key，今天接入多家模型。',
           bullets: [
@@ -324,7 +324,7 @@ export const i18n = {
       title: 'One endpoint. Every model.',
       cards: [
         {
-          eyebrow: 'PRODUCT 01',
+          eyebrow: 'PRODUCT',
           title: 'Unified API gateway',
           body: 'Production models are aggregated behind one API gateway. One API key connects your app to multiple vendors today.',
           bullets: [

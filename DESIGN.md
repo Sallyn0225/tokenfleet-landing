@@ -295,7 +295,9 @@ Typography is built around **Sohne** at weight 300 with negative letter-spacing 
 
 ### Semantic
 
-The brand does not use a separate semantic color palette in the marketing system — error / success states live in dashboard-product UI specifically.
+The brand keeps semantic color minimal in the marketing system. One success/live signal is registered:
+
+- **Success** (`--color-success` — `#16a34a`): the live "200 OK" status signal in the unified-endpoint demo (WhyUs card C) — the dot pulse and status text. `--color-success-rgb` (`22, 163, 74`) exposes the channels so alpha glows compose via `rgba(var(--color-success-rgb), a)`. Not a button or large-surface color; reserved for the live-status micro-signal. Other error / success states live in dashboard-product UI specifically.
 
 ## Typography
 
