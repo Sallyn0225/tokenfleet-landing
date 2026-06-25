@@ -83,6 +83,16 @@ export const i18n = {
         'MiniMax-M2.7': '高效编程与自我迭代',
         'glm-5.1': '智谱新一代语言模型',
       },
+      facts: {
+        models: '生产级模型',
+        vendors: '模型厂商',
+        modalities: '覆盖模态',
+        modalitiesValue: 'LLM · 图像 · 视频 · 音频',
+        access: '统一接入',
+        accessValue: 'OpenAI 兼容 endpoint',
+        billing: '统一计费',
+        billingValue: '单一对公账户 · 人民币',
+      },
     },
     product: {
       eyebrow: 'TokenFleet 产品线',
@@ -297,6 +307,16 @@ export const i18n = {
         'kimi-k2.6': 'Long-form Chinese documents and office tasks',
         'MiniMax-M2.7': 'Efficient coding with self-iteration',
         'glm-5.1': 'Next-gen Zhipu language model',
+      },
+      facts: {
+        models: 'Production models',
+        vendors: 'Model vendors',
+        modalities: 'Modalities',
+        modalitiesValue: 'LLM · Image · Video · Audio',
+        access: 'Unified access',
+        accessValue: 'OpenAI-compatible endpoint',
+        billing: 'One billing layer',
+        billingValue: 'Single business account',
       },
     },
     product: {

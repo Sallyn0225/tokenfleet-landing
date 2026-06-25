@@ -13,6 +13,7 @@ import {
   modalityLabel,
   priceLabel,
   totalModelCount,
+  usedVendors,
   vendorDisplayName,
 } from '../data/pricing.ts';
 import { i18n, localePath, type Locale } from '../i18n.ts';
@@ -24,6 +25,8 @@ interface Props {
 const { locale = 'zh' } = Astro.props as Props;
 const t = i18n[locale];
 const total = totalModelCount();
+const vendorCount = usedVendors().length;
+const facts = t.featured.facts;
 const featuredModelIds = [
   'deepseek-v4-pro',
   'DeepSeek-V3.2',
@@ -141,6 +144,29 @@ const featuredTitle = t.featured.title(total).split('\n');
         ))
       }
     </ol>
+
+    <dl class="featured__facts mono" data-reveal>
+      <div class="featured__fact">
+        <dt>{facts.models}</dt>
+        <dd><span class="featured__fact-num tabular">{total}</span></dd>
+      </div>
+      <div class="featured__fact">
+        <dt>{facts.vendors}</dt>
+        <dd><span class="featured__fact-num tabular">{vendorCount}</span></dd>
+      </div>
+      <div class="featured__fact">
+        <dt>{facts.modalities}</dt>
+        <dd>{facts.modalitiesValue}</dd>
+      </div>
+      <div class="featured__fact">
+        <dt>{facts.access}</dt>
+        <dd>{facts.accessValue}</dd>
+      </div>
+      <div class="featured__fact">
+        <dt>{facts.billing}</dt>
+        <dd>{facts.billingValue}</dd>
+      </div>
+    </dl>
   </div>
 </section>
 
@@ -225,6 +251,51 @@ const featuredTitle = t.featured.title(total).split('\n');
   }
   .featured__taxonomy a:hover {
     color: var(--color-primary);
+  }
+
+  /* ── fact strip: aggregate catalog facts below the grid ───────────────── */
+  .featured__facts {
+    grid-column: 1 / -1;
+    margin-top: clamp(28px, 4vw, 44px);
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--color-hairline);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .featured__fact {
+    background: var(--color-canvas);
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+  }
+
+  .featured__fact dt {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-mute);
+  }
+
+  .featured__fact dd {
+    font-size: 13px;
+    color: var(--color-ink);
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+  }
+
+  .featured__fact-num {
+    font-size: 24px;
+    font-weight: var(--weight-medium);
+    color: var(--color-primary);
+    letter-spacing: -0.02em;
+    line-height: 1;
   }
 
   /* ── grid: asymmetric on desktop ──────────────────────────────────────── */
@@ -440,6 +511,29 @@ const featuredTitle = t.featured.title(total).split('\n');
     }
     .modelcard {
       min-height: 184px;
+    }
+  }
+
+  /* fact strip collapses ahead of the card grid — its cells hold longer text */
+  @media (max-width: 960px) {
+    .featured__facts {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    /* 5 facts wrap unevenly once columns drop below 5 — let the trailing
+       fact fill its row instead of leaving an empty hairline cell. */
+    .featured__fact:last-child {
+      grid-column: span 2;
+    }
+  }
+  @media (max-width: 560px) {
+    .featured__facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .featured__fact {
+      padding: 14px 14px;
+    }
+    .featured__fact-num {
+      font-size: 21px;
     }
   }
 </style>
