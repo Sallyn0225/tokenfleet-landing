@@ -3,3 +3,13 @@ dist
 node_modules
 package-lock.json
 skills-lock.json
+
+# vendored tooling (impeccable / trellis skills, hooks) mirrored across
+# harness dirs — not project source
+.github/skills
+.github/hooks
+.agents
+.claude
+.codex
+.trellis
+.impeccable

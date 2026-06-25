@@ -70,6 +70,12 @@
   --color-lemon: #9b6829;
   --color-shadow-blue: #003770;
 
+  /* ── color: semantic ──────────────────────────────────────────────────── */
+  /* success / live "200 OK" signal — used by the endpoint-demo status pulse.
+     -rgb channels let alpha glows compose via rgba(var(--color-success-rgb), a). */
+  --color-success: #16a34a;
+  --color-success-rgb: 22, 163, 74;
+
   /* ── elevation ────────────────────────────────────────────────────────── */
   --shadow-1: 0 1px 3px rgba(0, 55, 112, 0.08);
   --shadow-2:

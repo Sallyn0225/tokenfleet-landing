@@ -12,7 +12,20 @@ const browserAndNodeGlobals = {
 
 export default [
   {
-    ignores: ['dist/**', '.astro/**', 'node_modules/**'],
+    ignores: [
+      'dist/**',
+      '.astro/**',
+      'node_modules/**',
+      // vendored tooling (impeccable / trellis skills + hooks) mirrored across
+      // harness dirs — third-party .mjs that don't follow this lint config.
+      '.github/skills/**',
+      '.github/hooks/**',
+      '.agents/**',
+      '.claude/**',
+      '.codex/**',
+      '.trellis/**',
+      '.impeccable/**',
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

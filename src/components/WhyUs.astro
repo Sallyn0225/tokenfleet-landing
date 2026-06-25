@@ -1162,8 +1162,8 @@ const cities = [
     width: 6px;
     height: 6px;
     border-radius: 999px;
-    background: #16a34a;
-    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.5);
+    background: var(--color-success);
+    box-shadow: 0 0 0 0 rgba(var(--color-success-rgb), 0.5);
     animation: endpoint-pulse 2.4s ease-out infinite;
     animation-play-state: paused;
     flex-shrink: 0;
@@ -1174,17 +1174,17 @@ const cities = [
   }
   @keyframes endpoint-pulse {
     0% {
-      box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.55);
+      box-shadow: 0 0 0 0 rgba(var(--color-success-rgb), 0.55);
     }
     65% {
-      box-shadow: 0 0 0 8px rgba(22, 163, 74, 0);
+      box-shadow: 0 0 0 8px rgba(var(--color-success-rgb), 0);
     }
     100% {
-      box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+      box-shadow: 0 0 0 0 rgba(var(--color-success-rgb), 0);
     }
   }
   .endpoint-demo__status {
-    color: #16a34a;
+    color: var(--color-success);
     font-size: 11px;
     font-weight: var(--weight-medium);
     letter-spacing: -0.005em;
@@ -1276,16 +1276,18 @@ const cities = [
   .latency__bar {
     display: block;
     height: 4px;
-    width: 0;
+    width: var(--w);
     background: var(--color-primary);
     border-radius: 999px;
     min-width: 2px;
-    transition: width 900ms var(--ease-out-expo);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 900ms var(--ease-out-expo);
     transition-delay: var(--delay, 0ms);
   }
   .whycard--latency.is-visible .latency__bar,
   html:not(.js-reveal) .whycard--latency .latency__bar {
-    width: var(--w);
+    transform: scaleX(1);
   }
 
   .latency__row--ghost td {
