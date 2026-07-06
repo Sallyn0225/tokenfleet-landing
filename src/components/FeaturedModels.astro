@@ -11,12 +11,12 @@
 import {
   loadModels,
   modalityLabel,
-  priceLabel,
   totalModelCount,
   usedVendors,
   vendorDisplayName,
 } from '../data/pricing.ts';
-import { i18n, localePath, type Locale } from '../i18n.ts';
+import { i18n, type Locale } from '../i18n.ts';
+import { PRICING_URL } from '../site-links.ts';
 
 interface Props {
   locale?: Locale;
@@ -29,11 +29,12 @@ const vendorCount = usedVendors().length;
 const facts = t.featured.facts;
 const featuredModelIds = [
   'deepseek-v4-pro',
-  'DeepSeek-V3.2',
-  'kimi-k2.5',
+  'deepseek-v3.2',
   'kimi-k2.6',
+  'kimi-k2.7-code',
   'MiniMax-M2.7',
-  'glm-5.1',
+  'glm-5.2',
+  'doubao-seedance-2-0-fast-260128',
 ];
 const featuredBlurbs: Record<string, string> = t.featured.blurbs;
 const modelById = new Map(
@@ -68,7 +69,7 @@ const featuredTitle = t.featured.title(total).split('\n');
       <p class="featured__body">
         {t.featured.body}
       </p>
-      <a href={localePath(locale, '/models')} class="link featured__link">
+      <a href={PRICING_URL} class="link featured__link">
         {t.featured.viewAll}
         <svg
           width="12"
@@ -87,24 +88,16 @@ const featuredTitle = t.featured.title(total).split('\n');
       </a>
       <ul class="featured__taxonomy mono">
         <li>
-          <a href={`${localePath(locale, '/models')}?modality=chat`}
-            >{t.models.modalities.chat}</a
-          >
+          <a href={PRICING_URL}>{t.models.modalities.chat}</a>
         </li>
         <li>
-          <a href={`${localePath(locale, '/models')}?modality=image`}
-            >{t.models.modalities.image}</a
-          >
+          <a href={PRICING_URL}>{t.models.modalities.image}</a>
         </li>
         <li>
-          <a href={`${localePath(locale, '/models')}?modality=video`}
-            >{t.models.modalities.video}</a
-          >
+          <a href={PRICING_URL}>{t.models.modalities.video}</a>
         </li>
         <li>
-          <a href={`${localePath(locale, '/models')}?modality=audio`}
-            >{t.models.modalities.audio}</a
-          >
+          <a href={PRICING_URL}>{t.models.modalities.audio}</a>
         </li>
       </ul>
     </div>
@@ -139,7 +132,6 @@ const featuredTitle = t.featured.title(total).split('\n');
               <p class="modelcard__id mono">{m.model_name}</p>
               <p class="modelcard__blurb">{m.blurb}</p>
             </div>
-            <p class="modelcard__price mono">{priceLabel(m, locale)}</p>
           </li>
         ))
       }
@@ -255,7 +247,7 @@ const featuredTitle = t.featured.title(total).split('\n');
 
   /* ── fact strip: aggregate catalog facts below the grid ───────────────── */
   .featured__facts {
-    grid-column: 1 / -1;
+    grid-column: 2;
     margin-top: clamp(28px, 4vw, 44px);
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -457,17 +449,6 @@ const featuredTitle = t.featured.title(total).split('\n');
     color: var(--color-ink-secondary);
   }
 
-  .modelcard__price {
-    font-size: 11px;
-    letter-spacing: -0.005em;
-    border-top: 1px solid currentColor;
-    padding-top: 14px;
-    margin-top: auto;
-    color: var(--color-ink-mute);
-    position: relative;
-    z-index: 2;
-  }
-
   /* ── responsive ───────────────────────────────────────────────────────── */
   @media (max-width: 1280px) {
     .featured__inner {
@@ -477,6 +458,9 @@ const featuredTitle = t.featured.title(total).split('\n');
     .featured__lede {
       position: static;
       max-width: 540px;
+    }
+    .featured__facts {
+      grid-column: 1 / -1;
     }
     .featured__grid {
       grid-template-columns: repeat(6, minmax(0, 1fr));
