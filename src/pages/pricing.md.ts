@@ -2,15 +2,19 @@
  * /pricing.md — 机器可读定价表（构建期生成，非 public 静态文件）。
  *
  * 给 AI 代理 / 比价引擎一份无需渲染 JS、无登录墙的纯 Markdown 价格快照。按厂商分组，
- * 每个模型一行：输入价 / 输出价（/1M tokens 或 /次）、计费方式、上下文窗口、详情页链接。
- * 全部数据走 `priceBreakdown()` / `modelsWithSlug()` / `metaOf()` 单一真值源，与模型详情页
- * 表格同源，模型增删 / 调价自动同步。语言为英文（AI 系统惯例），model id / 价格语言中立。
+ * 每个模型一行：输入价 / 输出价（/1M tokens 或 /次）、计费方式、上下文窗口、模型目录链接。
+ * 全部数据走 `priceBreakdown()` / `loadModels()` / `metaOf()` 单一真值源，与模型列表页
+ * 同源，模型增删 / 调价自动同步。语言为英文（AI 系统惯例），model id / 价格语言中立。
  *
  * `trailingSlash: never`；URL = /pricing.md。从页脚链接可达。
  */
 import type { APIRoute } from 'astro';
-import { modelsWithSlug } from '../data/model-slug.ts';
-import { usedVendors, priceBreakdown, fmtUsd } from '../data/pricing.ts';
+import {
+  loadModels,
+  usedVendors,
+  priceBreakdown,
+  fmtUsd,
+} from '../data/pricing.ts';
 import { metaOf } from '../data/model-meta.ts';
 
 function contextLabel(name: string): string {
@@ -24,7 +28,7 @@ export const GET: APIRoute = ({ site }) => {
     throw new Error('astro.config.mjs 缺少 `site`，无法生成绝对链接');
   }
   const abs = (path: string) => new URL(path, site).toString();
-  const models = modelsWithSlug();
+  const models = loadModels();
   const vendors = usedVendors();
   const updated = new Date().toISOString().slice(0, 10);
 
@@ -56,7 +60,7 @@ export const GET: APIRoute = ({ site }) => {
     const notes: string[] = [];
     for (const m of group) {
       const p = priceBreakdown(m);
-      const detail = abs(`/models/${m.slug}`);
+      const detail = abs('/models');
       const ctx = contextLabel(m.model_name);
 
       if (p.kind === 'call') {

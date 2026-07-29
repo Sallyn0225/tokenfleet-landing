@@ -19,6 +19,7 @@
  */
 
 import raw from '../../pricing-api.json';
+import { type Locale } from '../i18n.ts';
 
 /** USD per 1M tokens when ratio = 1. */
 export const BASE_USD_PER_MTOK = 2;
@@ -63,6 +64,8 @@ export type Modality = 'chat' | 'image' | 'video' | 'audio';
 export interface Model extends RawModel {
   vendor: Vendor;
   modality: Modality;
+  /** catalog list filter axis: language / multimodal / video. */
+  modelType: ModelType;
   /** kebab-case slug for the brand icon, e.g. 'openai-color'. */
   iconSlug: string;
   /** absolute icon URL (LobeHub CDN). */
@@ -167,6 +170,49 @@ export function modalityLabel(
       return locale === 'en' ? 'Video' : '视频';
     case 'audio':
       return locale === 'en' ? 'Audio' : '音频';
+  }
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// Model type axis (catalog list filter): language / multimodal / video
+// ──────────────────────────────────────────────────────────────────────────
+
+/**
+ * Coarse model-type axis for the /models catalog list filter. Distinct from
+ * `modalityOf` (kept for llms.txt): this is a single mutually-exclusive axis
+ * with no empty buckets across the 15-model snapshot, and uses explicit
+ * overrides so `glm-5v-turbo` (text+image input) is not misfiled as language.
+ *
+ * Default `language` covers the 11 text LLMs; `multimodal` covers vision-input
+ * models; `video` covers the 3 Doubao Seedance generation models.
+ */
+export type ModelType = 'language' | 'multimodal' | 'video';
+
+const TYPE_OVERRIDES: Record<string, ModelType> = {
+  'glm-5v-turbo': 'multimodal',
+  'doubao-seedance-2-0-260128': 'video',
+  'doubao-seedance-2-0-fast-260128': 'video',
+  'doubao-seedance-2-0-mini-260615': 'video',
+};
+
+export function modelTypeOf(m: RawModel): ModelType {
+  return TYPE_OVERRIDES[m.model_name] ?? 'language';
+}
+
+/** URL/data slug for a model type — identical to the literal value. */
+export function modelTypeSlug(t: ModelType): string {
+  return t;
+}
+
+/** Data-layer label (parity with `modalityLabel`). UI prefers `t.models.types`. */
+export function modelTypeLabel(t: ModelType, locale: Locale = 'zh'): string {
+  switch (t) {
+    case 'language':
+      return locale === 'en' ? 'Language' : '语言';
+    case 'multimodal':
+      return locale === 'en' ? 'Multimodal' : '多模态';
+    case 'video':
+      return locale === 'en' ? 'Video' : '视频';
   }
 }
 
@@ -304,6 +350,7 @@ const models: Model[] = (raw.data as RawModel[]).map((m) => {
     ...m,
     vendor,
     modality: modalityOf(m),
+    modelType: modelTypeOf(m),
     iconSlug: slug,
     iconUrl: iconUrlOf(slug),
     iconMonoUrl: iconMonoUrlOf(slug),
