@@ -3,13 +3,13 @@
  *
  * 给 ChatGPT / Claude / Perplexity 等一份站点速览：产品一句话定义 + 摘要 + 关键页面链接
  * + 全量模型清单。语言为英文（AI 系统惯例）；站点双语，链接同时给出 zh canonical 与
- * /en 版本。模型清单走 `modelsWithSlug()`，增删自动同步。
+ * /en 版本。模型清单走 `loadModels()`，增删自动同步。
  *
  * `trailingSlash: never`；URL = /llms.txt。
  */
 import type { APIRoute } from 'astro';
-import { modelsWithSlug } from '../data/model-slug.ts';
 import {
+  loadModels,
   usedVendors,
   vendorDisplayName,
   modalityLabel,
@@ -21,7 +21,7 @@ export const GET: APIRoute = ({ site }) => {
     throw new Error('astro.config.mjs 缺少 `site`，无法生成绝对链接');
   }
   const abs = (path: string) => new URL(path, site).toString();
-  const models = modelsWithSlug();
+  const models = loadModels();
   const vendors = usedVendors();
   const vendorList = vendors.map((v) => vendorDisplayName(v, 'en')).join(', ');
 
@@ -56,9 +56,7 @@ export const GET: APIRoute = ({ site }) => {
   for (const m of models) {
     const vendor = vendorDisplayName(m.vendor, 'en');
     const modality = modalityLabel(m.modality, 'en');
-    lines.push(
-      `- ${m.model_name} (${vendor}, ${modality}): ${abs(`/models/${m.slug}`)}`
-    );
+    lines.push(`- ${m.model_name} (${vendor}, ${modality}): ${abs('/models')}`);
   }
 
   lines.push('');

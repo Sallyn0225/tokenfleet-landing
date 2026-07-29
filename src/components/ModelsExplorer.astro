@@ -1,23 +1,24 @@
 ---
 /**
- * ModelsExplorer.astro — toolbar + crawlable cards grid.
+ * ModelsExplorer.astro — toolbar + crawlable models list (hairline rows).
  *
- * Interactivity is vanilla JS in a single <script>:
- *   - filter:  toggle [hidden] on cards based on vendor/modality/search
- *   - sort:    set card.style.order numeric key (input/output price ascending
- *              maps to its own value; descending = negated; default = source)
- *   - URL sync: state ↔ URLSearchParams (?vendor=&modality=&sort=&q=)
- *               so /models?modality=image links from elsewhere land in the
- *               filtered state.
+ * Catalog-list semantics: a single column of hairline-separated rows
+ * (`ModelRow.astro`), not a card grid. Interactivity is vanilla JS in one
+ * `<script>`:
+ *   - filter:  toggle [hidden] on rows based on vendor/type/search
+ *   - sort:    set row.style.order (default = source index; name A–Z =
+ *              data-name-order; name Z–A = total − data-name-order)
+ *   - URL sync: state ↔ URLSearchParams (?vendor=&type=&sort=&q=) so deep
+ *              links like /models?type=multimodal land in the filtered state.
  */
-import ModelCard from './ModelCard.astro';
+import ModelRow from './ModelRow.astro';
 import {
   usedVendors,
   vendorSlug,
   vendorDisplayName,
   totalModelCount,
+  loadModels,
 } from '../data/pricing.ts';
-import { modelsWithSlug } from '../data/model-slug.ts';
 import { i18n, type Locale } from '../i18n.ts';
 
 interface Props {
@@ -26,16 +27,23 @@ interface Props {
 
 const { locale = 'zh' } = Astro.props as Props;
 const t = i18n[locale];
-const models = modelsWithSlug();
+const models = loadModels();
 const vendors = usedVendors();
 const total = totalModelCount();
 
-const modalities = [
+// Precompute A–Z rank (0 = first alphabetically) for name sorting.
+const nameRank = new Map<string, number>();
+[...models]
+  .sort((a, b) =>
+    a.model_name.toLowerCase().localeCompare(b.model_name.toLowerCase())
+  )
+  .forEach((m, i) => nameRank.set(m.model_name, i));
+
+const types = [
   { slug: 'all', label: t.models.all },
-  { slug: 'chat', label: t.models.modalities.chat },
-  { slug: 'image', label: t.models.modalities.image },
-  { slug: 'video', label: t.models.modalities.video },
-  { slug: 'audio', label: t.models.modalities.audio },
+  { slug: 'language', label: t.models.types.language },
+  { slug: 'multimodal', label: t.models.types.multimodal },
+  { slug: 'video', label: t.models.types.video },
 ];
 ---
 
@@ -64,18 +72,18 @@ const modalities = [
       </div>
 
       <div
-        class="explorer__chips explorer__chips--modality"
+        class="explorer__chips explorer__chips--type"
         role="group"
-        aria-label={t.models.modalityAria}
+        aria-label={t.models.typeAria}
       >
         {
-          modalities.map((m) => (
+          types.map((tp) => (
             <button
               type="button"
-              class={`chip chip--modality${m.slug === 'all' ? ' is-active' : ''}`}
-              data-modality={m.slug}
+              class={`chip chip--type${tp.slug === 'all' ? ' is-active' : ''}`}
+              data-type={tp.slug}
             >
-              {m.label}
+              {tp.label}
             </button>
           ))
         }
@@ -115,10 +123,8 @@ const modalities = [
           <span class="sr-only">{t.models.sortLabel}</span>
           <select data-sort>
             <option value="default">{t.models.sortDefault}</option>
-            <option value="input_asc">{t.models.sortInputAsc}</option>
-            <option value="input_desc">{t.models.sortInputDesc}</option>
-            <option value="output_asc">{t.models.sortOutputAsc}</option>
-            <option value="output_desc">{t.models.sortOutputDesc}</option>
+            <option value="name_asc">{t.models.sortNameAsc}</option>
+            <option value="name_desc">{t.models.sortNameDesc}</option>
           </select>
         </label>
       </div>
@@ -128,13 +134,36 @@ const modalities = [
       </p>
     </div>
 
-    <ol class="explorer__grid" data-grid>
-      {models.map((m) => <ModelCard model={m} locale={locale} />)}
-      <li class="explorer__empty" data-empty hidden>
-        <p class="mono">{t.models.empty}</p>
-        <button type="button" class="link" data-reset>{t.models.reset}</button>
-      </li>
-    </ol>
+    <div class="models-table" data-grid>
+      <div class="models-table__head" aria-hidden="true">
+        <span class="models-table__th">{t.models.columns.name}</span>
+        <span class="models-table__th">{t.models.columns.id}</span>
+        <span class="models-table__th">{t.models.columns.type}</span>
+        <span class="models-table__th models-table__th--num"
+          >{t.models.columns.tpm}</span
+        >
+        <span class="models-table__th models-table__th--num"
+          >{t.models.columns.rpm}</span
+        >
+      </div>
+
+      <ol class="models-table__body">
+        {
+          models.map((m) => (
+            <ModelRow
+              model={m}
+              locale={locale}
+              nameOrder={nameRank.get(m.model_name) ?? 0}
+            />
+          ))
+        }
+        <li class="models-table__empty" data-empty hidden>
+          <p class="mono">{t.models.empty}</p>
+          <button type="button" class="link" data-reset>{t.models.reset}</button
+          >
+        </li>
+      </ol>
+    </div>
   </div>
 </section>
 
@@ -154,8 +183,8 @@ const modalities = [
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-areas:
-      'vendor   controls'
-      'modality counter';
+      'vendor controls'
+      'type    counter';
     gap: 16px 24px;
     align-items: center;
     padding-bottom: 18px;
@@ -168,8 +197,8 @@ const modalities = [
     flex-wrap: wrap;
     gap: 6px;
   }
-  .explorer__chips--modality {
-    grid-area: modality;
+  .explorer__chips--type {
+    grid-area: type;
   }
 
   .chip {
@@ -205,7 +234,7 @@ const modalities = [
   .chip.is-active .chip__count {
     color: var(--color-on-dark-mute);
   }
-  .chip--modality {
+  .chip--type {
     font-size: 11px;
     padding: 5px 10px;
   }
@@ -267,14 +296,46 @@ const modalities = [
     justify-self: end;
   }
 
-  .explorer__grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 14px;
+  /* ── models table ────────────────────────────────────────────────────── */
+  /* CSS vars are inherited by ModelRow's <li> so head and rows share the
+     same column tracks, cell padding, and gap → columns stay aligned. */
+  .models-table {
+    --models-grid-cols: 1.4fr 1.4fr 0.8fr auto auto;
+    --models-cell-px: 16px;
+    --models-gap: 16px;
+    display: flex;
+    flex-direction: column;
   }
 
-  .explorer__empty {
-    grid-column: 1 / -1;
+  .models-table__head {
+    display: grid;
+    grid-template-columns: var(--models-grid-cols);
+    column-gap: var(--models-gap);
+    padding: 12px var(--models-cell-px);
+    border-bottom: 1px solid var(--color-hairline-strong);
+  }
+
+  .models-table__th {
+    text-transform: uppercase;
+    letter-spacing: var(--type-eyebrow-track);
+    font-size: var(--type-micro-size);
+    color: var(--color-ink-mute);
+    min-width: 0;
+  }
+  .models-table__th--num {
+    text-align: right;
+    justify-self: end;
+  }
+
+  .models-table__body {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .models-table__empty {
     text-align: center;
     padding: 64px 0;
     color: var(--color-ink-mute);
@@ -283,8 +344,14 @@ const modalities = [
     align-items: center;
     gap: 12px;
   }
-  .explorer__empty[hidden] {
+  .models-table__empty[hidden] {
     display: none;
+  }
+
+  @media (max-width: 768px) {
+    .models-table__head {
+      display: none;
+    }
   }
 
   @media (max-width: 880px) {
@@ -292,7 +359,7 @@ const modalities = [
       grid-template-columns: 1fr;
       grid-template-areas:
         'vendor'
-        'modality'
+        'type'
         'controls'
         'counter';
     }
@@ -307,25 +374,14 @@ const modalities = [
       justify-self: start;
     }
   }
-
-  @media (max-width: 520px) {
-    .explorer__grid {
-      grid-template-columns: 1fr;
-    }
-  }
 </style>
 
 <script>
-  type SortKey =
-    | 'default'
-    | 'input_asc'
-    | 'input_desc'
-    | 'output_asc'
-    | 'output_desc';
+  type SortKey = 'default' | 'name_asc' | 'name_desc';
 
   interface State {
     vendor: string;
-    modality: string;
+    type: string;
     sort: SortKey;
     q: string;
   }
@@ -335,37 +391,32 @@ const modalities = [
   if (!toolbar || !grid) {
     // ModelsExplorer not mounted — bail.
   } else {
-    const cards = Array.from(grid.querySelectorAll<HTMLElement>('.modelcard'));
+    const rows = Array.from(grid.querySelectorAll<HTMLElement>('.modelrow'));
     const empty = grid.querySelector<HTMLElement>('[data-empty]');
+    const total = rows.length;
     const searchInput =
       document.querySelector<HTMLInputElement>('[data-search]');
     const sortSelect = document.querySelector<HTMLSelectElement>('[data-sort]');
     const vendorChips = Array.from(
       document.querySelectorAll<HTMLButtonElement>('.chip[data-vendor]')
     );
-    const modalityChips = Array.from(
-      document.querySelectorAll<HTMLButtonElement>('.chip[data-modality]')
+    const typeChips = Array.from(
+      document.querySelectorAll<HTMLButtonElement>('.chip[data-type]')
     );
     const resetBtn = document.querySelector<HTMLElement>('[data-reset]');
 
     const initialOrder = new Map<HTMLElement, number>();
-    cards.forEach((c, i) => initialOrder.set(c, i));
+    rows.forEach((r, i) => initialOrder.set(r, i));
 
     const state: State = readUrlState();
 
     function readUrlState(): State {
       const p = new URLSearchParams(window.location.search);
       const sort = p.get('sort') as SortKey | null;
-      const validSorts: SortKey[] = [
-        'default',
-        'input_asc',
-        'input_desc',
-        'output_asc',
-        'output_desc',
-      ];
+      const validSorts: SortKey[] = ['default', 'name_asc', 'name_desc'];
       return {
         vendor: p.get('vendor') || 'all',
-        modality: p.get('modality') || 'all',
+        type: p.get('type') || 'all',
         sort: sort && validSorts.includes(sort) ? sort : 'default',
         q: p.get('q') || '',
       };
@@ -374,7 +425,7 @@ const modalities = [
     function writeUrlState() {
       const p = new URLSearchParams();
       if (state.vendor !== 'all') p.set('vendor', state.vendor);
-      if (state.modality !== 'all') p.set('modality', state.modality);
+      if (state.type !== 'all') p.set('type', state.type);
       if (state.sort !== 'default') p.set('sort', state.sort);
       if (state.q) p.set('q', state.q);
       const qs = p.toString();
@@ -384,7 +435,7 @@ const modalities = [
 
     function applyChipActive(
       chips: HTMLButtonElement[],
-      attr: 'vendor' | 'modality',
+      attr: 'vendor' | 'type',
       value: string
     ) {
       chips.forEach((c) => {
@@ -396,7 +447,7 @@ const modalities = [
     function render() {
       // Sync UI controls with state.
       applyChipActive(vendorChips, 'vendor', state.vendor);
-      applyChipActive(modalityChips, 'modality', state.modality);
+      applyChipActive(typeChips, 'type', state.type);
       if (sortSelect && sortSelect.value !== state.sort)
         sortSelect.value = state.sort;
       if (searchInput && searchInput.value !== state.q)
@@ -405,38 +456,25 @@ const modalities = [
       const q = state.q.trim().toLowerCase();
       let shown = 0;
 
-      cards.forEach((card) => {
-        const v = card.dataset.vendor || '';
-        const m = card.dataset.modality || '';
-        const name = card.dataset.name || '';
+      rows.forEach((row) => {
+        const v = row.dataset.vendor || '';
+        const tp = row.dataset.type || '';
+        const name = row.dataset.name || '';
         const visible =
           (state.vendor === 'all' || v === state.vendor) &&
-          (state.modality === 'all' || m === state.modality) &&
+          (state.type === 'all' || tp === state.type) &&
           (q === '' || name.includes(q));
-        card.hidden = !visible;
+        row.hidden = !visible;
         if (visible) shown++;
 
         // sort key
-        let order = initialOrder.get(card) ?? 0;
-        if (state.sort === 'input_asc' || state.sort === 'output_asc') {
-          const p = parseFloat(
-            state.sort === 'input_asc'
-              ? card.dataset.inputPrice || '0'
-              : card.dataset.outputPrice || '0'
-          );
-          order = Math.round(p * 1000);
-        } else if (
-          state.sort === 'input_desc' ||
-          state.sort === 'output_desc'
-        ) {
-          const p = parseFloat(
-            state.sort === 'input_desc'
-              ? card.dataset.inputPrice || '0'
-              : card.dataset.outputPrice || '0'
-          );
-          order = 1_000_000_000 - Math.round(p * 1000);
+        let order = initialOrder.get(row) ?? 0;
+        if (state.sort === 'name_asc') {
+          order = Number(row.dataset.nameOrder ?? 0);
+        } else if (state.sort === 'name_desc') {
+          order = total - Number(row.dataset.nameOrder ?? 0);
         }
-        card.style.order = String(order);
+        row.style.order = String(order);
       });
 
       const counter = document.querySelector<HTMLElement>('[data-counter]');
@@ -454,9 +492,9 @@ const modalities = [
       });
     });
 
-    modalityChips.forEach((c) => {
+    typeChips.forEach((c) => {
       c.addEventListener('click', () => {
-        state.modality = c.dataset.modality || 'all';
+        state.type = c.dataset.type || 'all';
         writeUrlState();
         render();
       });
@@ -480,7 +518,7 @@ const modalities = [
 
     resetBtn?.addEventListener('click', () => {
       state.vendor = 'all';
-      state.modality = 'all';
+      state.type = 'all';
       state.sort = 'default';
       state.q = '';
       writeUrlState();

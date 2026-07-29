@@ -34,3 +34,9 @@ skills-lock.json
 
 # jetbrains setting folder
 .idea/
+
+# pi agent harness (local)
+.pi/
+
+# spurious gitattributes (Trellis-managed, not tracked here)
+.gitattributes
