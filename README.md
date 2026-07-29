@@ -18,21 +18,23 @@
 
 > [!NOTE]
 > This repository contains the static marketing site and model catalog pages. It does not contain the TokenFleet API service or console application.
+> This is the **overseas branch** (`sallyn/default-en-and-ai-pricing`): English is the default locale and the catalog is sourced from `tokenfleet.ai`. It is kept separate from `main` and is not merged back by default.
 
 ## Overview
 
-TokenFleet Landing presents a Chinese-first product narrative for **TokenFleet**: one API key, OpenAI-compatible integration, unified billing, invoices, and a searchable model catalog across LLM, image, and video models.
+TokenFleet Landing presents an English-first product narrative for **TokenFleet**: one API key, OpenAI-compatible integration, unified billing, invoices, and a searchable model catalog across LLM, image, and video models — with parallel Chinese, Japanese, and Korean locales.
 
-| Area                | Details                                                 |
-| ------------------- | ------------------------------------------------------- |
-| Framework           | Astro 6 static site                                     |
-| Interactive islands | React 19, OGL WebGL hero, animated logo loop            |
-| Languages           | Chinese (default at `/`) and English (at `/en`)         |
-| Main routes         | `/`, `/models`, `/en`, `/en/models`                     |
-| Catalog source      | Root `pricing-api.json` snapshot                        |
-| Current catalog     | 12 models, 10 vendors registered (4 with active models) |
-| Quality gates       | ESLint, Prettier, `astro check`, GitHub Actions CI      |
-| Build output        | Static files in `dist/`                                 |
+| Area                | Details                                                                        |
+| ------------------- | ------------------------------------------------------------------------------ |
+| Framework           | Astro 6 static site                                                            |
+| Interactive islands | React 19, OGL WebGL hero, animated logo loop                                   |
+| Languages           | English (default at `/`), Chinese at `/zh`, Japanese at `/ja`, Korean at `/ko` |
+| Main routes         | `/`, `/models`, `/zh`, `/zh/models`, `/ja`, `/ja/models`, `/ko`, `/ko/models`  |
+| Legacy redirects    | `/en` → `/`, `/en/models` → `/models` (back-compat for old English links)      |
+| Catalog source      | Root `pricing-api.json` snapshot mirroring `https://tokenfleet.ai/api/pricing` |
+| Current catalog     | 36 models across 6 active vendors; endpoints: OpenAI / Anthropic / Gemini      |
+| Quality gates       | ESLint, Prettier, `astro check`, GitHub Actions CI                             |
+| Build output        | Static files in `dist/`                                                        |
 
 ## Contents
 
@@ -43,18 +45,18 @@ TokenFleet Landing presents a Chinese-first product narrative for **TokenFleet**
 - [Routes](#routes)
 - [Project Structure](#project-structure)
 - [Key Files](#key-files)
-- [Updating Model Pricing](#updating-model-pricing)
+- [Updating the Model Catalog](#updating-the-model-catalog)
 - [Deployment Notes](#deployment-notes)
 - [Continuous Integration](#continuous-integration)
 
 ## Highlights
 
-- **Chinese-first landing page** for CTOs, engineers, enterprise finance, and procurement readers, with a parallel **English locale** under `/en` driven by a single dictionary in `src/i18n.ts`.
+- **English-first landing page** for CTOs, engineers, enterprise finance, and procurement readers, with parallel **Chinese (`/zh`)**, **Japanese (`/ja`)**, and **Korean (`/ko`)** locales driven by a single dictionary in `src/i18n.ts`.
 - **Animated WebGL hero backdrop** built with OGL, with reduced-motion, visibility pause, and no-WebGL fallback handling.
 - **Local AI brand logo strip** with a horizontally looping vendor showcase.
 - **OpenAI SDK compatibility narrative** with copyable `curl`, Python, and Node examples.
-- **Static model catalog** at `/models`, currently built from `pricing-api.json` with **12 models** and **10 vendors** (4 with active models), and OpenAI / Anthropic / Gemini endpoint metadata.
-- **Catalog interactions** for vendor filters, modality filters, search, price sorting, URL-synced state, deep-linked model dialogs, and copyable model IDs.
+- **Static model catalog** at `/models`, currently built from `pricing-api.json` with **36 models** across **6 vendors** (all active), and OpenAI / Anthropic / Gemini endpoint metadata.
+- **Catalog interactions** for vendor filters, model-type filters, search, name sorting, URL-synced state, and copyable model IDs.
 - **Enterprise positioning** around unified billing, VAT invoices, VPC/private deployment, SLA conversations, and GPU rental coming soon.
 - **Accessibility-minded UI** with a skip link, keyboard-friendly code tabs, visible focus states, responsive layouts, and reduced-motion handling.
 
@@ -119,61 +121,74 @@ npm run preview
 
 ## Routes
 
-| Route        | Purpose                                                                                      |
-| ------------ | -------------------------------------------------------------------------------------------- |
-| `/`          | Chinese landing page with hero, featured models, billing, business, and enterprise sections. |
-| `/models`    | Chinese searchable static catalog for all models in the pricing snapshot.                    |
-| `/en`        | English landing page sharing the same sections, driven by `locale = 'en'`.                   |
-| `/en/models` | English static catalog mirroring `/models`.                                                  |
+| Route        | Purpose                                                                             |
+| ------------ | ----------------------------------------------------------------------------------- |
+| `/`          | English landing page (default locale) with hero, featured models, and sections.     |
+| `/models`    | English searchable static catalog for all models in the pricing snapshot.           |
+| `/zh`        | Chinese landing page sharing the same sections, driven by `locale = 'zh'`.          |
+| `/zh/models` | Chinese static catalog mirroring `/models`.                                         |
+| `/ja`        | Japanese landing page, `locale = 'ja'`.                                             |
+| `/ja/models` | Japanese static catalog.                                                            |
+| `/ko`        | Korean landing page, `locale = 'ko'`.                                               |
+| `/ko/models` | Korean static catalog.                                                              |
+| `/en`        | Redirects to `/` (back-compat for old English-first links; see `astro.config.mjs`). |
+| `/en/models` | Redirects to `/models`.                                                             |
 
 ## Project Structure
 
 ```text
-docs/                  Product and design planning notes
+docs/                  Product, design, and maintenance notes
 public/                Static images, favicons, OG assets, brand marks
 public/ai-brand-logo/  Local LobeHub vendor SVG snapshots
 public/images/         Marketing imagery used across sections
 src/assets/            Bundled assets (e.g. QR codes) imported by components
 src/components/        Page sections and reusable Astro components
 src/components/react/  Hydrated React islands for the hero backdrop and logo loop
-src/data/              pricing.ts (catalog + price math) and model-meta.ts (context windows)
-src/i18n.ts            Locale type, path helper, and the zh / en dictionary
+src/data/              pricing.ts (catalog + price math) and model-limits.ts (TPM/RPM)
+src/i18n.ts            Locale type, path helper, and the en / zh / ja / ko dictionary
 src/layouts/           Shared HTML shell and metadata
-src/pages/             Astro routes for the Chinese site (`/`, `/models`)
-src/pages/en/          Astro routes for the English site (`/en`, `/en/models`)
+src/pages/             Astro routes for the English site (`/`, `/models`)
+src/pages/zh/          Astro routes for the Chinese site (`/zh`, `/zh/models`)
+src/pages/ja/          Astro routes for the Japanese site (`/ja`, `/ja/models`)
+src/pages/ko/          Astro routes for the Korean site (`/ko`, `/ko/models`)
 src/styles/            Global styles, design tokens, and button styles
 ```
 
 ## Key Files
 
-| File                                              | Purpose                                                                                                     |
-| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `src/pages/index.astro`                           | Composes the Chinese landing page (`locale = 'zh'`).                                                        |
-| `src/pages/en/index.astro`                        | Composes the English landing page (`locale = 'en'`); both pages share every section component.              |
-| `src/pages/models.astro`                          | Renders the Chinese model catalog page.                                                                     |
-| `src/pages/en/models.astro`                       | Renders the English model catalog page.                                                                     |
-| `src/i18n.ts`                                     | Defines locales, `localePath`, and the full `zh` / `en` UI dictionary consumed by every component.          |
-| `src/components/HeroBackdrop.astro`               | Hosts the static fallback and hydrated WebGL terminal backdrop.                                             |
-| `src/components/react/FaultyTerminalIsland.jsx`   | Wraps the OGL terminal effect with WebGL, reduced-motion, and visibility guards.                            |
-| `src/components/BrandStrip.astro`                 | Renders the animated AI vendor logo strip with `BrandLogoLoop.jsx`.                                         |
-| `src/data/pricing.ts`                             | Imports `pricing-api.json`, maps vendors, formats prices, detects modality, and exposes the static catalog. |
-| `src/data/model-meta.ts`                          | Curated context window / max output / docs link per model id (sourced from vendor docs).                    |
-| `src/components/ModelsExplorer.astro`             | Implements filtering, sorting, search, URL state, and model dialog wiring.                                  |
-| `src/components/ModelDialog.astro`                | Pre-renders model detail HTML for the shared `<dialog>`.                                                    |
-| `src/components/SalesQrLightbox.astro`            | Shared WeChat sales QR modal reused by footer and enterprise CTAs.                                          |
-| `src/layouts/Base.astro`                          | Defines metadata, favicons, canonical links, global CSS imports, skip link, and reveal behavior.            |
-| `PRODUCT.md`, `DESIGN.md`, `docs/design-brief.md` | Document product and design decisions behind the page (see `docs/prd.md` for the full PRD).                 |
+| File                                              | Purpose                                                                                                               |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `src/pages/index.astro`                           | Composes the English landing page (`locale = 'en'`, default).                                                         |
+| `src/pages/zh/index.astro`                        | Composes the Chinese landing page (`locale = 'zh'`); `ja` / `ko` pages mirror it. All pages share section components. |
+| `src/pages/models.astro`                          | Renders the English model catalog page.                                                                               |
+| `src/pages/zh/models.astro`                       | Renders the Chinese model catalog page; `ja/models.astro` / `ko/models.astro` mirror it.                              |
+| `src/i18n.ts`                                     | Defines locales, `localePath`, and the full `en` / `zh` / `ja` / `ko` UI dictionary consumed by every component.      |
+| `src/components/HeroBackdrop.astro`               | Hosts the static fallback and hydrated WebGL terminal backdrop.                                                       |
+| `src/components/react/FaultyTerminalIsland.jsx`   | Wraps the OGL terminal effect with WebGL, reduced-motion, and visibility guards.                                      |
+| `src/components/BrandStrip.astro`                 | Renders the animated AI vendor logo strip with `BrandLogoLoop.jsx`.                                                   |
+| `src/data/pricing.ts`                             | Imports `pricing-api.json`, maps vendors, formats prices, detects modality, and exposes the static catalog.           |
+| `src/data/model-limits.ts`                        | Manually curated TPM / RPM rate limits per model (consumed by `ModelRow.astro`).                                      |
+| `src/components/ModelsPage.astro`                 | Shared Chinese / English model catalog page shell (hero + explorer).                                                  |
+| `src/components/ModelsExplorer.astro`             | Crawlable catalog list toolbar plus vanilla JS vendor / type filters, search, name sorting, and URL state.            |
+| `src/components/ModelRow.astro`                   | One model row in the catalog list (name, ID, type, TPM, RPM).                                                         |
+| `src/components/FeaturedModels.astro`             | Homepage featured-models gallery driven by a hardcoded `featuredModelIds` list.                                       |
+| `src/components/SalesQrLightbox.astro`            | Shared sales QR modal reused by footer and enterprise CTAs.                                                           |
+| `src/layouts/Base.astro`                          | Defines metadata, favicons, canonical links, global CSS imports, skip link, and reveal behavior.                      |
+| `docs/model-catalog-maintenance.md`               | Maintainer guide for the model catalog: the six maintenance points and standard operating procedures.                 |
+| `PRODUCT.md`, `DESIGN.md`, `docs/design-brief.md` | Document product and design decisions behind the page.                                                                |
 
-## Updating Model Pricing
+## Updating the Model Catalog
 
-The model catalog is generated at build time from the root `pricing-api.json` snapshot, which is expected to mirror `https://tokenfleet.ai/api/pricing`.
+The model catalog is generated at build time from the root `pricing-api.json` snapshot, which mirrors `https://tokenfleet.ai/api/pricing`. Pricing is read-only from that snapshot — never hand-edit prices in code.
+
+For the full maintainer workflow (adding, retiring, renaming, re-limiting, and re-pricing models), see **[docs/model-catalog-maintenance.md](docs/model-catalog-maintenance.md)**. It covers the six maintenance points (`pricing-api.json`, `pricing.ts` overrides, `model-limits.ts` TPM/RPM, four-language `featured.blurbs` in `i18n.ts`, `FeaturedModels.astro` featured ids, and `public/ai-brand-logo/` icons) and the common pitfalls.
+
+Quick summary:
 
 1. Refresh `pricing-api.json` from the API.
-2. Check that `src/data/pricing.ts` still maps any new vendors, modalities, endpoint types, and icon slugs correctly.
-3. Run `npm run build` to verify the static catalog.
-
-> [!TIP]
-> The catalog UI supports LLM, image, video, and audio modality filters. The current pricing snapshot contains LLM, image, and video models.
+2. Check that `src/data/pricing.ts` still maps any new vendors, model types, endpoint types, and icon slugs correctly.
+3. Populate TPM / RPM in `src/data/model-limits.ts` if known; leave `—` placeholders otherwise (never fabricate).
+4. Run `npm run build` to verify the static catalog across `/models`, `/zh/models`, `/ja/models`, `/ko/models`.
 
 ## Deployment Notes
 

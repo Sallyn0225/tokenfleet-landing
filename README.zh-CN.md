@@ -18,21 +18,23 @@
 
 > [!NOTE]
 > 这个仓库包含静态官网与模型目录页面，不包含 TokenFleet API 服务端或控制台应用。
+> 当前位于**海外专用分支**（`sallyn/default-en-and-ai-pricing`）：默认语言为英文，目录数据取自 `tokenfleet.ai`，与 `main` 分流维护，默认不并回 `main`。
 
 ## 项目概览
 
-TokenFleet Landing 是 **TokenFleet** 的公开站点。它以中文为主，面向工程团队与企业采购读者，传达“一把 API key、OpenAI 兼容接入、统一计费、统一开票，并覆盖 LLM、图像、视频模型目录”的产品定位。
+TokenFleet Landing 是 **TokenFleet** 的公开站点。本分支以英文为主，面向工程团队与企业采购读者，传达“一把 API key、OpenAI 兼容接入、统一计费、统一开票，并覆盖 LLM、图像、视频模型目录”的产品定位，并提供中文、日文、韩文三个平行语言版本。
 
-| 项目         | 说明                                            |
-| ------------ | ----------------------------------------------- |
-| 框架         | Astro 6 静态站点                                |
-| 交互 islands | React 19、OGL WebGL 首屏、动画 logo 循环        |
-| 多语言       | 中文（默认 `/`）与英文（`/en`）                 |
-| 主要路由     | `/`、`/models`、`/en`、`/en/models`             |
-| 目录数据源   | 根目录 `pricing-api.json` 快照                  |
-| 当前目录     | 12 个模型、10 家已收录厂商（其中 4 家已挂模型） |
-| 质量门禁     | ESLint、Prettier、`astro check`、GitHub Actions |
-| 构建产物     | 输出到 `dist/` 的静态文件                       |
+| 项目         | 说明                                                                          |
+| ------------ | ----------------------------------------------------------------------------- |
+| 框架         | Astro 6 静态站点                                                              |
+| 交互 islands | React 19、OGL WebGL 首屏、动画 logo 循环                                      |
+| 多语言       | 英文（默认 `/`）、中文 `/zh`、日文 `/ja`、韩文 `/ko`                          |
+| 主要路由     | `/`、`/models`、`/zh`、`/zh/models`、`/ja`、`/ja/models`、`/ko`、`/ko/models` |
+| 兼容重定向   | `/en` → `/`、`/en/models` → `/models`（兼容旧英文链接）                       |
+| 目录数据源   | 根目录 `pricing-api.json` 快照，镜像 `https://tokenfleet.ai/api/pricing`      |
+| 当前目录     | 36 个模型、6 家厂商（全部已挂模型）；endpoint：OpenAI / Anthropic / Gemini    |
+| 质量门禁     | ESLint、Prettier、`astro check`、GitHub Actions                               |
+| 构建产物     | 输出到 `dist/` 的静态文件                                                     |
 
 ## 目录
 
@@ -43,18 +45,18 @@ TokenFleet Landing 是 **TokenFleet** 的公开站点。它以中文为主，面
 - [页面路由](#页面路由)
 - [项目结构](#项目结构)
 - [关键文件](#关键文件)
-- [更新模型价格](#更新模型价格)
+- [更新模型目录](#更新模型目录)
 - [部署说明](#部署说明)
 - [持续集成](#持续集成)
 
 ## 亮点
 
-- **中文优先的产品叙事**，同时服务 CTO、工程师、企业财务与采购决策；并提供平行的**英文版本**位于 `/en`，由 `src/i18n.ts` 中的统一字典驱动。
+- **英文优先的产品叙事**，同时服务 CTO、工程师、企业财务与采购决策；并提供平行的**中文（`/zh`）**、**日文（`/ja`）**、**韩文（`/ko`）** 版本，由 `src/i18n.ts` 中的统一字典驱动。
 - **WebGL 动效首屏背景** 基于 OGL 实现，并包含 reduced-motion、离屏暂停与无 WebGL fallback 处理。
 - **本地 AI 品牌 logo 横向循环展示**，用于呈现已接入的主流模型厂商。
 - **OpenAI SDK 兼容性展示**，首屏提供可复制的 `curl`、Python、Node 示例。
-- **静态模型目录** 位于 `/models`，当前由 `pricing-api.json` 构建，覆盖 **12 个模型**、**10 家厂商**（其中 4 家已挂模型），并包含 OpenAI / Anthropic / Gemini endpoint 元数据。
-- **目录交互完整**，支持厂商筛选、形态筛选、搜索、按价格排序、URL 状态同步、模型详情弹窗与 model id 复制。
+- **静态模型目录** 位于 `/models`，当前由 `pricing-api.json` 构建，覆盖 **36 个模型**、**6 家厂商**（全部已挂模型），并包含 OpenAI / Anthropic / Gemini endpoint 元数据。
+- **目录交互完整**，支持厂商筛选、模型类型筛选、搜索、按名称排序、URL 状态同步与 model id 复制。
 - **企业能力表达**，覆盖统一计费、增值税发票、VPC/私有部署、SLA 沟通与 GPU 算力出租 Coming Soon。
 - **关注可访问性**，包含 skip link、键盘可用的代码 tab、可见焦点态、响应式布局与 reduced-motion 处理。
 
@@ -121,57 +123,72 @@ npm run preview
 
 | 路由         | 用途                                                           |
 | ------------ | -------------------------------------------------------------- |
-| `/`          | 中文落地页，包含首屏、精选模型、计费、商务与企业部署区块。     |
-| `/models`    | 基于价格快照构建的中文全量模型静态目录。                       |
-| `/en`        | 英文落地页，与中文页共用所有 section 组件（`locale = 'en'`）。 |
-| `/en/models` | 对应 `/models` 的英文版静态目录。                              |
+| `/`          | 英文落地页（默认语言），包含首屏、精选模型与各区块。           |
+| `/models`    | 基于价格快照构建的英文全量模型静态目录。                       |
+| `/zh`        | 中文落地页，与英文页共用所有 section 组件（`locale = 'zh'`）。 |
+| `/zh/models` | 对应 `/models` 的中文版静态目录。                              |
+| `/ja`        | 日文落地页（`locale = 'ja'`）。                                |
+| `/ja/models` | 日文版静态目录。                                               |
+| `/ko`        | 韩文落地页（`locale = 'ko'`）。                                |
+| `/ko/models` | 韩文版静态目录。                                               |
+| `/en`        | 重定向到 `/`（兼容旧的英文优先链接，见 `astro.config.mjs`）。  |
+| `/en/models` | 重定向到 `/models`。                                           |
 
 ## 项目结构
 
 ```text
-docs/                  产品与设计规划文档
+docs/                  产品、设计与维护文档
 public/                静态图片、favicon、Open Graph 资源与品牌标识
 public/ai-brand-logo/  LobeHub AI 厂商 SVG 本地快照
 public/images/         各 section 使用的营销插图
 src/assets/            被组件 import 的资源（如二维码）
 src/components/        页面区块与可复用 Astro 组件
 src/components/react/  Hydrated React islands，用于首屏背景与 logo 循环
-src/data/              pricing.ts（目录与价格计算）与 model-meta.ts（上下文窗口元信息）
-src/i18n.ts            语言类型、`localePath` 工具与中英文统一字典
+src/data/              pricing.ts（目录与价格计算）与 model-limits.ts（TPM/RPM 限速）
+src/i18n.ts            语言类型、`localePath` 工具与 en/zh/ja/ko 四语言统一字典
 src/layouts/           共享 HTML 外壳与元信息
-src/pages/             中文站点 Astro 路由（`/`、`/models`）
-src/pages/en/          英文站点 Astro 路由（`/en`、`/en/models`）
+src/pages/             英文站点 Astro 路由（`/`、`/models`）
+src/pages/zh/          中文站点 Astro 路由（`/zh`、`/zh/models`）
+src/pages/ja/          日文站点 Astro 路由（`/ja`、`/ja/models`）
+src/pages/ko/          韩文站点 Astro 路由（`/ko`、`/ko/models`）
 src/styles/            全局样式、设计 token、按钮样式
 ```
 
 ## 关键文件
 
-| 文件                                                  | 作用                                                                            |
-| ----------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `src/pages/index.astro`、`src/pages/en/index.astro`   | 分别组合中文与英文落地页，共用全部 section 组件。                               |
-| `src/pages/models.astro`、`src/pages/en/models.astro` | 渲染中文与英文模型目录页。                                                      |
-| `src/i18n.ts`                                         | 定义 locale、`localePath` 与中英文 UI 字典，供所有组件消费。                    |
-| `src/components/HeroBackdrop.astro`                   | 承载静态 fallback 与 hydrated WebGL 终端背景。                                  |
-| `src/components/react/FaultyTerminalIsland.jsx`       | 为 OGL 终端动效补充 WebGL、reduced-motion 与可见性保护。                        |
-| `src/components/BrandStrip.astro`                     | 与 `BrandLogoLoop.jsx` 一起渲染 AI 厂商 logo 横向循环展示。                     |
-| `src/data/pricing.ts`                                 | 导入 `pricing-api.json`，处理厂商映射、价格格式化、模型形态识别与静态目录导出。 |
-| `src/data/model-meta.ts`                              | 手工维护的模型上下文窗口、最大输出、文档链接（来自厂商官方文档）。              |
-| `src/components/ModelsExplorer.astro`                 | 实现筛选、排序、搜索、URL 状态和模型弹窗联动。                                  |
-| `src/components/ModelDialog.astro`                    | 为共享 `<dialog>` 预渲染模型详情 HTML。                                         |
-| `src/components/SalesQrLightbox.astro`                | 共享的微信销售二维码弹层，被 Footer 与 Enterprise 区块的 CTA 复用。             |
-| `src/layouts/Base.astro`                              | 定义 metadata、favicon、canonical、全局样式、skip link 与 reveal 行为。         |
-| `PRODUCT.md`、`DESIGN.md`、`docs/design-brief.md`     | 记录页面背后的产品与设计决策（完整 PRD 见 `docs/prd.md`）。                     |
+| 文件                                              | 作用                                                                             |
+| ------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `src/pages/index.astro`                           | 组合英文落地页（`locale = 'en'`，默认）。                                        |
+| `src/pages/zh/index.astro`                        | 组合中文落地页（`locale = 'zh'`）；`ja` / `ko` 页面同构，共用全部 section 组件。 |
+| `src/pages/models.astro`                          | 渲染英文模型目录页。                                                             |
+| `src/pages/zh/models.astro`                       | 渲染中文模型目录页；`ja/models.astro`、`ko/models.astro` 同构。                  |
+| `src/i18n.ts`                                     | 定义 locale、`localePath` 与 en/zh/ja/ko 四语言 UI 字典，供所有组件消费。        |
+| `src/components/HeroBackdrop.astro`               | 承载静态 fallback 与 hydrated WebGL 终端背景。                                   |
+| `src/components/react/FaultyTerminalIsland.jsx`   | 为 OGL 终端动效补充 WebGL、reduced-motion 与可见性保护。                         |
+| `src/components/BrandStrip.astro`                 | 与 `BrandLogoLoop.jsx` 一起渲染 AI 厂商 logo 横向循环展示。                      |
+| `src/data/pricing.ts`                             | 导入 `pricing-api.json`，处理厂商映射、价格格式化、模型形态识别与静态目录导出。  |
+| `src/data/model-limits.ts`                        | 手工维护的模型 TPM / RPM 限速（被 `ModelRow.astro` 消费）。                      |
+| `src/components/ModelsPage.astro`                 | 中英文共用的模型目录页外壳（hero + explorer）。                                  |
+| `src/components/ModelsExplorer.astro`             | 实现厂商/类型筛选、搜索、按名称排序、URL 状态同步的目录列表。                    |
+| `src/components/ModelRow.astro`                   | 目录列表中的一行模型（名称、ID、类型、TPM、RPM）。                               |
+| `src/components/FeaturedModels.astro`             | 首页精选模型卡片，由硬编码的 `featuredModelIds` 列表驱动。                       |
+| `src/components/SalesQrLightbox.astro`            | 共享的销售二维码弹层，被 Footer 与 Enterprise 区块的 CTA 复用。                  |
+| `src/layouts/Base.astro`                          | 定义 metadata、favicon、canonical、全局样式、skip link 与 reveal 行为。          |
+| `docs/model-catalog-maintenance.md`               | 模型目录维护者指南：六个维护点与标准操作流程。                                   |
+| `PRODUCT.md`、`DESIGN.md`、`docs/design-brief.md` | 记录页面背后的产品与设计决策。                                                   |
 
-## 更新模型价格
+## 更新模型目录
 
-模型目录在构建时读取仓库根目录的 `pricing-api.json` 快照；该文件预期与 `https://tokenfleet.ai/api/pricing` 保持一致。
+模型目录在构建时读取仓库根目录的 `pricing-api.json` 快照；该文件镜像 `https://tokenfleet.ai/api/pricing`。价格为只读，不要在代码里手改价格。
+
+完整的维护者流程（新增 / 下线 / 改名 / 调限速 / 调价）见 **[docs/model-catalog-maintenance.md](docs/model-catalog-maintenance.md)**。它覆盖六个维护点（`pricing-api.json`、`pricing.ts` 覆盖表、`model-limits.ts` 的 TPM/RPM、`i18n.ts` 四语言 `featured.blurbs`、`FeaturedModels.astro` 的精选 id、`public/ai-brand-logo/` 图标）与常见坑。
+
+简要步骤：
 
 1. 从 API 刷新 `pricing-api.json`。
-2. 检查 `src/data/pricing.ts` 是否仍正确处理新增厂商、模型形态、endpoint 类型与 icon slug。
-3. 运行 `npm run build` 验证静态目录。
-
-> [!TIP]
-> 目录 UI 支持 LLM、图像、视频、音频形态筛选；当前价格快照包含 LLM、图像、视频模型。
+2. 检查 `src/data/pricing.ts` 是否仍正确处理新增厂商、模型类型、endpoint 类型与 icon slug。
+3. 拿到官方限速后在 `src/data/model-limits.ts` 填 TPM / RPM；拿不到就留空显示 `—`（绝不臆造）。
+4. 运行 `npm run build` 验证 `/models`、`/zh/models`、`/ja/models`、`/ko/models` 的静态目录。
 
 ## 部署说明
 
