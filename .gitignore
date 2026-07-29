@@ -34,3 +34,9 @@ skills-lock.json
 
 # jetbrains setting folder
 .idea/
+
+# local tooling / package-manager config (kept out of the overseas branch)
+.gitattributes
+.pi/
+pnpm-lock.yaml
+pnpm-workspace.yaml
