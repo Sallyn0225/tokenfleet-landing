@@ -64,6 +64,10 @@ export type Modality = 'chat' | 'image' | 'video' | 'audio';
 export interface Model extends RawModel {
   vendor: Vendor;
   modality: Modality;
+  /** friendly display name shown to users; `model_name` stays the API ID. */
+  displayName: string;
+  /** catalog list filter axis: language / multimodal / video. */
+  modelType: ModelType;
   /** kebab-case slug for the brand icon, e.g. 'openai-color'. */
   iconSlug: string;
   /** absolute icon URL (LobeHub CDN). */
@@ -168,6 +172,100 @@ export function modalityLabel(mod: Modality, locale: Locale = 'zh'): string {
       if (locale === 'ja') return '音声';
       if (locale === 'ko') return '오디오';
       return locale === 'en' ? 'Audio' : '音频';
+  }
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// Display names
+// ──────────────────────────────────────────────────────────────────────────
+
+/**
+ * Friendly display names shown in the UI. `model_name` is the API model ID
+ * (used in code samples, request bodies, and the catalog ID column) and must
+ * never be reformatted; this map only supplies a human-readable label. Keys
+ * are exact `model_name` values. Missing entries fall back to `model_name`.
+ */
+const DISPLAY_NAME_OVERRIDES: Record<string, string> = {
+  // MiniMax
+  'MiniMax-M2.5': 'Minimax M2.5',
+  'MiniMax-M2.1': 'Minimax M2.1',
+
+  // Moonshot
+  'kimi-k2.5': 'Kimi K2.5',
+  'kimi-k2.6': 'Kimi K2.6',
+
+  // DeepSeek
+  'DeepSeek-V3.2': 'DeepSeek V3.2',
+
+  // OpenAI image / video
+  'gpt-image-2': 'GPT Image 2',
+  'sora-2': 'Sora 2',
+
+  // Google image
+  'nano-banana-2-on-demand': 'Nano Banana 2',
+};
+
+export function displayNameOf(name: string): string {
+  return DISPLAY_NAME_OVERRIDES[name] ?? name;
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// Model type axis (catalog list filter): language / multimodal / video
+// ──────────────────────────────────────────────────────────────────────────
+
+/**
+ * Coarse model-type axis for the /models catalog list filter. Distinct from
+ * `modalityOf` (kept for llms.txt): this is a single mutually-exclusive axis
+ * with no empty buckets across the 36-model snapshot, and uses explicit
+ * overrides so image/video models are not misfiled as language.
+ *
+ * Default `language` covers text LLMs; `multimodal` covers image-generation
+ * models; `video` covers video-generation models.
+ */
+export type ModelType = 'language' | 'multimodal' | 'video';
+
+const TYPE_OVERRIDES: Record<string, ModelType> = {
+  'sora-2': 'video',
+  'gpt-image-2': 'multimodal',
+  'nano-banana-2-on-demand': 'multimodal',
+};
+
+export function modelTypeOf(m: RawModel): ModelType {
+  return TYPE_OVERRIDES[m.model_name] ?? 'language';
+}
+
+/** URL/data slug for a model type — identical to the literal value. */
+export function modelTypeSlug(t: ModelType): string {
+  return t;
+}
+
+/** Data-layer label (parity with `modalityLabel`). UI prefers `t.models.types`. */
+export function modelTypeLabel(t: ModelType, locale: Locale = 'zh'): string {
+  switch (t) {
+    case 'language':
+      return locale === 'en'
+        ? 'Language'
+        : locale === 'ja'
+          ? '言語'
+          : locale === 'ko'
+            ? '언어'
+            : '语言';
+    case 'multimodal':
+      return locale === 'en'
+        ? 'Multimodal'
+        : locale === 'ja'
+          ? 'マルチモーダル'
+          : locale === 'ko'
+            ? '멀티모달'
+            : '多模态';
+    case 'video':
+      return locale === 'en'
+        ? 'Video'
+        : locale === 'ja'
+          ? '動画'
+          : locale === 'ko'
+            ? '비디오'
+            : '视频';
   }
 }
 
@@ -312,7 +410,9 @@ const models: Model[] = (raw.data as RawModel[]).map((m) => {
   return {
     ...m,
     vendor,
+    displayName: displayNameOf(m.model_name),
     modality: modalityOf(m),
+    modelType: modelTypeOf(m),
     iconSlug: slug,
     iconUrl: iconUrlOf(slug),
     iconMonoUrl: iconMonoUrlOf(slug),
@@ -334,9 +434,3 @@ export function usedVendors(): Vendor[] {
   const ids = new Set(models.map((m) => m.vendor_id));
   return vendors.filter((v) => ids.has(v.id));
 }
-
-/** Endpoint definitions (for dialog metadata strip). */
-export const endpointDefs = raw.supported_endpoint as Record<
-  EndpointType,
-  { path: string; method: string }
->;

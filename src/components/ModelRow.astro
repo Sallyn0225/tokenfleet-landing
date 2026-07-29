@@ -1,0 +1,183 @@
+---
+/**
+ * ModelRow.astro — one model in the /models catalog list (replaces ModelCard).
+ *
+ * Catalog-list semantics (not a marketing spec-sheet): a hairline-separated
+ * row, no card shadow. Five columns — 模型名 | 模型ID(mono) | 类型 |
+ * TPM(mono) | RPM(mono). The model name shows `displayName` (friendly label)
+ * while the model id renders `model_name` (the API ID, mono copyable value);
+ * they differ in content as well as typeface.
+ *
+ * Renders as a `<li>` carrying `data-*` attributes so ModelsExplorer's vanilla
+ * JS can filter (`hidden`) and sort (`style.order`) without touching markup.
+ * Desktop uses a 5-track grid shared with the table head via CSS vars
+ * (`--models-grid-cols` / `--models-cell-px` / `--models-gap`) defined on
+ * `.models-table`; below 768px the row collapses to a stacked grid with the
+ * column head hidden (handled in ModelsExplorer).
+ */
+import {
+  vendorSlug,
+  modelTypeSlug,
+  modelTypeLabel,
+  type Model,
+} from '../data/pricing.ts';
+import { limitsOf } from '../data/model-limits.ts';
+import { i18n, type Locale } from '../i18n.ts';
+
+interface Props {
+  model: Model;
+  locale?: Locale;
+  /** precomputed A–Z rank (0 = first alphabetically) for name sorting. */
+  nameOrder?: number;
+}
+
+const { model, locale = 'zh', nameOrder = 0 } = Astro.props as Props;
+const t = i18n[locale];
+
+const vSlug = vendorSlug(model.vendor);
+const typeSlug = modelTypeSlug(model.modelType);
+const typeLabel = modelTypeLabel(model.modelType, locale);
+const limits = limitsOf(model.model_name);
+const fmtLimit = (n: number | undefined): string =>
+  n == null ? '—' : n.toLocaleString('en-US');
+const tpm = fmtLimit(limits?.tpm);
+const rpm = fmtLimit(limits?.rpm);
+---
+
+<li
+  class="modelrow"
+  data-type={typeSlug}
+  data-vendor={vSlug}
+  data-name={`${model.displayName} ${model.model_name}`.toLowerCase()}
+  data-name-order={nameOrder}
+>
+  <div class="modelrow__name">{model.displayName}</div>
+  <code class="modelrow__id mono" title={t.models.copyId}
+    >{model.model_name}</code
+  >
+  <span class="modelrow__type mono">{typeLabel}</span>
+  <span class="modelrow__tpm mono"
+    ><span class="modelrow__key">{t.models.columns.tpm}</span><span
+      class="modelrow__num">{tpm}</span
+    ></span
+  >
+  <span class="modelrow__rpm mono"
+    ><span class="modelrow__key">{t.models.columns.rpm}</span><span
+      class="modelrow__num">{rpm}</span
+    ></span
+  >
+</li>
+
+<style>
+  .modelrow {
+    list-style: none;
+    display: grid;
+    grid-template-columns: var(--models-grid-cols, 1.4fr 1.4fr 0.8fr auto auto);
+    column-gap: var(--models-gap, 16px);
+    align-items: center;
+    padding: 14px var(--models-cell-px, 16px);
+    border-bottom: 1px solid var(--color-hairline);
+    transition: background-color var(--motion-base) var(--ease-out-quart);
+  }
+
+  .modelrow:hover {
+    background: var(--color-canvas-soft);
+  }
+
+  .modelrow__name {
+    font-size: 14px;
+    font-weight: var(--weight-medium);
+    color: var(--color-ink);
+    letter-spacing: -0.01em;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .modelrow__id {
+    font-size: 13px;
+    color: var(--color-ink-secondary);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .modelrow__type {
+    justify-self: start;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 3px 8px;
+    border: 1px solid currentColor;
+    border-radius: var(--radius-pill);
+    color: var(--color-ink-mute);
+    white-space: nowrap;
+  }
+
+  .modelrow__tpm,
+  .modelrow__rpm {
+    justify-self: end;
+    text-align: right;
+    font-size: 13px;
+    color: var(--color-ink-secondary);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* desktop: the table head carries the TPM/RPM labels */
+  .modelrow__key {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .modelrow {
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        'name type'
+        'id   id'
+        'tpm  rpm';
+      gap: 4px 12px;
+      padding: 14px var(--models-cell-px, 16px);
+    }
+
+    .modelrow__name {
+      grid-area: name;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .modelrow__id {
+      grid-area: id;
+      white-space: normal;
+      overflow-wrap: break-all;
+    }
+
+    .modelrow__type {
+      grid-area: type;
+      justify-self: end;
+    }
+
+    .modelrow__tpm {
+      grid-area: tpm;
+      justify-self: start;
+      text-align: left;
+    }
+
+    .modelrow__rpm {
+      grid-area: rpm;
+      justify-self: end;
+      text-align: right;
+    }
+
+    /* mobile: head is hidden, so label each value inline */
+    .modelrow__key {
+      display: inline;
+      margin-right: 4px;
+      color: var(--color-ink-mute);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+  }
+</style>
