@@ -186,23 +186,8 @@ export function modalityLabel(mod: Modality, locale: Locale = 'zh'): string {
  * are exact `model_name` values. Missing entries fall back to `model_name`.
  */
 const DISPLAY_NAME_OVERRIDES: Record<string, string> = {
-  // MiniMax
-  'MiniMax-M2.5': 'Minimax M2.5',
-  'MiniMax-M2.1': 'Minimax M2.1',
-
-  // Moonshot
-  'kimi-k2.5': 'Kimi K2.5',
-  'kimi-k2.6': 'Kimi K2.6',
-
-  // DeepSeek
-  'DeepSeek-V3.2': 'DeepSeek V3.2',
-
-  // OpenAI image / video
+  // OpenAI image
   'gpt-image-2': 'GPT Image 2',
-  'sora-2': 'Sora 2',
-
-  // Google image
-  'nano-banana-2-on-demand': 'Nano Banana 2',
 };
 
 export function displayNameOf(name: string): string {
@@ -216,7 +201,7 @@ export function displayNameOf(name: string): string {
 /**
  * Coarse model-type axis for the /models catalog list filter. Distinct from
  * `modalityOf` (kept for llms.txt): this is a single mutually-exclusive axis
- * with no empty buckets across the 36-model snapshot, and uses explicit
+ * with no empty buckets across the current snapshot, and uses explicit
  * overrides so image/video models are not misfiled as language.
  *
  * Default `language` covers text LLMs; `multimodal` covers image-generation
@@ -225,9 +210,10 @@ export function displayNameOf(name: string): string {
 export type ModelType = 'language' | 'multimodal' | 'video';
 
 const TYPE_OVERRIDES: Record<string, ModelType> = {
-  'sora-2': 'video',
   'gpt-image-2': 'multimodal',
-  'nano-banana-2-on-demand': 'multimodal',
+  'gemini-2.5-flash-image': 'multimodal',
+  'gemini-3-pro-image': 'multimodal',
+  'gemini-3.1-flash-image': 'multimodal',
 };
 
 export function modelTypeOf(m: RawModel): ModelType {
@@ -400,26 +386,34 @@ export function fmtUsd(n: number): string {
 // Catalog loader
 // ──────────────────────────────────────────────────────────────────────────
 
-const models: Model[] = (raw.data as RawModel[]).map((m) => {
-  const vendor = vendorOf(m.vendor_id);
-  // model.icon (e.g. "OpenAI.Color") wins, otherwise fall back to vendor.icon.
-  // iconSlugFromField handles brands that ship mono-only (forces strip of
-  // a non-existent -color suffix).
-  const iconField = m.icon || vendor.icon;
-  const slug = iconSlugFromField(iconField);
-  return {
-    ...m,
-    vendor,
-    displayName: displayNameOf(m.model_name),
-    modality: modalityOf(m),
-    modelType: modelTypeOf(m),
-    iconSlug: slug,
-    iconUrl: iconUrlOf(slug),
-    iconMonoUrl: iconMonoUrlOf(slug),
-    inputPriceUsd: inputPriceOf(m),
-    outputPriceUsd: outputPriceOf(m),
-  };
-});
+// `*-openai-compact` variants are same-model OpenAI-compatible endpoints the
+// upstream exposes as separate billable rows (ratio 37.5). We keep them in the
+// pricing-api.json snapshot for fidelity but hide them from the catalog so the
+// /models list shows one row per logical model. Drop the filter to surface them.
+const HIDDEN_SUFFIXES = ['-openai-compact'];
+
+const models: Model[] = (raw.data as RawModel[])
+  .filter((m) => !HIDDEN_SUFFIXES.some((s) => m.model_name.endsWith(s)))
+  .map((m) => {
+    const vendor = vendorOf(m.vendor_id);
+    // model.icon (e.g. "OpenAI.Color") wins, otherwise fall back to vendor.icon.
+    // iconSlugFromField handles brands that ship mono-only (forces strip of
+    // a non-existent -color suffix).
+    const iconField = m.icon || vendor.icon;
+    const slug = iconSlugFromField(iconField);
+    return {
+      ...m,
+      vendor,
+      displayName: displayNameOf(m.model_name),
+      modality: modalityOf(m),
+      modelType: modelTypeOf(m),
+      iconSlug: slug,
+      iconUrl: iconUrlOf(slug),
+      iconMonoUrl: iconMonoUrlOf(slug),
+      inputPriceUsd: inputPriceOf(m),
+      outputPriceUsd: outputPriceOf(m),
+    };
+  });
 
 export function loadModels(): Model[] {
   return models;

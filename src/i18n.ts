@@ -97,11 +97,11 @@ const zhMessages = {
     fallbackBlurb: '生产级模型接入',
     blurbs: {
       'claude-opus-4-7': 'Anthropic 旗舰推理模型',
+      'claude-opus-4-8': 'Anthropic 新一代旗舰推理模型',
       'gpt-5.5': 'OpenAI 新一代旗舰模型',
-      'gemini-3-pro-preview': 'Google 前沿多模态模型',
-      'DeepSeek-V3.2': '高性价比推理与工具调用',
-      'kimi-k2.6': '长上下文文档与智能体',
-      'MiniMax-M2.5': '高效编程与智能体工作流',
+      'gpt-5.6-terra': 'OpenAI Terra 高性能系列',
+      'gemini-3.1-pro-preview': 'Google 前沿多模态预览',
+      'gemini-2.5-pro': 'Google 稳定版多模态旗舰',
     },
   },
   product: {
@@ -288,11 +288,11 @@ const enMessages = {
     fallbackBlurb: 'Production model access',
     blurbs: {
       'claude-opus-4-7': "Anthropic's flagship reasoning model",
+      'claude-opus-4-8': "Anthropic's next-gen flagship reasoning model",
       'gpt-5.5': "OpenAI's next-gen flagship model",
-      'gemini-3-pro-preview': "Google's frontier multimodal model",
-      'DeepSeek-V3.2': 'Efficient reasoning and tool use',
-      'kimi-k2.6': 'Long-context documents and agents',
-      'MiniMax-M2.5': 'Efficient coding and agent workflows',
+      'gpt-5.6-terra': 'OpenAI Terra high-performance series',
+      'gemini-3.1-pro-preview': "Google's frontier multimodal preview",
+      'gemini-2.5-pro': "Google's stable multimodal flagship",
     },
   },
   product: {
@@ -506,11 +506,11 @@ const jaMessages = {
     fallbackBlurb: '本番向けモデル接続',
     blurbs: {
       'claude-opus-4-7': 'Anthropicのフラッグシップ推論モデル',
+      'claude-opus-4-8': 'Anthropicの次世代フラッグシップ推論モデル',
       'gpt-5.5': 'OpenAIの次世代フラッグシップモデル',
-      'gemini-3-pro-preview': 'Googleの最前線マルチモーダルモデル',
-      'DeepSeek-V3.2': '効率的な推論とツール利用',
-      'kimi-k2.6': '長文コンテキスト文書とエージェント',
-      'MiniMax-M2.5': '効率的なコーディングとエージェントワークフロー',
+      'gpt-5.6-terra': 'OpenAI Terra 高性能シリーズ',
+      'gemini-3.1-pro-preview': 'Googleの最前線マルチモーダルプレビュー',
+      'gemini-2.5-pro': 'Googleの安定版マルチモーダルフラッグシップ',
     },
   },
   product: {
@@ -722,11 +722,11 @@ const koMessages = {
     fallbackBlurb: '프로덕션 모델 접속',
     blurbs: {
       'claude-opus-4-7': 'Anthropic 플래그십 추론 모델',
+      'claude-opus-4-8': 'Anthropic 차세대 플래그십 추론 모델',
       'gpt-5.5': 'OpenAI 차세대 플래그십 모델',
-      'gemini-3-pro-preview': 'Google 최전선 멀티모달 모델',
-      'DeepSeek-V3.2': '효율적인 추론과 도구 사용',
-      'kimi-k2.6': '긴 컨텍스트 문서와 에이전트',
-      'MiniMax-M2.5': '효율적인 코딩과 에이전트 워크플로',
+      'gpt-5.6-terra': 'OpenAI Terra 고성능 시리즈',
+      'gemini-3.1-pro-preview': 'Google 최전선 멀티모달 프리뷰',
+      'gemini-2.5-pro': 'Google 안정형 멀티모달 플래그십',
     },
   },
   product: {
