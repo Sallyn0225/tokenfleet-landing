@@ -20,6 +20,7 @@
 
 import raw from '../../pricing-api.json';
 import { type Locale } from '../i18n.ts';
+import { withBase } from '../base.ts';
 
 /** USD per 1M tokens when ratio = 1. */
 export const BASE_USD_PER_MTOK = 2;
@@ -106,14 +107,24 @@ export function vendorSlug(v: Vendor): string {
   return v.name.toLowerCase().replace(/\s+/g, '-');
 }
 
+/**
+ * 英文展示名 —— 上游 API 的 `vendors[].name` 对国内厂商返回中文。除 UI 的英文
+ * 语言版外，`/llms.txt` 与 `/pricing.md` 也依赖它保持全篇 ASCII：线上这两个
+ * 文件的响应头不带 `charset`，任何非 ASCII 字符在浏览器里都会解成乱码。
+ * 新增中文名厂商时必须在此登记，否则中文名会直接漏进这两个文件。
+ */
+const vendorNameEn: Record<number, string> = {
+  8: 'Zhipu',
+  9: 'Kuaishou',
+  11: 'Xiaomi',
+  13: 'ByteDance',
+};
+
 export function vendorDisplayName(
   v: Vendor,
   locale: 'zh' | 'en' = 'zh'
 ): string {
-  if (locale === 'en') {
-    if (v.id === 8) return 'Zhipu';
-    if (v.id === 9) return 'Kuaishou';
-  }
+  if (locale === 'en') return vendorNameEn[v.id] ?? v.name;
   return v.name;
 }
 
@@ -263,7 +274,8 @@ export function modelTypeLabel(t: ModelType, locale: Locale = 'zh'): string {
 // Icon URL helpers (local LobeHub Icons snapshots in public/ai-brand-logo)
 // ──────────────────────────────────────────────────────────────────────────
 
-const ICON_PATH = '/ai-brand-logo';
+/** 过 `withBase()`，子路径部署（GitHub Pages 项目站点）下图标才不会 404。 */
+const ICON_PATH = withBase('/ai-brand-logo');
 
 /**
  * Some LobeHub brand icons ship mono-only — there is no `-color` variant on
