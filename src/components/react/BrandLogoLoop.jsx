@@ -1,7 +1,8 @@
 import LogoLoop from './LogoLoop.jsx';
+import { withBase } from '../../i18n.ts';
 
 const brandIcon = (file, title) => ({
-  src: `/ai-brand-logo/${file}`,
+  src: withBase(`/ai-brand-logo/${file}`),
   alt: title,
   title,
 });

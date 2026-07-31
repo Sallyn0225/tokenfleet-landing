@@ -20,6 +20,7 @@
 
 import raw from '../../pricing-api.json';
 import type { Locale } from '../i18n.ts';
+import { withBase } from '../i18n.ts';
 
 /** USD per 1M tokens when ratio = 1. */
 export const BASE_USD_PER_MTOK = 2;
@@ -259,7 +260,8 @@ export function modelTypeLabel(t: ModelType, locale: Locale = 'zh'): string {
 // Icon URL helpers (local LobeHub Icons snapshots in public/ai-brand-logo)
 // ──────────────────────────────────────────────────────────────────────────
 
-const ICON_PATH = '/ai-brand-logo';
+// 前缀 GitHub Pages 子路径 base（根部署时 withBase 返回原路径，输出不变）。
+const ICON_PATH = withBase('/ai-brand-logo');
 
 /**
  * Some LobeHub brand icons ship mono-only — there is no `-color` variant on

@@ -3,11 +3,35 @@ export type Locale = 'zh' | 'en' | 'ja' | 'ko';
 export const locales: Locale[] = ['en', 'zh', 'ja', 'ko'];
 export const defaultLocale: Locale = 'en';
 
+/**
+ * GitHub Pages 子路径部署的 base（如 `/tokenfleet-landing-ai`）。Vite 构建时把
+ * `import.meta.env.BASE_URL` 替换为字面量；根部署时为 `'/'`，去尾斜杠后为空串，
+ * 输出与未引入 base 前完全一致。
+ *
+ * 本模块会被 `scripts/sync-pricing.mjs` 在 Node 下直接加载（取 featured.blurbs），
+ * 因此这里不能直接读 `import.meta.env.BASE_URL` —— Node 22.12/22.13 没有
+ * `import.meta.env`，会抛 TypeError 炸掉同步脚本。`typeof` 守卫同时兼容 Node
+ * 与 Vite 两种执行环境。
+ */
+const BASE_PATH = (() => {
+  if (typeof import.meta.env === 'undefined') return '';
+  return (import.meta.env.BASE_URL ?? '').replace(/\/$/, '');
+})();
+
 export function localePath(locale: Locale, path: string): string {
   const normalized = path.startsWith('/') ? path : `/${path}`;
-  if (locale === 'en') return normalized;
-  if (normalized === '/') return `/${locale}`;
-  return `/${locale}${normalized}`;
+  if (locale === 'en') return `${BASE_PATH}${normalized}`;
+  if (normalized === '/') return `${BASE_PATH}/${locale}`;
+  return `${BASE_PATH}/${locale}${normalized}`;
+}
+
+/**
+ * 给站内资源路径加 base 前缀。不要直接拼 `import.meta.env.BASE_URL`——
+ * 根部署时它等于 `'/'`，拼出来是 `//favicon.png` 这种协议相对 URL（会被浏览器
+ * 解析成 `https://favicon.png/`）。BASE_PATH 已去尾斜杠，根部署时为空串。
+ */
+export function withBase(path: string): string {
+  return `${BASE_PATH}${path}`;
 }
 
 export function ogLocale(locale: Locale): string {

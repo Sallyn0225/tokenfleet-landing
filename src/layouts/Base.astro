@@ -8,7 +8,13 @@ interface Props {
   currentPath?: string;
 }
 
-import { alternateLinks, i18n, ogLocale, type Locale } from '../i18n.ts';
+import {
+  alternateLinks,
+  i18n,
+  ogLocale,
+  withBase,
+  type Locale,
+} from '../i18n.ts';
 
 const {
   locale = 'zh',
@@ -41,9 +47,23 @@ import '../styles/tailwind.css';
     />
     <meta name="theme-color" content="#533afd" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
-    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href={withBase('/favicon-32.png')}
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="48x48"
+      href={withBase('/favicon-48.png')}
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href={withBase('/apple-touch-icon.png')}
+    />
     <link rel="canonical" href={canonical} />
     {
       alternates.map((alternate) => (

@@ -36,14 +36,18 @@ const site =
 
 const basePath = env.BASE_PATH ?? (isGithubPages ? '/tokenfleet-landing' : '');
 
+// Astro 的 redirects 目标不会自动带 base（实测），必须显式拼。base 由构建 env
+// 决定，这里跟随即可：根部署（BASE_PATH 空）时回到不带 base 的原路径。
+const redirects = {
+  '/en': `${basePath}/`,
+  '/en/models': `${basePath}/models`,
+};
+
 export default defineConfig({
   site,
   ...(basePath ? { base: basePath } : {}),
   trailingSlash: 'never',
-  redirects: {
-    '/en': '/',
-    '/en/models': '/models',
-  },
+  redirects,
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()],
