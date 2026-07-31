@@ -1,5 +1,7 @@
 name: sync-models
 
+# 定时任务与手动触发均只在「部署仓库」的默认分支（sallyn/default-en-and-ai-pricing）
+# 上运行；代码仓库（tokenfleet-landing）中本 workflow 不会被调度。
 on:
   # 22:00 UTC = 次日 06:00 Asia/Shanghai
   schedule:
