@@ -3,17 +3,22 @@
  * FeaturedModels.astro — 6-up Featured Models gallery.
  *
  * Layout: left ~32% section title + intro link, right ~68% asymmetric model
- * grid. Each card = neutral surface +
- * SVG brand mark watermark + compact logo chip + modality eyebrow + mono
- * model id (display-md, weight 300) + mono token cost.
+ * grid, with an aggregate fact strip below the grid. Each card = neutral
+ * surface + SVG brand mark watermark + compact logo chip + modality eyebrow +
+ * mono model id (display-md, weight 300).
+ *
+ * Cards deliberately carry NO price: the live console is the single source of
+ * truth for pricing, and a hardcoded snapshot here goes stale the moment
+ * upstream rates change. The /models catalog is where prices belong.
  */
 
 import {
   loadModels,
   modalityLabel,
-  priceLabel,
   totalModelCount,
+  usedVendors,
   vendorDisplayName,
+  type ModelType,
 } from '../data/pricing.ts';
 import { i18n, localePath, type Locale } from '../i18n.ts';
 
@@ -24,6 +29,22 @@ interface Props {
 const { locale = 'zh' } = Astro.props as Props;
 const t = i18n[locale];
 const total = totalModelCount();
+const allModels = loadModels();
+const vendorCount = usedVendors().length;
+const facts = t.featured.facts;
+
+/**
+ * Coverage line is derived from the catalog rather than hardcoded, so adding a
+ * video/image model to `pricing-api.json` updates the strip automatically.
+ * `language` renders as "LLM" to match the card eyebrows.
+ */
+const TYPE_ORDER: ModelType[] = ['language', 'multimodal', 'video'];
+const coverage = TYPE_ORDER.filter((type) =>
+  allModels.some((m) => m.modelType === type)
+)
+  .map((type) => (type === 'language' ? 'LLM' : t.models.types[type]))
+  .join(' · ');
+
 const featuredModelIds = [
   'claude-opus-4-7',
   'claude-opus-4-8',
@@ -33,9 +54,7 @@ const featuredModelIds = [
   'gemini-2.5-pro',
 ];
 const featuredBlurbs: Record<string, string> = t.featured.blurbs;
-const modelById = new Map(
-  loadModels().map((model) => [model.model_name, model])
-);
+const modelById = new Map(allModels.map((model) => [model.model_name, model]));
 const featuredModels = featuredModelIds
   .map((id) => modelById.get(id))
   .filter(Boolean)
@@ -136,11 +155,33 @@ const featuredTitle = t.featured.title(total).split('\n');
               <p class="modelcard__id mono">{m.model_name}</p>
               <p class="modelcard__blurb">{m.blurb}</p>
             </div>
-            <p class="modelcard__price mono">{priceLabel(m, locale)}</p>
           </li>
         ))
       }
     </ol>
+
+    <dl class="featured__facts mono" data-reveal>
+      <div class="featured__fact">
+        <dt>{facts.models}</dt>
+        <dd><span class="featured__fact-num tabular">{total}</span></dd>
+      </div>
+      <div class="featured__fact">
+        <dt>{facts.vendors}</dt>
+        <dd><span class="featured__fact-num tabular">{vendorCount}</span></dd>
+      </div>
+      <div class="featured__fact">
+        <dt>{facts.coverage}</dt>
+        <dd>{coverage}</dd>
+      </div>
+      <div class="featured__fact">
+        <dt>{facts.access}</dt>
+        <dd>{facts.accessValue}</dd>
+      </div>
+      <div class="featured__fact">
+        <dt>{facts.billing}</dt>
+        <dd>{facts.billingValue}</dd>
+      </div>
+    </dl>
   </div>
 </section>
 
@@ -225,6 +266,51 @@ const featuredTitle = t.featured.title(total).split('\n');
   }
   .featured__taxonomy a:hover {
     color: var(--color-primary);
+  }
+
+  /* ── fact strip: aggregate catalog facts below the grid ───────────────── */
+  .featured__facts {
+    grid-column: 2;
+    margin-top: clamp(28px, 4vw, 44px);
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--color-hairline);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .featured__fact {
+    background: var(--color-canvas);
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+  }
+
+  .featured__fact dt {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-mute);
+  }
+
+  .featured__fact dd {
+    font-size: 13px;
+    color: var(--color-ink);
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+  }
+
+  .featured__fact-num {
+    font-size: 24px;
+    font-weight: var(--weight-medium);
+    color: var(--color-primary);
+    letter-spacing: -0.02em;
+    line-height: 1;
   }
 
   /* ── grid: asymmetric on desktop ──────────────────────────────────────── */
@@ -386,17 +472,6 @@ const featuredTitle = t.featured.title(total).split('\n');
     color: var(--color-ink-secondary);
   }
 
-  .modelcard__price {
-    font-size: 11px;
-    letter-spacing: -0.005em;
-    border-top: 1px solid currentColor;
-    padding-top: 14px;
-    margin-top: auto;
-    color: var(--color-ink-mute);
-    position: relative;
-    z-index: 2;
-  }
-
   /* ── responsive ───────────────────────────────────────────────────────── */
   @media (max-width: 1280px) {
     .featured__inner {
@@ -406,6 +481,9 @@ const featuredTitle = t.featured.title(total).split('\n');
     .featured__lede {
       position: static;
       max-width: 540px;
+    }
+    .featured__facts {
+      grid-column: 1 / -1;
     }
     .featured__grid {
       grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -440,6 +518,29 @@ const featuredTitle = t.featured.title(total).split('\n');
     }
     .modelcard {
       min-height: 184px;
+    }
+  }
+
+  /* fact strip collapses ahead of the card grid — its cells hold longer text */
+  @media (max-width: 960px) {
+    .featured__facts {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    /* 5 facts wrap unevenly once columns drop below 5 — let the trailing
+       fact fill its row instead of leaving an empty hairline cell. */
+    .featured__fact:last-child {
+      grid-column: span 2;
+    }
+  }
+  @media (max-width: 560px) {
+    .featured__facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .featured__fact {
+      padding: 14px 14px;
+    }
+    .featured__fact-num {
+      font-size: 21px;
     }
   }
 </style>

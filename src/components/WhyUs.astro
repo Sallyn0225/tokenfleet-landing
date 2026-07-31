@@ -29,22 +29,27 @@ const allModels = loadModels();
 const total = totalModelCount();
 
 /**
- * Catalog sampler — 12 representative models across all 6 vendors.
- * Missing ids are filtered out; `remaining` covers the rest of the catalog.
+ * Catalog sampler — 15 representative models, 5 per vendor, interleaved so the
+ * mono grid reads as a mix rather than three vendor blocks. IDs must match
+ * `pricing-api.json` exactly; unknown ids are silently filtered out and leave
+ * holes in the grid. `remaining` covers the rest of the catalog.
  */
 const marqueeIds = [
+  'claude-opus-4-8',
+  'gpt-5.6-terra',
+  'gemini-3.1-pro-preview',
   'claude-opus-4-7',
-  'claude-sonnet-4.6',
-  'claude-haiku-4.5',
   'gpt-5.5',
-  'gpt-5.4',
-  'gpt-5.3-codex',
-  'gemini-3-pro-preview',
   'gemini-3.5-flash',
-  'DeepSeek-V3.2',
-  'kimi-k2.6',
-  'kimi-k2.5',
-  'MiniMax-M2.5',
+  'claude-opus-4-6',
+  'gpt-5.4',
+  'gemini-2.5-pro',
+  'claude-sonnet-4-6',
+  'gpt-5.3-codex',
+  'gemini-3.1-flash-lite',
+  'claude-haiku-4-5-20251001',
+  'gpt-5.4-mini',
+  'gemini-2.5-flash',
 ];
 const byId = new Map(allModels.map((m) => [m.model_name, m]));
 const marquee = marqueeIds
@@ -74,7 +79,7 @@ const cities = [
     </div>
 
     <div class="why__grid">
-      {/* A — production models mono grid (12 marquee + folded link) */}
+      {/* A — production models mono grid (15 marquee + folded link) */}
       <article
         class="whycard whycard--models"
         data-reveal

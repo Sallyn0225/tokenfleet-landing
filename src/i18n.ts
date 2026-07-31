@@ -103,6 +103,15 @@ const zhMessages = {
       'gemini-3.1-pro-preview': 'Google 前沿多模态预览',
       'gemini-2.5-pro': 'Google 稳定版多模态旗舰',
     },
+    facts: {
+      models: '生产级模型',
+      vendors: '模型厂商',
+      coverage: '覆盖类型',
+      access: '统一接入',
+      accessValue: 'OpenAI 兼容 endpoint',
+      billing: '统一计费',
+      billingValue: 'USD 结算 · 单一发票',
+    },
   },
   product: {
     eyebrow: 'TokenFleet 产品线',
@@ -293,6 +302,15 @@ const enMessages = {
       'gpt-5.6-terra': 'OpenAI Terra high-performance series',
       'gemini-3.1-pro-preview': "Google's frontier multimodal preview",
       'gemini-2.5-pro': "Google's stable multimodal flagship",
+    },
+    facts: {
+      models: 'Production models',
+      vendors: 'Vendors',
+      coverage: 'Coverage',
+      access: 'Unified access',
+      accessValue: 'OpenAI-compatible endpoint',
+      billing: 'Unified billing',
+      billingValue: 'USD · single invoice',
     },
   },
   product: {
@@ -512,6 +530,15 @@ const jaMessages = {
       'gemini-3.1-pro-preview': 'Googleの最前線マルチモーダルプレビュー',
       'gemini-2.5-pro': 'Googleの安定版マルチモーダルフラッグシップ',
     },
+    facts: {
+      models: '本番向けモデル',
+      vendors: 'ベンダー',
+      coverage: '対応種類',
+      access: '統一接続',
+      accessValue: 'OpenAI 互換エンドポイント',
+      billing: '統一請求',
+      billingValue: 'USD 決済 · 単一請求書',
+    },
   },
   product: {
     eyebrow: 'TokenFleetのプロダクト',
@@ -727,6 +754,15 @@ const koMessages = {
       'gpt-5.6-terra': 'OpenAI Terra 고성능 시리즈',
       'gemini-3.1-pro-preview': 'Google 최전선 멀티모달 프리뷰',
       'gemini-2.5-pro': 'Google 안정형 멀티모달 플래그십',
+    },
+    facts: {
+      models: '프로덕션 모델',
+      vendors: '벤더',
+      coverage: '지원 유형',
+      access: '통합 접속',
+      accessValue: 'OpenAI 호환 엔드포인트',
+      billing: '통합 청구',
+      billingValue: 'USD 결제 · 단일 인보이스',
     },
   },
   product: {
