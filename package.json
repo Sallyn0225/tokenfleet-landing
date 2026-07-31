@@ -10,6 +10,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "check": "astro check",
+    "sync:models": "node scripts/sync-pricing.mjs",
     "lint": "eslint .",
     "format:check": "prettier --check .",
     "preview": "astro preview --host",

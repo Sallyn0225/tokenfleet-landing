@@ -45,7 +45,7 @@ src/i18n.ts              ─▶  featured.blurbs（en / zh / ja / ko 四份，�
 
 - 位于仓库根目录，应镜像 `https://tokenfleet.ai/api/pricing`。
 - 结构：`{ vendors: [...], data: [...RawModel], ... }`。
-- 刷新方式：从 API 拉取后整体覆盖该文件并提交。**不要手改 JSON 里某条模型的价格**——价格一律以 API 为准，落地页只是只读快照。
+- 刷新方式：由 `sync-models` workflow 每日自动拉取并开 PR（见「6. 自动同步」）；人工也可按 6.2 手动跑。**不要手改 JSON 里某条模型的价格**——价格一律以 API 为准，落地页只是只读快照。
 - 当前快照：**36 个模型**、**6 家厂商**（全部活跃，被至少一个模型引用）。
 
 关键字段（被 `pricing.ts` 消费）：
@@ -202,3 +202,90 @@ npm run format:check && npm run lint && npm run build && npm run check
 - **限速填了占位假数字**：违反真值原则。拿不到就留空。
 - **图标 404**：新厂商有彩色 `icon` 字段但 `public/ai-brand-logo/` 没放彩色 SVG，或品牌本无彩色版却没加进 `NO_COLOR_VARIANT`。
 - **改了价格没刷新快照**：`pricing-api.json` 是唯一价格来源，手改 `pricing.ts` 的公式常量无效。
+
+---
+
+## 6. 自动同步（`sync-models` workflow）
+
+### 6.1 触发与产出
+
+`.github/workflows/sync-models.yml`（与 main 分支同款，但数据源为本站 `tokenfleet.ai`）：
+
+- **定时**：cron `0 22 * * *`（UTC）= 每天北京时间 06:00。
+- **手动**：`workflow_dispatch`，带一个 `allow_shrink` 布尔输入（含义见 6.3）。
+- 流程：`scripts/sync-pricing.mjs` 拉取 → 安全阀 → 归一化 → 写 `pricing-api.json` → 无 diff 则**直接结束，不开 PR、不产生空提交**；有 diff 则跑完整自检序列（`format:check` / `lint` / `build` / `check` 四项），再用 `peter-evans/create-pull-request` 在固定分支 `automation/model-catalog-sync` 上开 / 更新 PR。
+- PR **只改 `pricing-api.json`**（`add-paths` 限定），base 为本分支 `sallyn/default-en-and-ai-pricing`；正文包含变更摘要（新增 / 下线 / 调价 / 厂商变动）与自检结果表。本分支**没有** `check:catalog`（它依赖 main 特有的 `featured.ts` / `catalog-overrides.ts` / `model-meta.ts`），下线模型的「人工数据残留」标注由摘要内联给出。
+- 合并由人工点击。**注意**：该 PR 由默认 `GITHUB_TOKEN` 创建，GitHub 为防递归**不会**为它触发 `ci.yml`，所以完整检查在 workflow 内已经跑过一遍、结果写进了正文；若确实需要 PR 上的状态检查，close 再 reopen 该 PR 即可触发。
+
+### 6.2 手动跑同步
+
+```sh
+TF_USERNAME=... TF_PASSWORD=... npm run sync:models -- --dry-run
+```
+
+| 参数                    | 作用                                                      |
+| ----------------------- | --------------------------------------------------------- |
+| `--dry-run`             | 只报告变更，不写盘                                        |
+| `--allow-shrink`        | 放行模型数腰斩（见 6.3）                                  |
+| `--summary-file <path>` | 把 markdown 摘要另写一份到文件（workflow 用它拼 PR 正文） |
+
+环境变量：
+
+| 变量                 | 说明                                                                                                    |
+| -------------------- | ------------------------------------------------------------------------------------------------------- |
+| `TF_USERNAME`        | 必填，专用只读账号的用户名                                                                              |
+| `TF_PASSWORD`        | 必填，其密码                                                                                            |
+| `TF_PRICING_FIXTURE` | 可选，指向一份本地 JSON，**跳过登录与网络**直接用它当上游响应。仅供离线调试脚本逻辑，**不要在 CI 里设** |
+
+摘要写 stdout（以及存在时的 `$GITHUB_STEP_SUMMARY`），进度与错误写 stderr；凭证与 session cookie 不会出现在任何输出里。
+
+### 6.3 安全阀
+
+以下任一条件命中即 `exit 1` 且**绝不写盘**：
+
+| 条件                             | 理由                                                    |
+| -------------------------------- | ------------------------------------------------------- |
+| 登录失败 / 拿不到 session cookie | 凭证问题                                                |
+| HTTP 非 2xx、超时、JSON 解析失败 | 网络或网关异常                                          |
+| `success !== true`               | 上游显式报错                                            |
+| **`data` 为空**                  | 见下方警告 —— 唯一能拦住「凭证失效 → 目录被清空」的防线 |
+| `vendors` 为空                   | 同上量级的异常                                          |
+| 某条模型缺 `model_name`          | 快照不可用                                              |
+| 模型数较现快照下降超 50%         | 疑似分组配置事故，需人工判断                            |
+
+> **不要把 `data` 为空这一条「优化」掉。** `/api/pricing` 走 newAPI 的 `TryUserAuth`，鉴权失败时**静默降级为匿名**而不是报 401 —— 密码过期、账号被停用、session 失效，全部表现为 HTTP 200 + `success: true` + `data: []`，与正常响应唯一的区别就是那个空数组。
+
+模型数腰斩只有在人工确认过确实发生了大规模下架时才放行：手动 `workflow_dispatch` 勾选 `allow_shrink`，或本地加 `--allow-shrink`。
+
+### 6.4 归一化（防噪音 PR）
+
+上游返回的数组顺序不保证稳定，直接写盘会天天产生无意义 diff。写盘前脚本统一：
+
+- 顶层键按字母序输出；`data[]` 按 `model_name` 升序；`vendors[]` 按 `id` 升序；模型内 `enable_groups`、`supported_endpoint_types` 升序。
+- 保留 API 返回的**全部顶层字段**（快照定位仍是「API 镜像」），只有一个例外：**模型级的 `pricing_version` 被丢弃**。上游每次响应会把这个哈希随机挂到某一个模型上（实测约一半响应根本没有，有的时候值还相同但挂在不同模型上），保留它会让约每隔一次同步就产生一行无意义 diff，而且会让快照断言一件不成立的事。顶层的 `pricing_version` 是稳定的，予以保留。
+- 用 Prettier Node API（读仓库 `.prettierrc`）格式化后写入 —— **必须**，因为 `pricing-api.json` 未被 `.prettierignore` 排除，`npm run format:check` 会检查它。
+
+因此对同一份线上数据连续跑两次，第二次 `git diff` 为空。
+
+### 6.5 凭证与轮换
+
+Secrets：`TF_USERNAME` / `TF_PASSWORD`，配置在**海外站部署仓库**（`deploy-pages.yml` / `sync-models.yml` 实际运行的仓库，非本仓库）的 Settings → Secrets and variables → Actions。
+
+**账号要求**：tokenfleet.ai 上**专用的普通只读账号** —— default 分组、无管理员权限、无余额、不建 API 令牌。仓库是 public，一旦 Secret 泄露，管理员凭证的爆炸半径是整站。
+
+**这同时定义了快照的口径**：newAPI 按调用者的 `usable_group` 过滤 `data[]`，所以快照 = 「新注册用户现在就能调用的模型」。将来若上线仅对 svip / vip 开放的模型，它不会自动出现在 `/models` —— 这是有意的取舍，不是缺陷。
+
+轮换步骤：
+
+1. 在控制台改掉该账号的密码。
+2. 更新 Secret（`gh` 会交互式提示粘贴，值不进 shell 历史），`<海外站部署仓库>` 换成实际仓库：
+
+   ```sh
+   gh secret set TF_PASSWORD --repo <海外站部署仓库>
+   # 若用户名也换了
+   gh secret set TF_USERNAME --repo <海外站部署仓库>
+   ```
+
+3. 手动 `workflow_dispatch` 触发一次 `sync-models` 验证：跑通即为成功（无变化时正常空跑），登录失败会在 exit 1 且不动快照。
+
+> **为什么不能用 access token。** 2026-07-31 实测：`/api/pricing` 只认浏览器 session cookie。带合法 access token（哪怕是 default 分组的管理员令牌）并配上正确的数字 `New-API-User`，返回的仍是空 `data`；`sk-` 开头的渠道令牌与匿名请求的输出完全一致。同一账号用浏览器 session 请求则能拿到完整目录。因此脚本只能走 `POST /api/user/login` 换 session cookie 再拉取。另：`/v1/models` 对渠道令牌可用，但每条只有 id，无任何价格字段，不能作数据源。
