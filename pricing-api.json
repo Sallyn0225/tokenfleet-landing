@@ -86,7 +86,7 @@
       "model_price": 0,
       "owner_by": "",
       "completion_ratio": 1,
-      "enable_groups": ["default"],
+      "enable_groups": ["default", "test"],
       "supported_endpoint_types": ["openai"]
     },
     {
@@ -97,7 +97,7 @@
       "model_price": 0,
       "owner_by": "",
       "completion_ratio": 1,
-      "enable_groups": ["default"],
+      "enable_groups": ["default", "test"],
       "supported_endpoint_types": ["openai"]
     },
     {
@@ -108,7 +108,7 @@
       "model_price": 0,
       "owner_by": "",
       "completion_ratio": 1,
-      "enable_groups": ["default"],
+      "enable_groups": ["default", "test"],
       "supported_endpoint_types": ["openai"]
     },
     {
