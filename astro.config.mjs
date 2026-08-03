@@ -11,6 +11,9 @@ import tailwindcss from '@tailwindcss/vite';
  *   `/<repo>` 子路径下，故需要 `base`；同时切 `build.format: 'file'`，让
  *   `/models` 直接命中 `models.html`，避免 GitHub Pages 对目录形式 URL 强制
  *   301 到带尾斜杠版本（与 `trailingSlash: 'never'` 及 canonical 冲突）。
+ *   （该分支为无害死代码：静态站托管已从 GitHub Pages 切到腾讯 EdgeOne Makers，
+ *   见 `.github/workflows/deploy-edgeone.yml`；EdgeOne 走默认根部署形态，
+ *   复用本文件默认分支，无需新增 `DEPLOY_TARGET=edgeone`。保留此分支便于回退。）
  *
  * `SITE_URL` / `BASE_PATH` 可单独覆盖，便于换仓库名或之后切自定义域名
  * （切自定义域名时设 `BASE_PATH=` 空值即可回到根部署）。

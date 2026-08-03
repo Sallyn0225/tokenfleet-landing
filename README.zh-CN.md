@@ -224,6 +224,16 @@ npm run format:check && npm run lint && npm run build && npm run check && npm ru
 
 生产构建产物会写入 `dist/`，可以部署到任意静态托管平台。
 
+### EdgeOne 部署
+
+本仓库的静态站部署到腾讯 EdgeOne Makers（替代之前的 GitHub Pages 部署）。`.github/workflows/deploy-edgeone.yml` 在每次 push 到 `main`（也可手动 `workflow_dispatch`）时运行：用默认根部署形态（无 `base`、`directory` 格式，与生产一致）构建后，通过 EdgeOne Makers CLI 上传 `dist/`。
+
+所需的 GitHub repository secret：
+
+- `EDGEONE_API_TOKEN` —— 在 EdgeOne Makers 控制台生成的 API Token。
+
+生产站 `https://tokenfleet.cn` 的托管方式不变；EdgeOne 部署是复用生产构建形态的镜像，canonical 与 sitemap 仍指向 `tokenfleet.cn`。日后若要让 EdgeOne 站点使用自己的 canonical/sitemap，在 workflow 的 `Build` step 设置 `SITE_URL` 即可。
+
 ## 持续集成
 
 `.github/workflows/ci.yml` 会在每次 push 到 `main` 或目标为 `main` 的 PR 上运行：
