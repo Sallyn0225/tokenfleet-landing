@@ -234,6 +234,32 @@ npm run format:check && npm run lint && npm run build && npm run check && npm ru
 
 生产站 `https://tokenfleet.cn` 的托管方式不变；EdgeOne 部署是复用生产构建形态的镜像，canonical 与 sitemap 仍指向 `tokenfleet.cn`。日后若要让 EdgeOne 站点使用自己的 canonical/sitemap，在 workflow 的 `Build` step 设置 `SITE_URL` 即可。
 
+### 其他静态托管目标（可选镜像）
+
+同一个 `dist/` 产物也可以部署到下列任意平台作为可选镜像。每个平台都用其**原生 Git 连接器**——在平台控制台连接本仓库后，每次 push 到 `main` 都会自动构建，无需 GitHub Actions 或 API token。三个平台均为镜像：canonical 与 sitemap 仍指向生产站 `https://tokenfleet.cn`。若要让某个镜像成为该平台的 canonical 站点，在对应平台设置环境变量 `SITE_URL`（例如 `SITE_URL=https://<your-site>.pages.dev`）即可；`astro.config.mjs` 已支持。
+
+#### Netlify
+
+1. 在 Netlify 控制台：新建站点 → **Import an existing project** → 连接本 GitHub 仓库。
+2. 完成——Netlify 的构建机器人会自动读取 `netlify.toml`（`command: npm run build`、`publish: dist`、`NODE_VERSION: 22.18.0`），无需手填 build 设置。
+3. 日后若要让 Netlify 站点使用自己的 canonical/sitemap，在站点环境变量中设置 `SITE_URL`。
+
+#### Vercel
+
+1. 在 Vercel 控制台：**Add New Project** → 导入本 GitHub 仓库。
+2. 完成——Vercel 会自动检测 Astro 项目（build 命令 `astro build`、产物目录 `dist`），并从 `package.json` 的 `engines`（`>=22.18.0`）读取 Node 版本。本站为纯静态站，无需 `vercel.json`。
+3. 日后若要让 Vercel 站点使用自己的 canonical/sitemap，在项目的 Environment Variables 中设置 `SITE_URL`。
+
+#### Cloudflare Pages
+
+1. 在 Cloudflare 控制台：**Workers & Pages** → **Create** → **Pages** → **Connect to Git** → 连接本 GitHub 仓库。
+2. 一次性填入以下 build 设置（Pages 的 Git 连接器**不读取**仓库内配置文件）：
+   - Framework preset：**Astro**
+   - Build command：`npm run build`
+   - Build output directory：`dist`
+   - Environment variable：`NODE_VERSION` = `22.18.0`
+3. 日后若要让 Pages 站点使用自己的 canonical/sitemap，在项目的 Environment variables 中设置 `SITE_URL`。
+
 ## 持续集成
 
 `.github/workflows/ci.yml` 会在每次 push 到 `main` 或目标为 `main` 的 PR 上运行：

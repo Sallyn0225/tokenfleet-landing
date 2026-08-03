@@ -1,0 +1,18 @@
+# Netlify build configuration.
+#
+# Read automatically by the Netlify Git connector when this repository is
+# connected to a Netlify site — no need to fill in build settings by hand.
+# The site is a pure static Astro build, so no adapter is required.
+#
+# Canonical URLs and the sitemap point to the production site
+# https://tokenfleet.cn (this is a mirror deployment). To give the Netlify
+# site its own canonical/sitemap later, set the SITE_URL environment variable
+# on the Netlify site (e.g. SITE_URL=https://<your-site>.netlify.app);
+# astro.config.mjs already honors it.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22.18.0"

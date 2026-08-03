@@ -234,6 +234,32 @@ Required GitHub repository secret:
 
 The production site `https://tokenfleet.cn` keeps its own hosting; the EdgeOne deployment is a mirror that reuses the production build shape, so canonical URLs and the sitemap still point to `tokenfleet.cn`. To give the EdgeOne site its own canonical/sitemap later, set `SITE_URL` in the workflow's `Build` step.
 
+### Other static hosting targets (optional mirrors)
+
+The same `dist/` output can also be hosted as an optional mirror on any of the platforms below. Each uses that platform's **native Git connector** — connect the repository in the platform dashboard and it builds automatically on every push to `main`. No GitHub Actions or API tokens are needed. All three are mirrors: canonical URLs and the sitemap keep pointing to the production site `https://tokenfleet.cn`. To make a mirror the canonical site for that host, set `SITE_URL` as an environment variable on that platform (e.g. `SITE_URL=https://<your-site>.pages.dev`); `astro.config.mjs` already honors it.
+
+#### Netlify
+
+1. In the Netlify dashboard, add a new site → **Import an existing project** → connect this GitHub repository.
+2. Done — Netlify's build bot reads `netlify.toml` (`command: npm run build`, `publish: dist`, `NODE_VERSION: 22.18.0`) automatically, so no build settings need to be filled in by hand.
+3. To give the Netlify site its own canonical/sitemap later, set `SITE_URL` in the site's environment variables.
+
+#### Vercel
+
+1. In the Vercel dashboard, **Add New Project** → import this GitHub repository.
+2. Done — Vercel auto-detects the Astro project (build command `astro build`, output `dist`) and reads the Node version from `package.json`'s `engines` (`>=22.18.0`). No `vercel.json` is needed because the site is fully static.
+3. To give the Vercel site its own canonical/sitemap later, set `SITE_URL` in the project's Environment Variables.
+
+#### Cloudflare Pages
+
+1. In the Cloudflare dashboard, **Workers & Pages** → **Create** → **Pages** → **Connect to Git** → connect this GitHub repository.
+2. Fill in the build settings once (the Pages Git connector does **not** read in-repo config files):
+   - Framework preset: **Astro**
+   - Build command: `npm run build`
+   - Build output directory: `dist`
+   - Environment variable: `NODE_VERSION` = `22.18.0`
+3. To give the Pages site its own canonical/sitemap later, set `SITE_URL` in the project's Environment variables.
+
 ## Continuous Integration
 
 `.github/workflows/ci.yml` runs on every push and pull request targeting `main`:
