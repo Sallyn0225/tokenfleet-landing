@@ -130,6 +130,7 @@ npm run preview
 | `/models`      | 中文模型目录：hairline 分隔的列表行，支持厂商 / 类型筛选、搜索、名称排序与 TPM / RPM 限速列。 |
 | `/en/models`   | `/models` 的英文版本。                                                                        |
 | `/404`         | 自定义 noindex 未找到页，提供回首页和模型页的恢复入口。                                       |
+| `/robots.txt`  | 构建期 robots.txt，`Sitemap:` 随 `site` + base 生成；子路径（预览）部署整站 disallow。        |
 | `/sitemap.xml` | 构建期 XML sitemap，包含 zh-CN / en / x-default alternate（仅首页与模型列表页）。             |
 | `/llms.txt`    | 构建期 AI 助手可读站点摘要与完整模型列表。                                                    |
 | `/pricing.md`  | 构建期 Markdown 定价快照，供代理和比价引擎读取。                                              |
@@ -138,7 +139,7 @@ npm run preview
 
 ```text
 docs/                  产品、设计与维护文档
-public/                静态图片、favicon、OG 图、robots.txt 与品牌标识
+public/                静态图片、favicon、OG 图与品牌标识
 public/ai-brand-logo/  列表行使用的 LobeHub 厂商 SVG 本地快照
 public/images/         各 section 使用的营销图像
 scripts/               目录同步与一致性校验 CLI（Node，无构建步骤）

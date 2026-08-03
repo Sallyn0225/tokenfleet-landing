@@ -470,7 +470,7 @@ The brand uses **product UI mockups** more than photography. Dashboard composite
 
 **Gradient Mesh Backdrop** — pastel cream → sherbet orange → lavender → indigo → ruby pink stops blurred horizontally across the upper third of the page. Implemented as SVG or a large background image — not a flat CSS gradient (the real mesh has organic blob shapes).
 
-**Home-Hero Terminal Backdrop (documented exception)** — the home hero (`HeroBackdrop.astro` / `FaultyTerminalIsland`) intentionally replaces the gradient mesh with a pale white-purple WebGL terminal field (indigo `#5b42ff` tint over `#f8f6ff`). This is a deliberate brand decision, not drift: it commits the home hero to an engineer-first / terminal-native voice that matches the developer audience and the code-as-brand-voice principle. Guardrails that keep it on-brand: glitch/flicker/scanline are kept low, the field stays light (so ink copy holds ≥ 4.5:1 contrast), it respects `prefers-reduced-motion`, pauses out of viewport, and degrades to a static radial-gradient fallback when WebGL is unavailable. The gradient mesh remains the default for every **other** marketing hero across the site.
+**Home-Hero Backdrop (documented exception)** — the home hero (`HeroBackdrop.astro`) intentionally replaces the gradient mesh with a static light-purple atmospheric field (base `#f8f6ff`) built from three stacked CSS layers: layered radial gradients (indigo `#7d6dff` and magenta `#f96bee` washes) plus a white highlight, a faint indigo grid masked radially, and a white vignette. This is a deliberate brand decision, not drift: it commits the home hero to an engineer-first / terminal-native voice that matches the developer audience. The field is deliberately static — no WebGL, no glitch/flicker/scanline — so it respects `prefers-reduced-motion` by default and keeps ink copy ≥ 4.5:1 contrast on the light field. The gradient mesh remains the default for every **other** marketing hero across the site.
 
 **Composited Dashboard Mockup** — multi-layer faux-product-UI compositions: an IDE panel on the left, a dashboard table center, a chart card on the right, all rendered at small scale inside `{rounded.lg}` containers with subtle Level 2 shadows. The composite is the brand's most-photographed feature.
 
@@ -489,7 +489,7 @@ The brand uses **product UI mockups** more than photography. Dashboard composite
 ### Do
 
 - Reserve `{colors.primary}` for filled CTAs and inline link emphasis — it should appear sparingly, one filled button per band.
-- Apply the gradient mesh to every marketing hero; bare-canvas heroes feel off-brand. (Documented exception: the home hero uses the terminal backdrop — see Signature Components → "Home-Hero Terminal Backdrop". Bare canvas is still off-brand; the terminal field is a committed atmospheric replacement, not bare canvas.)
+- Apply the gradient mesh to every marketing hero; bare-canvas heroes feel off-brand. (Documented exception: the home hero uses the static light-purple field — see Signature Components → "Home-Hero Backdrop". Bare canvas is still off-brand; the light-purple field is a committed atmospheric replacement, not bare canvas.)
 - Render display tiers at weight 300 with negative letter-spacing — the thin tracking is the typographic signature.
 - Use `font-feature-settings: "tnum"` on every money / numeric cell.
 - Apply `font-feature-settings: "ss01"` globally on the body element.
@@ -540,4 +540,4 @@ Product UI composites use `srcset` with art-direction crops at major breakpoints
 4. Add new variants as separate entries.
 5. Default body to `{typography.body-md}` (15px) at **weight 400** (regular); the thin (300) signature is reserved for latin display tiers. CJK never goes below 400.
 6. Apply `ss01` globally on the body; apply `tnum` per-element on numeric content.
-7. The gradient mesh is the default on marketing heroes — bare-canvas heroes break the brand. The one documented exception is the home hero's terminal backdrop (see Signature Components); any further hero-backdrop departure needs the same explicit documentation.
+7. The gradient mesh is the default on marketing heroes — bare-canvas heroes break the brand. The one documented exception is the home hero's static light-purple backdrop (see Signature Components); any further hero-backdrop departure needs the same explicit documentation.

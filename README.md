@@ -130,6 +130,7 @@ npm run preview
 | `/models`      | Chinese static model catalog: a hairline-separated row list with vendor / type filters, search, name sorting, and TPM / RPM columns. |
 | `/en/models`   | English model catalog mirroring `/models`.                                                                                           |
 | `/404`         | Custom noindex not-found page with recovery links.                                                                                   |
+| `/robots.txt`  | Build-time robots.txt whose `Sitemap:` URL follows `site` + base; disallows crawling on sub-path (preview) deploys.                  |
 | `/sitemap.xml` | Build-time XML sitemap with zh-CN / en / x-default alternates (home + models only).                                                  |
 | `/llms.txt`    | Build-time assistant-readable site summary and full model list.                                                                      |
 | `/pricing.md`  | Build-time Markdown pricing snapshot for agents and comparison engines.                                                              |
@@ -138,7 +139,7 @@ npm run preview
 
 ```text
 docs/                  Product, design, and maintenance notes
-public/                Static images, favicons, OG image, robots.txt, brand marks
+public/                Static images, favicons, OG image, and brand marks
 public/ai-brand-logo/  Local LobeHub vendor SVG snapshots used by catalog rows
 public/images/         Marketing imagery used across sections
 scripts/               Catalog sync and consistency-check CLIs (Node, no build step)
