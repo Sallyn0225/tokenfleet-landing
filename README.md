@@ -224,6 +224,16 @@ The site is configured in `astro.config.mjs` with:
 
 The production build output is written to `dist/` and can be deployed to any static hosting platform.
 
+### EdgeOne deployment
+
+This repository's static site is deployed to Tencent EdgeOne Makers (it replaces the previous GitHub Pages deployment). `.github/workflows/deploy-edgeone.yml` runs on every push to `main` (and via manual `workflow_dispatch`): it builds the default root-deploy shape (no `base`, `directory` format — identical to production) and uploads `dist/` with the EdgeOne Makers CLI.
+
+Required GitHub repository secret:
+
+- `EDGEONE_API_TOKEN` — an API Token generated in the EdgeOne Makers console.
+
+The production site `https://tokenfleet.cn` keeps its own hosting; the EdgeOne deployment is a mirror that reuses the production build shape, so canonical URLs and the sitemap still point to `tokenfleet.cn`. To give the EdgeOne site its own canonical/sitemap later, set `SITE_URL` in the workflow's `Build` step.
+
 ## Continuous Integration
 
 `.github/workflows/ci.yml` runs on every push and pull request targeting `main`:
