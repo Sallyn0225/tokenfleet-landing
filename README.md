@@ -225,6 +225,24 @@ The site is configured in `astro.config.mjs` with:
 
 The production build output is written to `dist/` and can be deployed to any static hosting platform.
 
+### Production delivery via GitHub Release
+
+Every push to `main` also publishes a built `dist/` bundle as a **GitHub Release** artifact
+(`.github/workflows/release-dist.yml`). Because this repository is **public**, the attachment is
+anonymously downloadable — no login or repo access needed, which is what makes it suitable for
+handing to ops. The fixed asset name gives a stable URL:
+
+```bash
+curl -fL -O https://github.com/Sallyn0225/tokenfleet-landing/releases/latest/download/tokenfleet-landing-dist.zip
+curl -fL -O https://github.com/Sallyn0225/tokenfleet-landing/releases/latest/download/tokenfleet-landing-dist.zip.sha256
+sha256sum -c tokenfleet-landing-dist.zip.sha256
+unzip -d /path/to/site-root tokenfleet-landing-dist.zip
+```
+
+The zip contains the site root with **no top-level `dist/` directory**. Each release records the
+commit SHA, build time (UTC/CST) and model count in its description for version tracing. Only the
+newest 10 releases are kept. Ops-facing instructions: [`docs/release-distribution.md`](docs/release-distribution.md).
+
 ### EdgeOne deployment
 
 This repository's static site is deployed to Tencent EdgeOne Makers (it replaces the previous GitHub Pages deployment). `.github/workflows/deploy-edgeone.yml` runs on every push to `main` (and via manual `workflow_dispatch`): it builds the default root-deploy shape (no `base`, `directory` format — identical to production) and uploads `dist/` with the EdgeOne Makers CLI.

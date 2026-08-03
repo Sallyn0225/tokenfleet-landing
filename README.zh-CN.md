@@ -225,6 +225,24 @@ npm run format:check && npm run lint && npm run build && npm run check && npm ru
 
 生产构建产物会写入 `dist/`，可以部署到任意静态托管平台。
 
+### 生产站产物分发（GitHub Release）
+
+每次 push 到 `main` 还会把构建好的 `dist/` 打包成 **GitHub Release** 附件
+（`.github/workflows/release-dist.yml`）。本仓库为 **PUBLIC**，附件可**匿名下载**——
+无需登录、无需仓库权限，因此适合直接交付给运维。附件文件名固定，配合 GitHub 原生
+`releases/latest` 机制，下载 URL 永远指向最新产物：
+
+```bash
+curl -fL -O https://github.com/Sallyn0225/tokenfleet-landing/releases/latest/download/tokenfleet-landing-dist.zip
+curl -fL -O https://github.com/Sallyn0225/tokenfleet-landing/releases/latest/download/tokenfleet-landing-dist.zip.sha256
+sha256sum -c tokenfleet-landing-dist.zip.sha256
+unzip -d /path/to/site-root tokenfleet-landing-dist.zip
+```
+
+压缩包解开后**直接是站点根**，不含 `dist/` 顶层目录。每个 Release 正文记录 commit SHA、
+构建时间（UTC / CST）与模型数量，便于版本追溯。仅保留最近 10 个 Release。
+运维操作指引见 [`docs/release-distribution.md`](docs/release-distribution.md)。
+
 ### EdgeOne 部署
 
 本仓库的静态站部署到腾讯 EdgeOne Makers（替代之前的 GitHub Pages 部署）。`.github/workflows/deploy-edgeone.yml` 在每次 push 到 `main`（也可手动 `workflow_dispatch`）时运行：用默认根部署形态（无 `base`、`directory` 格式，与生产一致）构建后，通过 EdgeOne Makers CLI 上传 `dist/`。
