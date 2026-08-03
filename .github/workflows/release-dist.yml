@@ -53,21 +53,23 @@ jobs:
       # 形如 "<hash>  tokenfleet-landing-dist.zip"，可直接被 sha256sum -c 消费。
       - name: Package dist and checksum
         run: |
-          cd dist
-          zip -qr ../tokenfleet-landing-dist.zip .
-          cd ..
+          # 在子 shell 内 cd 打包，避免 shellcheck SC2164/SC2103；cd 失败即整步失败。
+          ( cd dist && zip -qr ../tokenfleet-landing-dist.zip . )
           sha256sum tokenfleet-landing-dist.zip > tokenfleet-landing-dist.zip.sha256
 
       - name: Collect release metadata
         id: meta
         run: |
-          echo "short_sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
-          echo "date_tag=$(date -u +%Y%m%d)" >> "$GITHUB_OUTPUT"
-          echo "utc_time=$(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$GITHUB_OUTPUT"
-          echo "cst_time=$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S CST')" >> "$GITHUB_OUTPUT"
-          echo "model_count=$(node -e 'console.log(require("./pricing-api.json").data.length)')" >> "$GITHUB_OUTPUT"
-          echo "file_count=$(find dist -type f | wc -l)" >> "$GITHUB_OUTPUT"
-          echo "pkg_size=$(du -h tokenfleet-landing-dist.zip | cut -f1)" >> "$GITHUB_OUTPUT"
+          # 多个 echo 写入同一文件时合并为单个重定向块，满足 shellcheck SC2129。
+          {
+            echo "short_sha=$(git rev-parse --short HEAD)"
+            echo "date_tag=$(date -u +%Y%m%d)"
+            echo "utc_time=$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+            echo "cst_time=$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S CST')"
+            echo "model_count=$(node -e 'console.log(require("./pricing-api.json").data.length)')"
+            echo "file_count=$(find dist -type f | wc -l)"
+            echo "pkg_size=$(du -h tokenfleet-landing-dist.zip | cut -f1)"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Compose release body
         id: body
