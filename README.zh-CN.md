@@ -241,7 +241,8 @@ unzip -d /path/to/site-root tokenfleet-landing-dist.zip
 
 压缩包解开后**直接是站点根**，不含 `dist/` 顶层目录。每个 Release 正文记录 commit SHA、
 构建时间（UTC / CST）与模型数量，便于版本追溯。仅保留最近 10 个 Release。
-运维操作指引见 [`docs/release-distribution.md`](docs/release-distribution.md)。
+运维操作指引见 [`docs/release-distribution.md`](docs/release-distribution.md)；
+VPS 自动更新部署指引见 [`docs/vps-deployment.md`](docs/vps-deployment.md)。
 
 ### EdgeOne 部署
 

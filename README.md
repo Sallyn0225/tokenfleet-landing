@@ -242,6 +242,7 @@ unzip -d /path/to/site-root tokenfleet-landing-dist.zip
 The zip contains the site root with **no top-level `dist/` directory**. Each release records the
 commit SHA, build time (UTC/CST) and model count in its description for version tracing. Only the
 newest 10 releases are kept. Ops-facing instructions: [`docs/release-distribution.md`](docs/release-distribution.md).
+VPS auto-update setup: [`docs/vps-deployment.md`](docs/vps-deployment.md).
 
 ### EdgeOne deployment
 
