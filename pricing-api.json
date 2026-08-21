@@ -51,7 +51,7 @@
       "model_price": 0,
       "owner_by": "",
       "completion_ratio": 1.5,
-      "enable_groups": ["default", "ds-vip", "ds_65", "svip", "vip"],
+      "enable_groups": ["default", "svip", "vip"],
       "supported_endpoint_types": ["openai"]
     },
     {
@@ -63,11 +63,25 @@
       "owner_by": "",
       "completion_ratio": 2.0000000007,
       "cache_ratio": 0.020000000308,
-      "enable_groups": ["default", "ds-vip", "ds_65", "svip", "test", "vip"],
+      "enable_groups": ["default", "ds-vip", "svip", "test", "vip"],
+      "supported_endpoint_types": ["openai"],
+      "billing_mode": "tiered_expr",
+      "billing_expr": "(tier(\"闲时\", p * 0.2142857143 + c * 0.6428571429 + cr * 0.007142857143)) * (hour(\"Asia/Shanghai\") >= 9 && hour(\"Asia/Shanghai\") < 12 ? 2 : 1) * (hour(\"Asia/Shanghai\") >= 14 && hour(\"Asia/Shanghai\") < 18 ? 2 : 1)"
+    },
+    {
+      "model_name": "deepseek-v4-flash-0731",
+      "vendor_id": 5,
+      "quota_type": 0,
+      "model_ratio": 0.0714285714,
+      "model_price": 0,
+      "owner_by": "",
+      "completion_ratio": 2.0000000007,
+      "cache_ratio": 0.20000000308,
+      "enable_groups": ["default", "ds_8", "svip", "test"],
       "supported_endpoint_types": ["openai"]
     },
     {
-      "model_name": "deepseek-v4-pro",
+      "model_name": "deepseek-v4-pro-0424",
       "vendor_id": 5,
       "quota_type": 0,
       "model_ratio": 0.857142857,
@@ -75,8 +89,8 @@
       "owner_by": "",
       "completion_ratio": 2.00000000035,
       "cache_ratio": 0.008333333335,
-      "enable_groups": ["default", "ds-vip", "ds_25", "ds_4", "svip", "vip"],
-      "supported_endpoint_types": ["anthropic", "open"]
+      "enable_groups": ["default", "ds_25", "ds_4", "svip", "test"],
+      "supported_endpoint_types": ["openai"]
     },
     {
       "model_name": "doubao-seedance-2-0-260128",
@@ -198,7 +212,7 @@
       "owner_by": "",
       "completion_ratio": 5.00000000007,
       "cache_ratio": 0.099999999997,
-      "enable_groups": ["default", "test"],
+      "enable_groups": ["default", "k3_65", "test"],
       "supported_endpoint_types": ["openai"]
     }
   ],
